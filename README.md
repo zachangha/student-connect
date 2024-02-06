@@ -19,6 +19,7 @@
 | Student Name | Student Email | GitHub Username | Student's role |
 | :----------: | :-----------: | :-------------: | :------------: |
 |   John Doe   | jdoe@sfsu.edu |      jdoe       |  Team Leader   |
+| Collins Gichohi | cgichohi@sfsu.edu | gsnilloC | Front End Lead |
 
 **NO code should be stored in the root of your repository. You may rename the
 `application/` folder to your team's application name if you'd like, but all the
