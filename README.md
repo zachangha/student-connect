@@ -21,6 +21,7 @@
 | Kao Saephan     | ksaephan1@sfsu.edu   |    ksaephan     |  Team Leader   |
 | Collins Gichohi | cgichohi@sfsu.edu    |   gsnilloC      | Front End Lead |
 | Sean Ibarra Diaz| sibarradiaz@sfsu.edu |   Cross776      |  Scrum Master  |
+| Zacharia Angha  | zangha@sfsu.edu      |   zachangha     |  Git Master    |
 
 **NO code should be stored in the root of your repository. You may rename the
 `application/` folder to your team's application name if you'd like, but all the
