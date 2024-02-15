@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
       {" "}
-      {/* Wrap your entire application with Router */}
+      {}
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
