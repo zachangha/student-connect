@@ -4,7 +4,7 @@ function App() {
   return (
     <>
       <Header />
-      <h2> example header </h2>
+      <h2> PERSON1 PAGE </h2>
     </>
   );
 }

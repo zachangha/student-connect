@@ -1,21 +1,39 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import About from "./component/about";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  useParams,
+} from "react-router-dom";
 import Home from "./component/home";
-import Person1 from "./component/person1";
 import Navbar from "./component/navbar";
+import About from "./component/about"; // Import the About component
 
 function App() {
   return (
     <Router>
-      {" "}
-      {}
       <Navbar />
+
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/person1" element={<Person1 />} />
+        <Route path="/members/:memberName" element={<MemberPage />} />
+        <Route path="/about" element={<About />} />{" "}
       </Routes>
     </Router>
+  );
+}
+
+function MemberPage() {
+  const { memberName } = useParams();
+  const MemberComponent = React.lazy(() =>
+    import(`./component/members/${memberName}`)
+  );
+
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <MemberComponent />
+    </React.Suspense>
   );
 }
 

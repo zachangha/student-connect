@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 function Navbar() {
   return (
     <nav>
+      THIS IS THE NAVBAR
       <ul>
         <li>
           <NavLink to="/" activeClassName="active">

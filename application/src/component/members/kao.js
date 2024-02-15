@@ -1,10 +1,10 @@
-import Header from "./header.js";
+import Header from "../header.js";
 
 function App() {
   return (
     <div>
       <Header />
-      <h2> THIS IS THE HOME PAGE</h2>
+      <h2> KAO's page </h2>
     </div>
   );
 }
