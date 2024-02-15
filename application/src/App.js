@@ -3,12 +3,11 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Link,
   useParams,
 } from "react-router-dom";
 import Home from "./component/home";
 import Navbar from "./component/navbar";
-import About from "./component/about"; // Import the About component
+import About from "./component/about";
 
 function App() {
   return (
