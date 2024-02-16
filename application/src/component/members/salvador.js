@@ -1,13 +1,17 @@
-import Header from "../header.js";
-import "../styles/page.css"
+import React from "react";
+import "../styles/s.css";
+import salvadorImage from "../images/salvador.jpg";
+
 
 function App() {
   return (
-    <div className="center">
-      <Header />
-      <h2> SALVADOR Avila's page </h2>
-      <h3> Role: Front End Assist </h3>
+    <div className="container">
+      <div className="about-me">
+      <img src={salvadorImage} alt="Salvador Avila" />
+      <h1> Salvador Avila </h1>
+      <h2> Front End Assist </h2>
       
+    </div>
     </div>
     
   );
