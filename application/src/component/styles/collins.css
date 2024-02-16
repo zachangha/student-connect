@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.about-me {
+  text-align: center;
+}
+
+.about-me img {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+}

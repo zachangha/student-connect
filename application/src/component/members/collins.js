@@ -1,10 +1,15 @@
-import Header from "../header.js";
+import React from "react";
+import "../styles/collins.css";
+import collinsImage from "../images/collins.jpeg";
 
 function App() {
   return (
-    <div>
-      <Header />
-      <h2> COLLINS' page </h2>
+    <div className="container">
+      <div className="about-me">
+        <img src={collinsImage} alt="Collins Gichohi" />
+        <h1>Collins Gichohi</h1>
+        <h2>Front End Lead</h2>
+      </div>
     </div>
   );
 }
