@@ -1,11 +1,15 @@
 import Header from "../header.js";
+import "../styles/page.css"
 
 function App() {
   return (
-    <div>
+    <div className="center">
       <Header />
-      <h2> SALVADOR's page </h2>
+      <h2> SALVADOR Avila's page </h2>
+      <h3> Role: Front End Assist </h3>
+      
     </div>
+    
   );
 }
 

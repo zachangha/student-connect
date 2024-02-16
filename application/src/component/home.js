@@ -4,7 +4,7 @@ function App() {
   return (
     <div>
       <Header />
-      <h2> THIS IS THE HOME PAGE</h2>
+      <h2> Welcome to Our Home Page!</h2>
     </div>
   );
 }
