@@ -1,4 +1,4 @@
-# CSC648-01-sp24-team05
+# CSC648-01-sp24-Team05
 
 **Application URL: <https://example.com>**
 
