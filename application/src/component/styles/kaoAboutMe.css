@@ -1,0 +1,17 @@
+.bigBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: center;
+    padding-top: 5%;
+}
+
+.aboutMe {
+    text-align: center;
+}
+
+.aboutMe img {
+    width: 320px;
+    height: 400px;
+    border-radius: 10%;
+}

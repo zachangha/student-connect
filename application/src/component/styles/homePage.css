@@ -1,0 +1,26 @@
+.bigBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: center;
+    padding-top: 3%;
+    
+}
+
+.goal {
+    text-align: center;
+}
+
+.goal h1{
+    color: darkblue;
+    text-decoration: underline;
+}
+
+.goal h2 {
+    color: black;
+    text-decoration: underline;
+}
+
+.goal h3 {
+    text-align: left;
+}
