@@ -1,10 +1,10 @@
 import React from "react";
-import "../styles/collins.css";
+import "../styles/aboutMe.css";
 import collinsImage from "../images/collins.jpeg";
 
 function App() {
   return (
-    <div className="container">
+    <div className="aboutContainer">
       <div className="about-me">
         <img src={collinsImage} alt="Collins Gichohi" />
         <h1>Collins Gichohi</h1>

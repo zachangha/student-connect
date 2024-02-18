@@ -1,8 +1,9 @@
-.container {
+.aboutContainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  height: center;
+  padding-top: 8%;
 }
 
 .about-me {

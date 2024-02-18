@@ -3,7 +3,6 @@ import Header from "../header.js";
 function App() {
   return (
     <div>
-      <Header />
       <h2> LUKE's page </h2>
     </div>
   );
