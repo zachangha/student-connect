@@ -1,4 +1,4 @@
-# CSC648-SectionName-sp24-teamNum Repository
+# CSC648-01-sp24-Team05
 
 **Application URL: <https://example.com>**
 
