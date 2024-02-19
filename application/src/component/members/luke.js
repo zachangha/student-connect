@@ -1,4 +1,3 @@
-import Header from "../header.js";
 import lukeImage from "../images/luke.jpg";
 import "../styles/kaoAboutMe.css";
 
