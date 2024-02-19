@@ -1,5 +1,5 @@
 import Header from "../header.js";
-import lukeImage from "..images/luke.jpg"
+import lukeImage from '../images/luke.jpg';
 
 function App() {
   return (
