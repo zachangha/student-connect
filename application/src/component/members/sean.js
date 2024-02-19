@@ -1,9 +1,15 @@
-import Header from "../header.js";
+import React from "react";
+import "../styles/aboutMe.css";
+import seanImage from "../images/sean.jpeg";
 
 function App() {
   return (
-    <div>
-      <h2> SEAN's page </h2>
+    <div className="aboutContainer">
+      <div className="about-me">
+        <img src={seanImage} alt="Sean Ibarra Diaz" />
+        <h1>Sean Ibarra Diaz</h1>
+        <h2>Scrum Master</h2>
+      </div>
     </div>
   );
 }
