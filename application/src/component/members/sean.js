@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/aboutMe.css";
-import seanImage from "../images/sean.jpeg";
+import seanImage from "../images/sean.jpg";
 
 function App() {
   return (
