@@ -38,6 +38,8 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.23.9",
+    "@babel/preset-env": "^7.23.9",
     "husky": "^9.0.10",
     "lint-staged": "^15.2.2"
   },
