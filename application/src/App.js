@@ -5,9 +5,9 @@ import {
   Routes,
   useParams,
 } from "react-router-dom";
-import Home from "./component/home";
-import Navbar from "./component/navbar";
-import About from "./component/about";
+import Home from "./component/home.js";
+import Navbar from "./component/navbar.js";
+import About from "./component/about.js";
 
 function App() {
   return (
