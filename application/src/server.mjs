@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
+require("dotenv").config();
 
 const app = express(); // create express app
 app.use(cors());
