@@ -1,13 +1,14 @@
 import path from "path";
 import cors from "cors";
 import express from "express";
+import morgan from "morgan";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
-require("dotenv").config();
 
 const app = express(); // create express app
 app.use(cors());
 app.use(bodyParser.json());
+app.use(morgan("dev"));
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const root = path.resolve(__dirname, "..", "build");
