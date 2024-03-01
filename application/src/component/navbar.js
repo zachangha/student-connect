@@ -20,6 +20,11 @@ function Navbar() {
               About
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/login" activeClassName="active">
+              Login
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>

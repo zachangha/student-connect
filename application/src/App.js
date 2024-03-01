@@ -8,6 +8,8 @@ import {
 import Home from "./component/home.js";
 import Navbar from "./component/navbar.js";
 import About from "./component/about.js";
+import Login from "./component/login.js";
+import Register from "./component/register.js";
 
 function App() {
   return (
@@ -17,7 +19,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/members/:memberName" element={<MemberPage />} />
-        <Route path="/about" element={<About />} />{" "}
+        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );
