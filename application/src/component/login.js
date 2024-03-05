@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./styles/auth-pages.css";
+import Button from "@mui/material/Button";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ function Login() {
       <header className="header">
         <h1>Login</h1>
       </header>
-      <div className="container">
+      <div className="auth-container">
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
             <label htmlFor="email">Email:</label>
@@ -41,13 +42,11 @@ function Login() {
               required
             />
           </div>
-          <button type="submit" className="login-button">
-            Log In
-          </button>
+          <Button variant="contained">Login</Button>
+          <div className="links">
+            <Link to="/register">Don't have an account? Sign up</Link>
+          </div>
         </form>
-        <div className="links">
-          <Link to="/register">Don't have an account? Sign up</Link>
-        </div>
       </div>
     </div>
   );

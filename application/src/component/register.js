@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./styles/auth-pages.css";
+import Button from "@mui/material/Button";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -69,13 +70,11 @@ function Register() {
               required
             />
           </div>
-          <button type="submit" className="register-button">
-            Register
-          </button>
+          <Button variant="contained">Sign Up</Button>
+          <div className="links">
+            <Link to="/login">Already have an account? Log in</Link>
+          </div>
         </form>
-        <div className="links">
-          <Link to="/login">Already have an account? Log in</Link>
-        </div>
       </div>
     </div>
   );

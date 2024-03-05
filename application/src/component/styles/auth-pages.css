@@ -5,9 +5,9 @@
   text-transform: uppercase;
 }
 
-.container {
+.auth-container {
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   width: 90%;
 }
