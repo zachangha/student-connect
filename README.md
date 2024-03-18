@@ -1,6 +1,6 @@
 # CSC648-01-sp24-Team05
 
-**Application URL: <http://18.225.95.176>**
+**Application URL: <http://18.117.145.154>**
 
 |   Student Name   |        Student Email        | GitHub Username |  Student's role  |
 | :--------------: | :-------------------------: | :-------------: | :--------------: |
