@@ -1,82 +1,86 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Container, TextField, Button, Link } from "@mui/material";
 import "./styles/auth-pages.css";
-import Button from "@mui/material/Button";
 
 function Register() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  // TODO: need to implement authentication
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-    console.log("Registration Submitted", { username, email, password });
-  };
-
   return (
-    <div>
-      <header className="header">
-        <h1>Register</h1>
-      </header>
-      <div className="container">
-        <form onSubmit={handleSubmit} className="register-form">
-          <div className="form-group">
-            <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="confirm-password">Confirm Password:</label>
-            <input
-              type="password"
-              id="confirm-password"
-              name="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
-          <Button variant="contained">Sign Up</Button>
-          <div className="links">
-            <Link to="/login">Already have an account? Log in</Link>
-          </div>
-        </form>
+    <>
+      <div className="register-container">
+        <Container maxWidth="xs" className="login-box">
+          <h1 className="login-title">Register</h1>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="firstName"
+            label="First Name"
+            name="firstName"
+            autoComplete="given-name"
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="lastName"
+            label="Last Name"
+            name="lastName"
+            autoComplete="family-name"
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Your email"
+            name="email"
+            autoComplete="email"
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="new-password"
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="confirmPassword"
+            label="Retype Password"
+            type="password"
+            id="confirmPassword"
+            autoComplete="new-password"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className="login-button"
+            sx={{ mt: 2 }}
+          >
+            Register
+          </Button>
+          <p className="signup-prompt">
+            Already have an account?
+            <Link href="/login" className="signup-link">
+              Login
+            </Link>
+          </p>
+        </Container>
       </div>
-    </div>
+      <div className="right-side-container"></div>
+    </>
   );
 }
 

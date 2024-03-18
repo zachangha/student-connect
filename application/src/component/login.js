@@ -1,55 +1,56 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Container, TextField, Button, Link } from "@mui/material";
 import "./styles/auth-pages.css";
-import Button from "@mui/material/Button";
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  // TODO: need to implement authentication
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Login Submitted", { email, password });
-  };
-
+function LoginPage() {
   return (
-    <div>
-      <header className="header">
-        <h1>Login</h1>
-      </header>
-      <div className="auth-container">
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <Button variant="contained">Login</Button>
-          <div className="links">
-            <Link to="/register">Don't have an account? Sign up</Link>
-          </div>
-        </form>
+    <>
+      <div className="login-container">
+        <Container maxWidth="xs" className="login-box">
+          <h1 className="login-title">Log In</h1>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Your email"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className="login-button"
+            sx={{ mt: 2 }}
+          >
+            Log In
+          </Button>
+          <p className="signup-prompt">
+            Don't have an account?{" "}
+            <Link href="/register" className="signup-link">
+              Sign Up
+            </Link>
+          </p>
+        </Container>
       </div>
-    </div>
+      <div className="right-side-container"></div>
+    </>
   );
 }
 
-export default Login;
+export default LoginPage;
