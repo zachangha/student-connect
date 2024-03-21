@@ -1,10 +1,10 @@
 import path from "path";
 import cors from "cors";
 import express from "express";
-// import mongoose from "mongoose";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
+import { connectToDatabase } from "./database.mjs";
 
 const app = express(); // create express app
 
@@ -16,14 +16,7 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const root = path.resolve(__dirname, "..", "build");
 app.use(express.static(root));
 
-// mongoose.connect(process.env.DB_URL, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-
-// mongoose.connection.once("open", function () {
-//   console.log("MongoDB connection successfully established");
-// });
+connectToDatabase();
 
 app.get("/members/:memberName", (req, res) => {
   const memberName = req.params.memberName;
