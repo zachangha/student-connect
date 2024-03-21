@@ -5,8 +5,9 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 import { connectToDatabase } from "./database.mjs";
+import { insertUser } from "./insertDB.mjs";
 
-const app = express(); // create express app
+const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -17,6 +18,9 @@ const root = path.resolve(__dirname, "..", "build");
 app.use(express.static(root));
 
 connectToDatabase();
+
+console.log("Inserting user...");
+insertUser();
 
 app.use("/*", (req, res) => {
   res.sendFile(path.join(root, "index.html"));
