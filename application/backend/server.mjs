@@ -18,12 +18,6 @@ app.use(express.static(root));
 
 connectToDatabase();
 
-app.get("/members/:memberName", (req, res) => {
-  const memberName = req.params.memberName;
-  console.log(`Member requested: ${memberName}`);
-  res.sendFile(path.join(root, "index.html"));
-});
-
 app.use("/*", (req, res) => {
   res.sendFile(path.join(root, "index.html"));
 });
