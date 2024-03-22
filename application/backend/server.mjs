@@ -1,12 +1,13 @@
 import path from "path";
 import cors from "cors";
 import express from "express";
-import mongoose from "mongoose";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
+import { connectToDatabase } from "./database.mjs";
+import { insertUser } from "./insertDB.mjs";
 
-const app = express(); // create express app
+const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -16,20 +17,10 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const root = path.resolve(__dirname, "..", "build");
 app.use(express.static(root));
 
-mongoose.connect(process.env.DB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+connectToDatabase();
 
-mongoose.connection.once("open", function () {
-  console.log("MongoDB connection successfully established");
-});
-
-app.get("/members/:memberName", (req, res) => {
-  const memberName = req.params.memberName;
-  console.log(`Member requested: ${memberName}`);
-  res.sendFile(path.join(root, "index.html"));
-});
+console.log("Inserting user...");
+insertUser();
 
 app.use("/*", (req, res) => {
   res.sendFile(path.join(root, "index.html"));
