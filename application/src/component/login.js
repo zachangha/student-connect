@@ -5,14 +5,14 @@ import { useNavigate } from "react-router-dom";
 import "./styles/auth-pages.css";
 
 function LoginPage() {
-  const navigate = useNavigate(); // Hook to control navigation
+  const navigate = useNavigate();
 
   return (
     <>
       <Button
         startIcon={<ArrowBackIcon />}
         onClick={() => navigate("/")}
-        style={{ margin: "10px 0", alignSelf: "flex-start" }} // Adjust styling as needed
+        style={{ margin: "10px 0", alignSelf: "flex-start" }}
       >
         Back to Home
       </Button>

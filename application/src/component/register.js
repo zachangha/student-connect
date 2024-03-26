@@ -5,14 +5,14 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
-  const navigate = useNavigate(); // Hook to control navigation
+  const navigate = useNavigate();
 
   return (
     <>
       <Button
         startIcon={<ArrowBackIcon />}
         onClick={() => navigate("/")}
-        style={{ margin: "10px 0", alignSelf: "flex-start" }} // Adjust styling as needed
+        style={{ margin: "10px 0", alignSelf: "flex-start" }}
       >
         Back to Home
       </Button>
