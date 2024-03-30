@@ -5,7 +5,6 @@ import { insertUser } from "./insertDB.mjs";
 dotenv.config();
 
 async function connectToDatabase() {
-  console.log("in connectToDatabase");
   try {
     await mongoose.connect(process.env.DB_URL, {});
     console.log("Connected to Database");
