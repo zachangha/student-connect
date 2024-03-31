@@ -4,10 +4,8 @@ import {
   Route,
   Routes,
   useParams,
-  useLocation,
 } from "react-router-dom";
 import Home from "./component/home.js";
-import Navbar from "./component/navbar.js";
 import About from "./component/about.js";
 import Login from "./component/login.js";
 import Register from "./component/register.js";
@@ -15,36 +13,46 @@ import Messages from "./component/messages.js";
 import Profile from "./component/profile.js";
 import Classes from "./component/classes.js";
 import Footer from "./component/footer.js";
-import V2Nav from "./component/v2Nav.js";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
+import Layout from "./component/layout.js";
 
 function App() {
   return (
     <Router>
-      <ThemeProvider theme={themes}>
-        <V2Nav />
+      <ThemeProvider theme={ourTheme}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />{" "}
+            <Route path="about" element={<About />} />
+            <Route path="messages" element={<Messages />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="classes" element={<Classes />} />
+            <Route path="members/:memberName" element={<MemberPage />} />
+          </Route>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+        </Routes>
+        <Footer />
       </ThemeProvider>
-      <RoutesWrapper />
     </Router>
   );
 }
 
-// Create a theme instance.
-const themes = createTheme({
+const ourTheme = createTheme({
   palette: {
     primary: {
-      main: "#556cd6", // A blue shade
+      main: "#556cd6",
     },
     secondary: {
-      main: "#19857b", // A teal shade
+      main: "#19857b",
     },
     error: {
-      main: "#ff1744", // A red shade
+      main: "#ff1744",
     },
     background: {
-      default: "#fff", // White background by default
-      paper: "#f5f5f5", // Light grey for paper elements
+      default: "#fff",
+      paper: "#f5f5f5",
     },
   },
   typography: {
@@ -58,45 +66,22 @@ const themes = createTheme({
     },
   },
   components: {
-    // Customizing MUI components globally
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: "8px", // Rounded corners for buttons
+          borderRadius: "8px",
         },
       },
     },
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "#556cd6", // Matching the primary color
+          backgroundColor: "#556cd6",
         },
       },
     },
   },
 });
-
-function RoutesWrapper() {
-  const location = useLocation();
-  const authRoutes = ["/login", "/register"];
-
-  return (
-    <>
-      {/* {!authRoutes.includes(location.pathname) && <Navbar />} */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/members/:memberName" element={<MemberPage />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/messages" element={<Messages />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/classes" element={<Classes />} />
-      </Routes>
-      {!authRoutes.includes(location.pathname) && <Footer />}
-    </>
-  );
-}
 
 function MemberPage() {
   const { memberName } = useParams();

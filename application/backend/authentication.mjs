@@ -4,7 +4,6 @@ import { User } from "./database.mjs";
 
 const router = express.Router();
 
-// Route to handle user registration
 router.post("/register", async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -12,7 +11,6 @@ router.post("/register", async (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
-      // Add other fields as necessary
     });
     const savedUser = await user.save();
     res.status(201).send("User created successfully");
@@ -21,13 +19,10 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Route to handle user login
 router.post("/login", async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
   if (user && (await bcrypt.compare(req.body.password, user.password))) {
-    // Authentication successful
     res.send("Logged in successfully");
-    // Implement session or token logic here as needed
   } else {
     res.status(400).send("Invalid username or password");
   }

@@ -1,12 +1,11 @@
 import * as React from "react";
 import { styled, useTheme } from "@mui/material/styles";
-import { NavLink } from "react-router-dom"; // Import NavLink
+import { NavLink } from "react-router-dom";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -23,18 +22,19 @@ import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LoginIcon from "@mui/icons-material/Login";
 
-// Define your navigation links
 const navLinks = [
   { text: "Home", to: "/", icon: <HomeIcon /> },
   { text: "Messages", to: "/messages", icon: <MesssageIcon /> },
   { text: "Classes", to: "/classes", icon: <MailIcon /> },
+];
+
+const bottomLinks = [
   { text: "Profiles", to: "/profile", icon: <AccountCircleIcon /> },
   { text: "Login", to: "/login", icon: <LoginIcon /> },
 ];
 
 const drawerWidth = 200;
 
-// Mixins for opened and closed drawer states
 const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create("width", {
@@ -112,8 +112,7 @@ export default function MiniDrawer() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
+    <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
@@ -167,11 +166,34 @@ export default function MiniDrawer() {
             </ListItem>
           ))}
         </List>
+        <Divider />
+        <List>
+          {bottomLinks.map(({ text, to, icon }, index) => (
+            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+              <ListItemButton
+                component={NavLink}
+                to={to}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  {icon}
+                </ListItemIcon>
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        {/* Your page content here */}
-      </Box>
     </Box>
   );
 }
