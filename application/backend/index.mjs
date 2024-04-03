@@ -4,6 +4,7 @@ import express from 'express';
 import { connectToDatabase } from './database.mjs';
 import User from './models/User.mjs';
 import Course from './models/Course.mjs';
+import ClassChatter from './models/ClassChatter.mjs';
 
 
 const app = express(); 
@@ -15,6 +16,8 @@ app.get('/', (req, res) => {
 
 res.send('Hello World!');
 });
+
+// Users endpoints
 
 app.get('/users', async (req, res) => {
     try {
@@ -64,6 +67,8 @@ app.delete('/users/:id', async (req, res) => {
         res.status(500).send(err)
     }
 })
+
+// Courses endpoints
 
 app.get('/courses', async (req, res) => {
     try {
@@ -115,6 +120,56 @@ app.delete('/courses/:id', async (req, res) => {
         res.status(500).send(err);
     }
 });
+
+// Class Chatter endpoints
+
+app.get('/classchatter', async (req, res) => {
+    try {
+      const chatter = await ClassChatter.find();
+      res.json(chatter);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+});
+
+app.post('/classchatter', async (req, res) => {
+    const newChatter = new ClassChatter(req.body);
+    try {
+      const savedChatter = await newChatter.save();
+      res.status(201).json(savedChatter);
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  });
+  
+  app.get('/classchatter/:id', async (req, res) => {
+    try {
+      const chatter = await ClassChatter.findById(req.params.id);
+      if (!chatter) res.status(404).send("Chatter not found");
+      res.json(chatter);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  });
+  
+  app.put('/classchatter/:id', async (req, res) => {
+    try {
+      const updatedChatter = await ClassChatter.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      res.json(updatedChatter);
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  });
+  
+  app.delete('/classchatter/:id', async (req, res) => {
+    try {
+      const deletedChatter = await ClassChatter.findByIdAndDelete(req.params.id);
+      if (!deletedChatter) res.status(404).send("Chatter not found");
+      res.status(200).send("Chatter deleted");
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  });
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
