@@ -5,6 +5,7 @@ import { connectToDatabase } from './database.mjs';
 import User from './models/User.mjs';
 import Course from './models/Course.mjs';
 import ClassChatter from './models/ClassChatter.mjs';
+import QAForum from './models/QAForum.mjs';
 
 
 const app = express(); 
@@ -170,6 +171,67 @@ app.post('/classchatter', async (req, res) => {
       res.status(500).send(err);
     }
   });
+
+  // Q&A Forum endpoints
+
+app.get('/qaforum', async (req, res) => {
+    try {
+        const qaPosts = await QAForum.find();
+        res.json(qaPosts);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+app.post('/qaforum', async (req, res) => {
+    const qaPost = new QAForum(req.body);
+    try {
+        const newQAPost = await qaPost.save();
+        res.status(201).json(newQAPost);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+app.get('/qaforum/:id', async (req, res) => {
+    try {
+        const qaPost = await QAForum.findById(req.params.id);
+        if (!qaPost) {
+            res.status(404).send('Q&A Forum post not found');
+        } else {
+            res.json(qaPost);
+        }
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+app.put('/qaforum/:id', async (req, res) => {
+    try {
+        const updatedQAPost = await QAForum.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedQAPost) {
+            res.status(404).send('Q&A Forum post not found');
+        } else {
+            res.json(updatedQAPost);
+        }
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+app.delete('/qaforum/:id', async (req, res) => {
+    try {
+        const deletedQAPost = await QAForum.findByIdAndDelete(req.params.id);
+        if (!deletedQAPost) {
+            res.status(404).send('Q&A Forum post not found');
+        } else {
+            res.status(200).send('Q&A Forum post deleted');
+        }
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
