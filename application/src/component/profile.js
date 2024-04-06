@@ -5,7 +5,7 @@ import "./styles/homePage.css";
 function App() {
   return (
     <div className="bigBox">
-      <h1> HOME PAGE </h1>
+      <h1> PROFILE PAGE </h1>
     </div>
   );
 }

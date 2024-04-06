@@ -16,8 +16,18 @@ function Navbar() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/about" activeClassName="active">
-              About
+            <NavLink to="/messages" activeClassName="active">
+              Messages
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/profile" activeClassName="active">
+              Profiles
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/classes" activeClassName="active">
+              Classes
             </NavLink>
           </li>
           <li>

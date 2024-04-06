@@ -5,7 +5,6 @@ import { insertUser } from "./insertDB.mjs";
 dotenv.config();
 
 async function connectToDatabase() {
-  console.log("in connectToDatabase");
   try {
     await mongoose.connect(process.env.DB_URL, {});
     console.log("Connected to Database");
@@ -27,12 +26,12 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
-    unique: true,
+    required: [true, "Please provide an Email!"],
+    unique: [true, "Email Exist"],
   },
   password: {
     type: String,
-    required: true,
+    required: [true, "Please provide a password!"],
   },
   firstName: {
     type: String,
@@ -61,4 +60,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-export { connectToDatabase };
+const User = mongoose.model("User", userSchema);
+
+export { User, connectToDatabase };

@@ -1,10 +1,21 @@
 import React from "react";
 import { Container, TextField, Button, Link } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate } from "react-router-dom";
 import "./styles/auth-pages.css";
 
 function LoginPage() {
+  const navigate = useNavigate();
+
   return (
     <>
+      <Button
+        startIcon={<ArrowBackIcon />}
+        onClick={() => navigate("/")}
+        style={{ margin: "10px 0", alignSelf: "flex-start" }}
+      >
+        Back to Home
+      </Button>
       <div className="login-container">
         <Container maxWidth="xs" className="login-box">
           <h1 className="login-title">Log In</h1>
