@@ -13,14 +13,24 @@ app.use(bodyParser.json());
 app.use(morgan("dev"));
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(root));
+  app.use("/*", (req, res) => {
+    res.sendFile(path.join(root, "index.html"));
+  });
+}
+
 const root = path.resolve(__dirname, "..", "build");
 app.use(express.static(root));
 
 connectToDatabase();
 
-app.use("/*", (req, res) => {
-  res.sendFile(path.join(root, "index.html"));
-});
+// app.use("/*", (req, res) => {
+//   res.sendFile(path.join(root, "index.html"));
+// });
+
+app.get("/", (req, res) => {});
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server started on port " + (process.env.PORT || 3000));

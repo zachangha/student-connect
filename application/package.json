@@ -59,5 +59,6 @@
   "lint-staged": {
     "**/*": "prettier ---write ---ignore-unknown",
     "frontend/**/*.js": "webpack"
-  }
+  },
+    "proxy": "http://localhost:3000"
 }
