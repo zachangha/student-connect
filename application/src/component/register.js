@@ -1,11 +1,26 @@
-import React from "react";
-import { Container, TextField, Button, Link } from "@mui/material";
+import { useState, React } from "react";
+import {
+  Container,
+  TextField,
+  Button,
+  Link,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
+} from "@mui/material";
 import "./styles/auth-pages.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
   const navigate = useNavigate();
+
+  // Inside your Register function, add state hooks for pronouns and role
+  const [pronouns, setPronouns] = useState("");
+  const [role, setRole] = useState("");
+
+  // Add these inside your return statement, where you want the dropdowns to appear
 
   return (
     <>
@@ -72,6 +87,35 @@ function Register() {
             id="confirmPassword"
             autoComplete="new-password"
           />
+
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="pronouns-label">Pronouns</InputLabel>
+            <Select
+              labelId="pronouns-label"
+              id="pronouns"
+              value={pronouns}
+              label="Pronouns"
+              onChange={(event) => setPronouns(event.target.value)}
+            >
+              <MenuItem value="he/him">He/Him</MenuItem>
+              <MenuItem value="she/her">She/Her</MenuItem>
+              <MenuItem value="they/them">They/Them</MenuItem>
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="role-label">Role</InputLabel>
+            <Select
+              labelId="role-label"
+              id="role"
+              value={role}
+              label="Role"
+              onChange={(event) => setRole(event.target.value)}
+            >
+              <MenuItem value="student">Student</MenuItem>
+              <MenuItem value="teacher">Teacher</MenuItem>
+            </Select>
+          </FormControl>
           <Button
             type="submit"
             fullWidth

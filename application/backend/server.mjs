@@ -5,7 +5,6 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 import { connectToDatabase } from "./database.mjs";
-import { insertUser } from "./insertDB.mjs";
 
 const app = express();
 
