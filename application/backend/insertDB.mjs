@@ -1,4 +1,6 @@
-import { User, connectToDatabase } from "./database.mjs";
+import { connectToDatabase } from "./database.mjs";
+import User from './models/User.mjs';
+
 
 export async function insertUser() {
   await connectToDatabase();
