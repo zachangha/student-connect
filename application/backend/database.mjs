@@ -6,7 +6,10 @@ dotenv.config();
 
 export async function connectToDatabase() {
   try {
-    await mongoose.connect(process.env.DB_URL, {});
+    await mongoose.connect(
+      "mongodb://LukeT:Csc648GroupProject!@18.117.145.154:27017/CSC_648_Database",
+      {}
+    );
     console.log("Connected to Database");
   } catch (err) {
     console.log(err);
