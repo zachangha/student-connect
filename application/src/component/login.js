@@ -25,16 +25,12 @@ function LoginPage() {
       if (response.status === 200) {
         console.log("Login successful:", data);
 
-        // Assuming 'data.user' contains the user information excluding the password
         if (data.user) {
-          // Convert user object to a string for storage
           const userData = JSON.stringify(data.user);
-          localStorage.setItem("user", userData); // Store the user data
+          localStorage.setItem("user", userData);
         }
-
-        navigate("/"); // Navigate to home or dashboard
+        navigate("/");
       } else {
-        // Handle errors, e.g., show an error message
         console.error("Login failed:", data.message);
       }
     } catch (error) {

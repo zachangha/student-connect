@@ -48,7 +48,7 @@ function Register() {
     try {
       const response = await axios.post("/api/users", userArray);
       console.log("User registered:", response.data);
-      navigate("/about");
+      navigate("/login");
     } catch (error) {
       console.error(
         "Failed to register user:",

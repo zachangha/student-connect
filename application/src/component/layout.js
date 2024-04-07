@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import V2Nav from "./v2Nav";
+import V2Nav from "./navbar";
 
 const Layout = () => {
   const location = useLocation();

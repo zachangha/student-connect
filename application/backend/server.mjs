@@ -50,7 +50,6 @@ app.post("/api/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Create a user object without the password
     const userResponse = {
       username: user.username,
       email: user.email,
