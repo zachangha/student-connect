@@ -1,31 +1,17 @@
-import express from "express";
+import mongoose from "mongoose";
+import User from "./models/User.mjs";
 import bcrypt from "bcrypt";
-import { User } from "./database.mjs";
 
-const router = express.Router();
+// Pre-save hook to hash password
+User.pre("save", async function (next) {
+  // Only hash the password if it has been modified (or is new)
+  if (!this.isModified("password")) return next();
 
-router.post("/register", async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const user = new User({
-      username: req.body.username,
-      email: req.body.email,
-      password: hashedPassword,
-    });
-    const savedUser = await user.save();
-    res.status(201).send("User created successfully");
+    const salt = await bcrypt.genSalt(10); // Generate salt
+    this.password = await bcrypt.hash(this.password, salt); // Hash password
+    next();
   } catch (err) {
-    res.status(400).send("Error registering user");
+    next(err);
   }
 });
-
-router.post("/login", async (req, res) => {
-  const user = await User.findOne({ username: req.body.username });
-  if (user && (await bcrypt.compare(req.body.password, user.password))) {
-    res.send("Logged in successfully");
-  } else {
-    res.status(400).send("Invalid username or password");
-  }
-});
-
-export default router;

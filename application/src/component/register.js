@@ -19,6 +19,7 @@ function Register() {
 
   const [pronouns, setPronouns] = useState("");
   const [role, setRole] = useState("");
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -38,10 +39,9 @@ function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match.");
-      return; // Stop the form submission
+      return;
     }
 
     const userArray = [formData];
