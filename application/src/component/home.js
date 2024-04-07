@@ -3,13 +3,16 @@ import "./styles/homePage.css";
 // import { Button, TextField } from "@mui/material";
 
 function App() {
-  // Attempt to retrieve the username from local storage
-  const username = localStorage.getItem("username");
+  const user = JSON.parse(localStorage.getItem("user"));
 
   return (
     <div className="bigBox">
-      <h1> HOME PAGE </h1>
-      {username && <h2>Welcome, {username}!</h2>}
+      {user && (
+        <div>
+          <h1>Username: {user.username}</h1>
+          <h1>Email: {user.email}</h1>
+        </div>
+      )}
     </div>
   );
 }

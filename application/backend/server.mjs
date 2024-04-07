@@ -50,7 +50,19 @@ app.post("/api/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    res.json({ message: "Login successful" });
+    // Create a user object without the password
+    const userResponse = {
+      username: user.username,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      karmaPoints: user.karmaPoints,
+      pronouns: user.pronouns,
+      role: user.role,
+      dateJoined: user.dateJoined,
+    };
+
+    res.json({ message: "Login successful", user: userResponse });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
