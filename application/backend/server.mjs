@@ -19,9 +19,6 @@ app.use(express.static(root));
 
 connectToDatabase();
 
-console.log("Inserting user...");
-insertUser();
-
 app.use("/*", (req, res) => {
   res.sendFile(path.join(root, "index.html"));
 });

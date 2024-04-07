@@ -28,8 +28,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start node": "nodemon ./src/server.mjs",
-    "server": "node ./src/server.mjs"
+    "start node": "nodemon ./backend/server.mjs",
+    "server": "node ./backend/server.mjs"
   },
   "eslintConfig": {
     "extends": [
