@@ -6,6 +6,9 @@ import User from './models/User.mjs';
 import Course from './models/Course.mjs';
 import ClassChatter from './models/ClassChatter.mjs';
 import QAForum from './models/QAForum.mjs';
+import MessagingSystem from './models/MessagingSystem.mjs';
+import InsightfulReactions from './models/InsightfulReactions.mjs';
+import SecurityProtocol from './models/SecurityProtocol.mjs';
 
 
 const app = express(); 
@@ -231,6 +234,165 @@ app.delete('/qaforum/:id', async (req, res) => {
         res.status(500).send(err);
     }
 });
+
+// Messaging System endpoints
+
+app.get('/messaging', async (req, res) => {
+    try {
+        const messages = await MessagingSystem.find();
+        res.json(messages);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+app.post('/messaging', async (req, res) => {
+    const message = new MessagingSystem(req.body);
+    try {
+        const newMessage = await message.save();
+        res.status(201).json(newMessage);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+app.get('/messaging/:id', async (req, res) => {
+    try {
+        const message = await MessagingSystem.findById(req.params.id);
+        if (!message) {
+            res.status(404).send('Message not found');
+        } else {
+            res.json(message);
+        }
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+app.put('/messaging/:id', async (req, res) => {
+    try {
+        const updatedMessage = await MessagingSystem.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedMessage) {
+            res.status(404).send('Message not found');
+        } else {
+            res.json(updatedMessage);
+        }
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+app.delete('/messaging/:id', async (req, res) => {
+    try {
+        const deletedMessage = await MessagingSystem.findByIdAndDelete(req.params.id);
+        if (!deletedMessage) {
+            res.status(404).send('Message not found');
+        } else {
+            res.status(200).send('Message deleted');
+        }
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// Insightful Reactions endpoints
+app.get('/insightfulreactions', async (req, res) => {
+    try {
+        const reactions = await InsightfulReactions.find();
+        res.json(reactions);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+app.post('/insightfulreactions', async (req, res) => {
+    const reaction = new InsightfulReactions(req.body);
+    try {
+        const newReaction = await reaction.save();
+        res.status(201).json(newReaction);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+app.get('/insightfulreactions/:id', async (req, res) => {
+    try {
+        const reaction = await InsightfulReactions.findById(req.params.id);
+        if (!reaction) res.status(404).send("Reaction not found");
+        res.json(reaction);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+app.put('/insightfulreactions/:id', async (req, res) => {
+    try {
+        const updatedReaction = await InsightfulReactions.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(updatedReaction);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+app.delete('/insightfulreactions/:id', async (req, res) => {
+    try {
+        const deletedReaction = await InsightfulReactions.findByIdAndDelete(req.params.id);
+        if (!deletedReaction) res.status(404).send("Reaction not found");
+        res.status(200).send("Reaction deleted");
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+// Security Protocol endpoints
+app.get('/securityprotocol', async (req, res) => {
+    try {
+        const protocols = await SecurityProtocol.find();
+        res.json(protocols);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+app.post('/securityprotocol', async (req, res) => {
+    const protocol = new SecurityProtocol(req.body);
+    try {
+        const newProtocol = await protocol.save();
+        res.status(201).json(newProtocol);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+app.get('/securityprotocol/:id', async (req, res) => {
+    try {
+        const protocol = await SecurityProtocol.findById(req.params.id);
+        if (!protocol) res.status(404).send("Protocol not found");
+        res.json(protocol);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+app.put('/securityprotocol/:id', async (req, res) => {
+    try {
+        const updatedProtocol = await SecurityProtocol.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(updatedProtocol);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+app.delete('/securityprotocol/:id', async (req, res) => {
+    try {
+        const deletedProtocol = await SecurityProtocol.findByIdAndDelete(req.params.id);
+        if (!deletedProtocol) res.status(404).send("Protocol not found");
+        res.status(200).send("Protocol deleted");
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
 
 
 app.listen(port, () => {
