@@ -64,7 +64,7 @@ function Register() {
         onClick={() => navigate("/")}
         style={{ margin: "10px 0", alignSelf: "flex-start" }}
       >
-        Back to Home
+        Back to Landing Page
       </Button>
       <div className="register-container">
         <Container component="main" maxWidth="xs" className="login-box">

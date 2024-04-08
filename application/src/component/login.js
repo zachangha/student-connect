@@ -29,7 +29,7 @@ function LoginPage() {
           const userData = JSON.stringify(data.user);
           localStorage.setItem("user", userData);
         }
-        navigate("/");
+        navigate("/home");
       } else {
         console.error("Login failed:", data.message);
       }
@@ -45,7 +45,7 @@ function LoginPage() {
         onClick={() => navigate("/")}
         style={{ margin: "10px 0", alignSelf: "flex-start" }}
       >
-        Back to Home
+        Back to Landing Page
       </Button>
       <div className="login-container">
         <Container

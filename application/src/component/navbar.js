@@ -110,22 +110,15 @@ export default function MiniDrawer() {
   const navigate = useNavigate();
 
   const navLinks = [
-    { text: "Home", to: "/", icon: <HomeIcon /> },
+    { text: "Home", to: "/home", icon: <HomeIcon /> },
     { text: "Messages", to: "/messages", icon: <MesssageIcon /> },
     { text: "Classes", to: "/classes", icon: <MailIcon /> },
   ];
 
-  const user = localStorage.getItem("user");
-
-  const bottomLinks = user
-    ? [
-        { text: "Profiles", to: "/profile", icon: <AccountCircleIcon /> },
-        { text: "Logout", icon: <LogoutIcon />, onClick: logout },
-      ]
-    : [
-        { text: "Profiles", to: "/profile", icon: <AccountCircleIcon /> },
-        { text: "Login", to: "/login", icon: <LoginIcon /> },
-      ];
+  const bottomLinks = [
+    { text: "Profiles", to: "/profile", icon: <AccountCircleIcon /> },
+    { text: "Logout", icon: <LogoutIcon />, onClick: logout },
+  ];
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>

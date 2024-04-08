@@ -59,3 +59,22 @@
   height: 50px;
   border-radius: 50%;
 }
+
+.backButtonContainer {
+  text-align: right;
+  padding: 10px;
+}
+
+.backButton {
+  text-decoration: none;
+  color: #000;
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 10px 20px;
+  display: inline-block;
+}
+
+.backButton:hover {
+  background-color: #e0e0e0;
+}
