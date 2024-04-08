@@ -1,31 +1,30 @@
-# This is where the source code of your application is located
+# Development Scripts
 
-# Getting Started with Create React App
+In the project directory:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## To install all necessary dependencies:
+ `npm install`
 
-## Available Scripts
+- Run when pulling the repository for the first time
+  
+## For front end development:
+ `npm start`
 
-In the project directory, you can run:
+- Runs the app in the development mode.
+- Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- The page will reload when you make changes.
+- Run this to test frontend functionality
 
-### `npm install`
+## For backend development:
+`npm run build`
 
-Run this first to install all necessary dependencies.
+- Builds the app for production to the `build` folder.
+- It correctly bundles React in production mode and optimizes the build for the best performance.
+- NEEDS TO BE RUN ANYTIME THERE IS FRONTEND CHANGES
 
-### `npm start`
+ `npm run start node`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+ - To start the app on the server in port 3000
+ - Run this to test backend functionality
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
