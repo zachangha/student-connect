@@ -21,17 +21,8 @@ import MesssageIcon from "@mui/icons-material/Forum";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LoginIcon from "@mui/icons-material/Login";
-
-const navLinks = [
-  { text: "Home", to: "/", icon: <HomeIcon /> },
-  { text: "Messages", to: "/messages", icon: <MesssageIcon /> },
-  { text: "Classes", to: "/classes", icon: <MailIcon /> },
-];
-
-const bottomLinks = [
-  { text: "Profiles", to: "/profile", icon: <AccountCircleIcon /> },
-  { text: "Login", to: "/login", icon: <LoginIcon /> },
-];
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 200;
 
@@ -111,6 +102,31 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  const logout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
+  const navigate = useNavigate();
+
+  const navLinks = [
+    { text: "Home", to: "/", icon: <HomeIcon /> },
+    { text: "Messages", to: "/messages", icon: <MesssageIcon /> },
+    { text: "Classes", to: "/classes", icon: <MailIcon /> },
+  ];
+
+  const user = localStorage.getItem("user");
+
+  const bottomLinks = user
+    ? [
+        { text: "Profiles", to: "/profile", icon: <AccountCircleIcon /> },
+        { text: "Logout", icon: <LogoutIcon />, onClick: logout },
+      ]
+    : [
+        { text: "Profiles", to: "/profile", icon: <AccountCircleIcon /> },
+        { text: "Login", to: "/login", icon: <LoginIcon /> },
+      ];
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <AppBar position="fixed" open={open}>
@@ -168,11 +184,12 @@ export default function MiniDrawer() {
         </List>
         <Divider />
         <List>
-          {bottomLinks.map(({ text, to, icon }, index) => (
+          {bottomLinks.map(({ text, to, icon, onClick }, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
-                component={NavLink}
-                to={to}
+                component={onClick ? "button" : NavLink}
+                to={!onClick ? to : undefined}
+                onClick={onClick ? logout : undefined}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
