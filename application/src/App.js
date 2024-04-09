@@ -5,6 +5,7 @@ import {
   Routes,
   useParams,
 } from "react-router-dom";
+import Landing from "./component/landingPage.js";
 import Home from "./component/home.js";
 import About from "./component/about.js";
 import Login from "./component/login.js";
@@ -23,7 +24,8 @@ function App() {
       <ThemeProvider theme={ourTheme}>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />{" "}
+            <Route index element={<Landing />} />{" "}
+            <Route path="Home" element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="messages" element={<Messages />} />
             <Route path="profile" element={<Profile />} />
