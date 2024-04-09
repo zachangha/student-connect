@@ -21,6 +21,7 @@ app.use(express.static(root));
 
 connectToDatabase();
 
+// post new user to databse during registration
 app.post("/api/users", async (req, res) => {
   try {
     const userData = req.body;
@@ -34,6 +35,8 @@ app.post("/api/users", async (req, res) => {
   }
 });
 
+// enter using info when trying to login and check that password matches
+// store user information to local storage so it can be accessed later
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -67,6 +70,7 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+// catch all
 app.use("/*", (req, res) => {
   res.sendFile(path.join(root, "index.html"));
 });

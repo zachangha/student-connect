@@ -5,6 +5,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
+// this is the first page users will see when opening sight
+// will ask to login or register
 function App() {
   const navigate = useNavigate();
 

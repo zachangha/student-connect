@@ -4,6 +4,7 @@ import User from "./models/User.mjs";
 
 dotenv.config();
 
+// Connect to database
 export async function connectToDatabase() {
   try {
     await mongoose.connect(
@@ -16,6 +17,7 @@ export async function connectToDatabase() {
   }
 }
 
+// insert users into database using array populated from login form
 export async function insertUsers(usersData) {
   await connectToDatabase();
 

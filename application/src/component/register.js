@@ -20,6 +20,7 @@ function Register() {
   const [pronouns, setPronouns] = useState("");
   const [role, setRole] = useState("");
 
+  // create form to caputer data from user
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -31,11 +32,13 @@ function Register() {
     role: "",
   });
 
+  // capture form data
   const handleFormChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // when submit button is pressed post the information to users api so it can be inserted into DB
   const handleSubmit = async (event) => {
     event.preventDefault();
 

@@ -20,10 +20,10 @@ import MailIcon from "@mui/icons-material/Mail";
 import MesssageIcon from "@mui/icons-material/Forum";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 
+// different drawer configurations
 const drawerWidth = 200;
 
 const openedMixin = (theme) => ({
@@ -73,6 +73,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
+// aesthetics of the drawer
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -90,6 +91,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+// open and close drawer functions
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -109,6 +111,7 @@ export default function MiniDrawer() {
 
   const navigate = useNavigate();
 
+  // links that will be listed in the sidebar
   const navLinks = [
     { text: "Home", to: "/home", icon: <HomeIcon /> },
     { text: "Messages", to: "/messages", icon: <MesssageIcon /> },
