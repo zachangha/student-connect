@@ -5,6 +5,11 @@ import "./styles/about.css";
 function About() {
   return (
     <div>
+      <div className="backButtonContainer">
+        <Link to="/" className="backButton">
+          Back to Landing Page
+        </Link>
+      </div>
       <header className="header">
         <h1>Meet our Team</h1>
       </header>

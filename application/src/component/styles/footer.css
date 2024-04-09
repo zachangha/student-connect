@@ -1,0 +1,22 @@
+.footer-container {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #f8f9fa; /* Light grey background */
+  color: black;
+  text-align: center;
+  padding: 10px 0; /* Adjust padding as needed */
+  font-size: 16px; /* Adjust font size as needed */
+}
+
+.footer-link {
+  color: #007bff; /* Bootstrap primary link color, adjust as needed */
+  text-decoration: none; /* Optional: removes underline from links */
+  margin-left: 5px; /* Spacing between the text and the link */
+}
+
+/* Additional styling for active link - adjust if needed */
+.footer-link.active {
+  text-decoration: underline;
+}

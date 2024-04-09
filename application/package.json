@@ -11,6 +11,8 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.6.8",
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -28,8 +30,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start node": "nodemon ./src/server.mjs",
-    "server": "node ./src/server.mjs"
+    "start node": "nodemon ./backend/server.mjs",
+    "server": "node ./backend/server.mjs"
   },
   "eslintConfig": {
     "extends": [
@@ -59,5 +61,6 @@
   "lint-staged": {
     "**/*": "prettier ---write ---ignore-unknown",
     "frontend/**/*.js": "webpack"
-  }
+  },
+  "proxy": "http://localhost:3000"
 }

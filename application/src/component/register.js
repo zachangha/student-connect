@@ -1,85 +1,202 @@
-import React from "react";
-import { Container, TextField, Button, Link } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Container,
+  TextField,
+  Button,
+  Link,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl,
+} from "@mui/material";
 import "./styles/auth-pages.css";
+import axios from "axios";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const navigate = useNavigate();
+
+  const [pronouns, setPronouns] = useState("");
+  const [role, setRole] = useState("");
+
+  // create form to caputer data from user
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    karmaPoints: 0,
+    pronouns: "",
+    role: "",
+  });
+
+  // capture form data
+  const handleFormChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // when submit button is pressed post the information to users api so it can be inserted into DB
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    const userArray = [formData];
+    try {
+      const response = await axios.post("/api/users", userArray);
+      console.log("User registered:", response.data);
+      navigate("/login");
+    } catch (error) {
+      console.error(
+        "Failed to register user:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
+
   return (
     <>
+      <Button
+        startIcon={<ArrowBackIcon />}
+        onClick={() => navigate("/")}
+        style={{ margin: "10px 0", alignSelf: "flex-start" }}
+      >
+        Back to Landing Page
+      </Button>
       <div className="register-container">
-        <Container maxWidth="xs" className="login-box">
+        <Container component="main" maxWidth="xs" className="login-box">
           <h1 className="login-title">Register</h1>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="firstName"
-            label="First Name"
-            name="firstName"
-            autoComplete="given-name"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="lastName"
-            label="Last Name"
-            name="lastName"
-            autoComplete="family-name"
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Your email"
-            name="email"
-            autoComplete="email"
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="new-password"
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="confirmPassword"
-            label="Retype Password"
-            type="password"
-            id="confirmPassword"
-            autoComplete="new-password"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className="login-button"
-            sx={{ mt: 2 }}
-          >
-            Register
-          </Button>
-          <p className="signup-prompt">
-            Already have an account?
-            <Link href="/login" className="signup-link">
-              Login
-            </Link>
-          </p>
+          <form onSubmit={handleSubmit} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="firstName"
+              label="First Name"
+              name="firstName"
+              autoComplete="given-name"
+              autoFocus
+              onChange={handleFormChange}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="lastName"
+              label="Last Name"
+              name="lastName"
+              autoComplete="family-name"
+              onChange={handleFormChange}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
+              onChange={handleFormChange}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Your email"
+              name="email"
+              autoComplete="email"
+              onChange={handleFormChange}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="new-password"
+              onChange={handleFormChange}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              id="confirmPassword"
+              autoComplete="new-password"
+              onChange={handleFormChange}
+            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="pronouns-label">Pronouns</InputLabel>
+              <Select
+                labelId="pronouns-label"
+                id="pronouns"
+                name="pronouns"
+                value={formData.pronouns}
+                label="Pronouns"
+                onChange={(event) => {
+                  setPronouns(event.target.value);
+                  handleFormChange(event);
+                }}
+              >
+                <MenuItem value="he/him">He/Him</MenuItem>
+                <MenuItem value="she/her">She/Her</MenuItem>
+                <MenuItem value="they/them">They/Them</MenuItem>
+                <MenuItem value="other">Other</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="role-label">Role</InputLabel>
+              <Select
+                labelId="role-label"
+                id="role"
+                name="role"
+                value={formData.role}
+                label="Role"
+                onChange={(event) => {
+                  setRole(event.target.value);
+                  handleFormChange(event);
+                }}
+              >
+                <MenuItem value="student">Student</MenuItem>
+                <MenuItem value="teacher">Teacher</MenuItem>
+              </Select>
+            </FormControl>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className="login-button"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Register
+            </Button>
+            <p className="signup-prompt">
+              Already have an account?{" "}
+              <Link href="/login" variant="body2" className="signup-link">
+                Login
+              </Link>
+            </p>
+          </form>
         </Container>
       </div>
-      <div className="right-side-container"></div>
     </>
   );
 }
