@@ -6,9 +6,10 @@ import "./styles/auth-pages.css";
 
 function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [email, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  // on submit send login form and check if user exists
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -40,66 +41,69 @@ function LoginPage() {
 
   return (
     <>
-      <Button
-        startIcon={<ArrowBackIcon />}
-        onClick={() => navigate("/")}
-        style={{ margin: "10px 0", alignSelf: "flex-start" }}
-      >
-        Back to Landing Page
-      </Button>
-      <div className="login-container">
-        <Container
-          maxWidth="xs"
-          className="login-box"
-          component="form"
-          onSubmit={handleSubmit}
+      <div className="page-layout">
+        <div className="right-container"></div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <Button
+          startIcon={<ArrowBackIcon />}
+          onClick={() => navigate("/")}
+          style={{ margin: "10px 0", alignSelf: "flex-start" }}
         >
-          <h1 className="login-title">Log In</h1>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Your email"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className="login-button"
-            sx={{ mt: 2 }}
+          Back to Landing Page
+        </Button>
+        <div className="login-container">
+          <Container
+            maxWidth="xs"
+            className="login-box"
+            component="form"
+            onSubmit={handleSubmit}
           >
-            Log In
-          </Button>
-          <p className="signup-prompt">
-            Don't have an account?{" "}
-            <Link href="/register" className="signup-link">
-              Sign Up
-            </Link>
-          </p>
-        </Container>
+            <h1 className="login-title">Log In</h1>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Your username"
+              name="username"
+              autoComplete="username"
+              autoFocus
+              value={email}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className="login-button"
+              sx={{ mt: 2 }}
+            >
+              Log In
+            </Button>
+            <p className="signup-prompt">
+              Don't have an account?{" "}
+              <Link href="/register" className="signup-link">
+                Sign Up
+              </Link>
+            </p>
+          </Container>
+        </div>
       </div>
-      <div className="right-side-container"></div>
     </>
   );
 }
