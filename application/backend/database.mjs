@@ -1,16 +1,10 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import User from "./models/User.mjs";
 
-dotenv.config();
-
 // Connect to database
-export async function connectToDatabase() {
+export async function connectToDatabase(env_DB_URI) {
   try {
-    await mongoose.connect(
-      "mongodb://LukeT:Csc648GroupProject!@18.117.145.154:27017/CSC_648_Database",
-      {}
-    );
+    await mongoose.connect(process.env.URI, {});
     console.log("Connected to Database");
   } catch (err) {
     console.log(err);
