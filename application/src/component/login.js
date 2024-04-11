@@ -3,11 +3,17 @@ import { Container, TextField, Button, Link } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import "./styles/auth-pages.css";
+import AlertComponent from "./alerts";
 
 function LoginPage() {
   const navigate = useNavigate();
   const [email, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
 
   // on submit send login form and check if user exists
   const handleSubmit = async (event) => {
@@ -25,18 +31,38 @@ function LoginPage() {
       const data = await response.json();
       if (response.status === 200) {
         console.log("Login successful:", data);
+        setAlert({
+          open: true,
+          message: "Login successful!",
+          severity: "success",
+        });
 
         if (data.user) {
           const userData = JSON.stringify(data.user);
           localStorage.setItem("user", userData);
         }
-        navigate("/home");
+        setTimeout(() => navigate("/home"), 600);
       } else {
         console.error("Login failed:", data.message);
+        console.error("Login failed:");
+        setAlert({
+          open: true,
+          message: "Invalid Credentials",
+          severity: "error",
+        });
       }
     } catch (error) {
-      console.error("Request failed:", error);
+      console.error("Login failed:", error);
+      setAlert({
+        open: true,
+        message: error.toString(),
+        severity: "error",
+      });
     }
+  };
+
+  const handleClose = () => {
+    setAlert({ ...alert, open: false });
   };
 
   return (
@@ -102,6 +128,12 @@ function LoginPage() {
               </Link>
             </p>
           </Container>
+          <AlertComponent
+            open={alert.open}
+            handleClose={handleClose}
+            severity={alert.severity}
+            message={alert.message}
+          />
         </div>
       </div>
     </>

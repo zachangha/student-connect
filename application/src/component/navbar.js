@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 import Box from "@mui/material/Box";
@@ -20,6 +20,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import MesssageIcon from "@mui/icons-material/Forum";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AlertComponent from "./alerts";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 
@@ -95,6 +96,11 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -106,7 +112,12 @@ export default function MiniDrawer() {
 
   const logout = () => {
     localStorage.removeItem("user");
-    navigate("/login");
+    setTimeout(() => navigate("/"), 600);
+    setAlert({
+      open: true,
+      message: "You have successfully logged out.",
+      severity: "success",
+    });
   };
 
   const navigate = useNavigate();
@@ -132,7 +143,6 @@ export default function MiniDrawer() {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ marginRight: 5, ...(open && { display: "none" }) }}
           >
             <MenuIcon />
           </IconButton>
@@ -207,6 +217,14 @@ export default function MiniDrawer() {
           ))}
         </List>
       </Drawer>
+
+      <AlertComponent
+        open={alert.open}
+        onClose={() => setAlert({ ...alert, open: false })}
+        severity={alert.severity}
+      >
+        {alert.message}
+      </AlertComponent>
     </Box>
   );
 }

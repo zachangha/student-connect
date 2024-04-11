@@ -8,6 +8,8 @@ import {
   Select,
   MenuItem,
   FormControl,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import "./styles/auth-pages.css";
 import axios from "axios";
@@ -19,8 +21,9 @@ function Register() {
 
   const [pronouns, setPronouns] = useState("");
   const [role, setRole] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertInfo, setAlertInfo] = useState({ severity: "info", message: "" });
 
-  // create form to caputer data from user
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -32,39 +35,61 @@ function Register() {
     role: "",
   });
 
-  // capture form data
   const handleFormChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // when submit button is pressed post the information to users api so it can be inserted into DB
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match.");
+      setAlertInfo({ severity: "error", message: "Passwords do not match." });
+      setOpenAlert(true);
       return;
     }
 
-    const userArray = [formData];
     try {
-      const response = await axios.post("/api/users", userArray);
+      const response = await axios.post("/api/users", [formData]);
       console.log("User registered:", response.data);
-      navigate("/login");
+      setAlertInfo({
+        severity: "success",
+        message: "Registration successful! Redirecting to login...",
+      });
+      setOpenAlert(true);
+      setTimeout(() => navigate("/login"), 2000); // Redirect after delay for user to see message
     } catch (error) {
-      console.error(
-        "Failed to register user:",
-        error.response ? error.response.data : error.message
-      );
+      const errorMessage = error.response ? error.response.data : error.message;
+      console.error("Failed to register user:", errorMessage);
+      setAlertInfo({
+        severity: "error",
+        message: `Registration failed: ${errorMessage}`,
+      });
+      setOpenAlert(true);
     }
   };
 
   return (
     <>
+      <Snackbar
+        open={openAlert}
+        autoHideDuration={6000}
+        onClose={handleCloseAlert}
+      >
+        <Alert
+          onClose={handleCloseAlert}
+          severity={alertInfo.severity}
+          sx={{ width: "100%" }}
+        >
+          {alertInfo.message}
+        </Alert>
+      </Snackbar>
       <div className="page-layout">
         <div className="left-container">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Button
             startIcon={<ArrowBackIcon />}
             onClick={() => navigate("/")}
@@ -117,7 +142,7 @@ function Register() {
                 required
                 fullWidth
                 id="email"
-                label="Your email"
+                label="Email"
                 name="email"
                 autoComplete="email"
                 onChange={handleFormChange}
