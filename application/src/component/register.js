@@ -62,140 +62,145 @@ function Register() {
 
   return (
     <>
-      <Button
-        startIcon={<ArrowBackIcon />}
-        onClick={() => navigate("/")}
-        style={{ margin: "10px 0", alignSelf: "flex-start" }}
-      >
-        Back to Landing Page
-      </Button>
-      <div className="register-container">
-        <Container component="main" maxWidth="xs" className="login-box">
-          <h1 className="login-title">Register</h1>
-          <form onSubmit={handleSubmit} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="firstName"
-              label="First Name"
-              name="firstName"
-              autoComplete="given-name"
-              autoFocus
-              onChange={handleFormChange}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="lastName"
-              label="Last Name"
-              name="lastName"
-              autoComplete="family-name"
-              onChange={handleFormChange}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              onChange={handleFormChange}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Your email"
-              name="email"
-              autoComplete="email"
-              onChange={handleFormChange}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="new-password"
-              onChange={handleFormChange}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="confirmPassword"
-              label="Confirm Password"
-              type="password"
-              id="confirmPassword"
-              autoComplete="new-password"
-              onChange={handleFormChange}
-            />
-            <FormControl fullWidth margin="normal">
-              <InputLabel id="pronouns-label">Pronouns</InputLabel>
-              <Select
-                labelId="pronouns-label"
-                id="pronouns"
-                name="pronouns"
-                value={formData.pronouns}
-                label="Pronouns"
-                onChange={(event) => {
-                  setPronouns(event.target.value);
-                  handleFormChange(event);
-                }}
+      <div className="page-layout">
+        <div className="left-container">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate("/")}
+            style={{ margin: "10px 0", alignSelf: "flex-start" }}
+          >
+            Back to Landing Page
+          </Button>
+        </div>
+        <div className="register-container">
+          <Container component="main" maxWidth="xs" className="login-box">
+            <h1 className="login-title">Register</h1>
+            <form onSubmit={handleSubmit} noValidate>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                name="firstName"
+                autoComplete="given-name"
+                autoFocus
+                onChange={handleFormChange}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                autoComplete="family-name"
+                onChange={handleFormChange}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                onChange={handleFormChange}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Your email"
+                name="email"
+                autoComplete="email"
+                onChange={handleFormChange}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="new-password"
+                onChange={handleFormChange}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="confirmPassword"
+                label="Confirm Password"
+                type="password"
+                id="confirmPassword"
+                autoComplete="new-password"
+                onChange={handleFormChange}
+              />
+              <FormControl fullWidth margin="normal">
+                <InputLabel id="pronouns-label">Pronouns</InputLabel>
+                <Select
+                  labelId="pronouns-label"
+                  id="pronouns"
+                  name="pronouns"
+                  value={formData.pronouns}
+                  label="Pronouns"
+                  onChange={(event) => {
+                    setPronouns(event.target.value);
+                    handleFormChange(event);
+                  }}
+                >
+                  <MenuItem value="he/him">He/Him</MenuItem>
+                  <MenuItem value="she/her">She/Her</MenuItem>
+                  <MenuItem value="they/them">They/Them</MenuItem>
+                  <MenuItem value="other">Other</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl fullWidth margin="normal">
+                <InputLabel id="role-label">Role</InputLabel>
+                <Select
+                  labelId="role-label"
+                  id="role"
+                  name="role"
+                  value={formData.role}
+                  label="Role"
+                  onChange={(event) => {
+                    setRole(event.target.value);
+                    handleFormChange(event);
+                  }}
+                >
+                  <MenuItem value="student">Student</MenuItem>
+                  <MenuItem value="teacher">Teacher</MenuItem>
+                </Select>
+              </FormControl>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className="login-button"
+                sx={{ mt: 3, mb: 2 }}
               >
-                <MenuItem value="he/him">He/Him</MenuItem>
-                <MenuItem value="she/her">She/Her</MenuItem>
-                <MenuItem value="they/them">They/Them</MenuItem>
-                <MenuItem value="other">Other</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel id="role-label">Role</InputLabel>
-              <Select
-                labelId="role-label"
-                id="role"
-                name="role"
-                value={formData.role}
-                label="Role"
-                onChange={(event) => {
-                  setRole(event.target.value);
-                  handleFormChange(event);
-                }}
-              >
-                <MenuItem value="student">Student</MenuItem>
-                <MenuItem value="teacher">Teacher</MenuItem>
-              </Select>
-            </FormControl>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className="login-button"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Register
-            </Button>
-            <p className="signup-prompt">
-              Already have an account?{" "}
-              <Link href="/login" variant="body2" className="signup-link">
-                Login
-              </Link>
-            </p>
-          </form>
-        </Container>
+                Register
+              </Button>
+              <p className="signup-prompt">
+                Already have an account?{" "}
+                <Link href="/login" variant="body2" className="signup-link">
+                  Login
+                </Link>
+              </p>
+            </form>
+          </Container>
+        </div>
       </div>
     </>
   );
