@@ -17,13 +17,16 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
+  // use to navigate to different routes
   const navigate = useNavigate();
 
+  // set states for the drop down menus and the alerts
   const [pronouns, setPronouns] = useState("");
   const [role, setRole] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
   const [alertInfo, setAlertInfo] = useState({ severity: "info", message: "" });
 
+  // create form that will hold the register data that is to be sent
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -35,24 +38,29 @@ function Register() {
     role: "",
   });
 
+  // update form adat as it is being inputted
   const handleFormChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // used to close drop down menu when clicked again
   const handleCloseAlert = () => {
     setOpenAlert(false);
   };
 
+  // when submit button is bit information registered in the form is posted to users API
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // check if the passwords match if not send alert
     if (formData.password !== formData.confirmPassword) {
       setAlertInfo({ severity: "error", message: "Passwords do not match." });
       setOpenAlert(true);
       return;
     }
 
+    // post users information to API alert user of outcome
     try {
       const response = await axios.post("/api/users", [formData]);
       console.log("User registered:", response.data);

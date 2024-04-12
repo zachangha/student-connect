@@ -101,7 +101,6 @@ export default function MiniDrawer() {
     message: "",
     severity: "",
   });
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -110,6 +109,7 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  // delete user info from local and redirect to landing page, sending alert
   const logout = () => {
     localStorage.removeItem("user");
     setTimeout(() => navigate("/"), 600);
@@ -217,7 +217,6 @@ export default function MiniDrawer() {
           ))}
         </List>
       </Drawer>
-
       <AlertComponent
         open={alert.open}
         onClose={() => setAlert({ ...alert, open: false })}

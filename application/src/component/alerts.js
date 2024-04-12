@@ -2,7 +2,7 @@ import React from "react";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 
-// component to give user feedback while using
+// component to give user depdending on necessary message
 function AlertComponent({ open, handleClose, severity, message }) {
   return (
     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
