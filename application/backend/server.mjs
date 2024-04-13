@@ -4,11 +4,15 @@ import express from "express";
 import morgan from "morgan";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
 import { fileURLToPath } from "url";
 import { connectToDatabase, insertUsers } from "./database.mjs";
 import User from "./models/User.mjs";
 
 const app = express();
+
+dotenv.config({ path: "../.env" });
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -76,5 +80,5 @@ app.use("/*", (req, res) => {
 });
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log("Server started on port " + (process.env.PORT || 3000));
+  console.log("Server started on port " + process.env.PORT);
 });

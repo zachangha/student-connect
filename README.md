@@ -1,4 +1,4 @@
-# CSC648-01-sp24-Team05
+# Study Connect
 
 **Application URL: <http://18.117.145.154>**
 
