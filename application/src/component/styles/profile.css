@@ -1,0 +1,45 @@
+.userprof{
+    display: flex;
+    justify-content: center;
+    align-items: right;
+    height: center;
+    padding-top: 5%;
+    margin-left: 400px;
+   
+}
+.userprof1{
+    display: flex;
+    justify-content: center;
+    align-items: right;
+    height: center;
+    padding-top: 1%;
+    margin-left: 400px;
+    
+}
+
+  .userprof2{
+    display: flex;
+    justify-content: center;
+    align-items: right;
+    height: center;
+    padding-top: 1%;
+    margin-left: 400px;
+    
+}
+.userprof3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: center;
+    padding-top: 1%;
+    margin-left: 400px;
+
+}
+.userprof4{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: center;
+    padding-top: 1%;
+    margin-left: 400px;
+}
