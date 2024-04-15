@@ -8,13 +8,13 @@ const Classes = () => {
   const [courseID, setCourseID] = useState("");
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("user")); // Ensuring this contains 'id'
+  const user = JSON.parse(localStorage.getItem("user"));
 
+  // post studentID and courseID to be api to be posted into the database
   const handleJoinCourse = async () => {
     if (courseID.trim() !== "") {
       try {
         const response = await fetch("/api/classes/join", {
-          // Correct the API endpoint
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -37,10 +37,11 @@ const Classes = () => {
     }
   };
 
-  const redirectToCreateCourse = () => {
+  const redirectToAddCourse = () => {
     navigate("/addClasses");
   };
 
+  // render something different according to the role of the user
   if (user.role === "student") {
     return (
       <div className="classes-container">
@@ -72,7 +73,7 @@ const Classes = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={redirectToCreateCourse}
+          onClick={redirectToAddCourse}
           className="create-course-button"
         >
           Create Course
@@ -85,7 +86,7 @@ const Classes = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={redirectToCreateCourse}
+          onClick={redirectToAddCourse}
           className="create-course-button"
         >
           Create Course

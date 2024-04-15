@@ -12,18 +12,19 @@ import {
   Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import "./styles/homePage.css"; // Ensure this path is correct
+import "./styles/homePage.css";
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}"); // Assuming user data is stored in localStorage
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
   const today = new Date();
   const dateString = `${today.getDate()}/${
     today.getMonth() + 1
   }/${today.getFullYear()}`; // Format: DD/MM/YYYY
 
+  // add tasks to list
   const handleAddTask = () => {
     if (newTask.trim() !== "") {
       setTasks([...tasks, { id: Date.now(), text: newTask, checked: false }]);
@@ -31,6 +32,7 @@ function App() {
     }
   };
 
+  // checkmarks
   const handleToggleCheck = (id) => {
     setTasks(
       tasks.map((task) => {
@@ -42,10 +44,12 @@ function App() {
     );
   };
 
+  // delete tasks from list
   const handleDeleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  // return a todo list
   return (
     <div className="root">
       <Typography

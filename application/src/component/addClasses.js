@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Container, TextField, Button } from "@mui/material";
-import "./styles/classes.css"; // Make sure your path to the CSS file is correct
+import "./styles/classes.css";
 
 function App() {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user")); // Assuming user data is stored correctly in local storage
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const [formData, setFormData] = useState({
     classID: "",
@@ -18,6 +18,7 @@ function App() {
     setFormData({ ...formData, [name]: value });
   };
 
+  // post all information to api classID: can be any string
   const handleSubmit = async (event) => {
     event.preventDefault();
     const teacherID = user.id;
