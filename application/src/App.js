@@ -14,6 +14,7 @@ import Messages from "./component/messages.js";
 import Profile from "./component/profile.js";
 import Classes from "./component/classes.js";
 import Footer from "./component/footer.js";
+import AddClasses from "./component/addClasses.js";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
 import Layout from "./component/layout.js";
@@ -29,6 +30,7 @@ function App() {
             <Route path="about" element={<About />} />
             <Route path="messages" element={<Messages />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="addClasses" element={<AddClasses />} />
             <Route path="classes" element={<Classes />} />
             <Route path="members/:memberName" element={<MemberPage />} />
           </Route>
