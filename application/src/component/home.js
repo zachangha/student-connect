@@ -52,7 +52,7 @@ function App() {
         variant="h6"
         style={{ marginBottom: "16px", textAlign: "center" }}
       >
-        Welcome, {user.username || "User"}!
+        Welcome, {user.username || "User"}! User ID: {user.id || "N/A"}
       </Typography>
 
       <Container className="todoContainer">

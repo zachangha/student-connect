@@ -147,7 +147,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Study Connect
+            Student Connect
           </Typography>
         </Toolbar>
       </AppBar>

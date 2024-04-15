@@ -9,9 +9,8 @@ function App() {
   const user = JSON.parse(localStorage.getItem("user")); // Assuming user data is stored correctly in local storage
 
   const [formData, setFormData] = useState({
-    courseID: "",
-    courseName: "",
-    teacherID: user ? user.teacherID : "", // Ensure that teacherID is stored in user object in local storage
+    classID: "",
+    className: "",
   });
 
   const handleFormChange = (event) => {
@@ -21,32 +20,39 @@ function App() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const teacherID = user.id;
+    const { classID, className } = formData;
+
     try {
-      const response = await axios.post("/api/courses", formData); // Endpoint to add a course
-      console.log("Course Added Successfully:", response.data);
-      alert("Course created successfully!");
-      navigate("/classes"); // Redirect to classes page or dashboard as per requirement
+      const response = await axios.post("/api/classes", {
+        classID,
+        className,
+        teacherID,
+      });
+      console.log("Class Added Successfully:", response.data);
+      alert("Class created successfully!");
+      navigate("/home");
     } catch (error) {
-      console.error("Failed to add course:", error.message);
-      alert("Failed to create course. Please try again.");
+      console.error("Failed to add class:", error.message);
+      alert("Failed to create class. Please try again.");
     }
   };
 
   return (
     <Container component="main" maxWidth="xs" className="container">
-      <h1>Add Course</h1>
+      <h1>Add class</h1>
       <form onSubmit={handleSubmit} noValidate>
         <TextField
           variant="outlined"
           margin="normal"
           required
           fullWidth
-          id="courseID"
-          label="Course ID"
-          name="courseID"
-          autoComplete="courseID"
+          id="classID"
+          label="class ID"
+          name="classID"
+          autoComplete="classID"
           autoFocus
-          value={formData.courseID}
+          value={formData.classID}
           onChange={handleFormChange}
         />
         <TextField
@@ -54,11 +60,11 @@ function App() {
           margin="normal"
           required
           fullWidth
-          id="courseName"
-          label="Course Name"
-          name="courseName"
-          autoComplete="courseName"
-          value={formData.courseName}
+          id="className"
+          label="class Name"
+          name="className"
+          autoComplete="className"
+          value={formData.className}
           onChange={handleFormChange}
         />
         <Button
@@ -68,7 +74,7 @@ function App() {
           color="primary"
           className="submit-button"
         >
-          Create Course
+          Create class
         </Button>
       </form>
     </Container>

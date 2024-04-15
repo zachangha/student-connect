@@ -21,7 +21,7 @@ function App() {
         }}
       >
         <Typography component="h1" variant="h5">
-          Welcome to Study Connect
+          Welcome to Student Connect
         </Typography>
         <Typography variant="body1" sx={{ mt: 2 }}>
           Are you a returning user or new here?

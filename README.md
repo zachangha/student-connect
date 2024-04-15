@@ -1,4 +1,4 @@
-# Study Connect
+# Student Connect
 
 **Application URL: <http://18.117.145.154>**
 

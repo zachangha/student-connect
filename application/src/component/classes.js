@@ -1,32 +1,33 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button"; // Import Button from Material-UI
-import TextField from "@mui/material/TextField"; // Import TextField for better input style
-import "./styles/classes.css"; // Ensure you have basic CSS for styling
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import "./styles/classes.css";
 
 const Classes = () => {
   const [courseID, setCourseID] = useState("");
   const navigate = useNavigate();
 
-  // Retrieve user role from local storage
-  const role = localStorage.getItem("userRole");
+  const user = JSON.parse(localStorage.getItem("user")); // Ensuring this contains 'id'
 
   const handleJoinCourse = async () => {
     if (courseID.trim() !== "") {
       try {
-        // Assuming `/api/courses/join` is the endpoint to handle joining a course
-        const response = await fetch("/api/courses/join", {
+        const response = await fetch("/api/classes/join", {
+          // Correct the API endpoint
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ courseID }),
+          body: JSON.stringify({ classID: courseID, studentID: user.id }),
         });
 
         if (response.ok) {
           alert("Successfully joined the course");
+          navigate("/home");
         } else {
-          throw new Error("Failed to join course");
+          const result = await response.json();
+          throw new Error(result.message || "Failed to join course");
         }
       } catch (error) {
         alert(error.message);
@@ -40,14 +41,15 @@ const Classes = () => {
     navigate("/addClasses");
   };
 
-  // Simplified if statement to determine rendering based on role
-  if (role === "student") {
+  if (user.role === "student") {
     return (
       <div className="classes-container">
         <TextField
           variant="outlined"
           margin="normal"
-          fullWidth
+          required
+          fullWidth={false}
+          sx={{ width: 200 }}
           id="courseID"
           label="Enter Course ID"
           value={courseID}
@@ -64,7 +66,7 @@ const Classes = () => {
         </Button>
       </div>
     );
-  } else if (role === "teacher") {
+  } else if (user.role === "teacher") {
     return (
       <div className="classes-container">
         <Button
@@ -78,7 +80,6 @@ const Classes = () => {
       </div>
     );
   } else {
-    // Default case or error handling if role is undefined or not 'student'/'teacher'
     return (
       <div className="classes-container">
         <Button

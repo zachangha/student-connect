@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 import { fileURLToPath } from "url";
 import { connectToDatabase, insertUsers } from "./database.mjs";
 import User from "./models/User.mjs";
+import Class from "./models/Classes.mjs";
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.post("/api/login", async (req, res) => {
     }
 
     const userResponse = {
+      id: user._id,
       username: user.username,
       email: user.email,
       firstName: user.firstName,
@@ -71,6 +73,53 @@ app.post("/api/login", async (req, res) => {
     res.json({ message: "Login successful", user: userResponse });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+// endpoint for teachers to create classes using id to link to the teacher
+app.post("/api/classes", async (req, res) => {
+  console.log("Received data:", req.body);
+  const { classID, className, teacherID } = req.body;
+  try {
+    const newClass = new Class({
+      classID,
+      className,
+      teacher: teacherID,
+    });
+    await newClass.save();
+    res.status(201).json({
+      message: "Class created successfully",
+      classID: newClass.classID,
+    });
+  } catch (error) {
+    console.error("Error when creating class:", error);
+    res.status(error.name === "ValidationError" ? 400 : 500).json({
+      message: "Failed to create class",
+      error: error.message,
+    });
+  }
+});
+
+// endpoint for students to join, checks if their classID exists if so checks if studentID is in the
+// array and if not adds them
+app.post("/api/classes/join", async (req, res) => {
+  const { classID, studentID } = req.body;
+  try {
+    const existingClass = await Class.findOne({ classID });
+    if (!existingClass) {
+      return res.status(404).json({ message: "Class not found" });
+    }
+    if (!existingClass.students.includes(studentID)) {
+      existingClass.students.push(studentID);
+      await existingClass.save();
+      res.status(200).json({ message: "Joined class successfully" });
+    } else {
+      res.status(400).json({ message: "Already joined this class" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to join class", error: error.message });
   }
 });
 
