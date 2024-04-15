@@ -1,23 +1,3 @@
-// import React from "react";
-// import "./styles/homePage.css";
-// import { Button, TextField } from "@mui/material";
-
-// function App() {
-//   const user = JSON.parse(localStorage.getItem("user"));
-
-//   return (
-//     <div className="bigBox">
-//       {user && (
-//         <div>
-//           <h1>Username: {user.username}</h1>
-//           <h1>Email: {user.email}</h1>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default App;
 import React, { useState, useEffect } from 'react'; // Import useState and useEffect hooks
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
@@ -73,51 +53,20 @@ function BackgroundLetterAvatars({ userResponse }) {
      <div className="userprof1">
      <h1>Email: {user.email}</h1>
      </div>
-     <div className="userprof2">
+     <div className="userprof1">
      <h1>Pronouns:  {user.pronouns}</h1>
      </div>
-     <div className="userprof3">
+     <div className="userprof1">
      <h1>Role: {user.role}</h1>
      </div>
-     <div className="userprof4">
+     <div className="userprof1">
      <h1>Classes:</h1>
      </div>
    </Stack>
  
  );
 }
-// function whatever() {
-//   const user = JSON.parse(localStorage.getItem("user"));
 
-//   return (
-//     <div className="userpro">
-//       <div className="user-info-container"></div>
-//       {user && (
-//         <div>
-//           <h1>Username: {user.username}</h1>
-//           <h1>Email: {user.email}</h1>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-
-// function App() {
-//   const user = JSON.parse(localStorage.getItem("user"));
-
-
-//   return (
-//     <div className="bigBox">
-//       {user && (
-//         <div>
-//           <h1>Username: {user.username}</h1>
-//           <h1>Email: {user.email}</h1>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
 
 
 export default BackgroundLetterAvatars;
