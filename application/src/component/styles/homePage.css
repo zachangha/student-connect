@@ -1,26 +1,45 @@
+.root {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children horizontally */
+  justify-content: center; /* Center children vertically */
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.todoContainer {
+  width: 20%;
+  min-height: 60vh;
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 20px;
+  background-color: white;
+  margin-top: 16px; /* Adds space between the welcome message and the container */
+}
+
 .bigBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: center;
-    padding-top: 3%;
-    
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: center;
+  padding-top: 3%;
 }
 
 .goal {
-    text-align: center;
+  text-align: center;
 }
 
-.goal h1{
-    color: darkblue;
-    text-decoration: underline;
+.goal h1 {
+  color: darkblue;
+  text-decoration: underline;
 }
 
 .goal h2 {
-    color: black;
-    text-decoration: underline;
+  color: black;
+  text-decoration: underline;
 }
 
 .goal h3 {
-    text-align: left;
+  text-align: left;
 }

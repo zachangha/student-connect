@@ -16,7 +16,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
+import SchoolIcon from "@mui/icons-material/School";
 import MesssageIcon from "@mui/icons-material/Forum";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -125,12 +125,12 @@ export default function MiniDrawer() {
   // links that will be listed in the sidebar
   const navLinks = [
     { text: "Home", to: "/home", icon: <HomeIcon /> },
+    { text: "Classes", to: "/classes", icon: <SchoolIcon /> },
     { text: "Messages", to: "/messages", icon: <MesssageIcon /> },
-    { text: "Classes", to: "/classes", icon: <MailIcon /> },
   ];
 
   const bottomLinks = [
-    { text: "Profiles", to: "/profile", icon: <AccountCircleIcon /> },
+    { text: "Profile", to: "/profile", icon: <AccountCircleIcon /> },
     { text: "Logout", icon: <LogoutIcon />, onClick: logout },
   ];
 
@@ -147,7 +147,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Study Connect
+            Student Connect
           </Typography>
         </Toolbar>
       </AppBar>

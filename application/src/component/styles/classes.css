@@ -1,0 +1,47 @@
+.classes-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.course-id-input,
+.join-course-button,
+.create-course-button {
+  margin: 10px;
+  padding: 10px;
+  width: 200px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f5f5f5; /* light grey background */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 200px;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.TextField {
+  margin-bottom: 20px !important; /* Important to override Material-UI styles */
+}
+
+.submit-button {
+  margin-top: 20px;
+  background-color: #1976d2; /* Material-UI primary blue */
+  color: white;
+  padding: 10px 15px;
+}
+
+.submit-button:hover {
+  background-color: #115293;
+}
