@@ -5,11 +5,12 @@ import morgan from "morgan";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
+import axios from "axios";
 import { fileURLToPath } from "url";
 import { connectToDatabase, insertUsers } from "./database.mjs";
 import User from "./models/User.mjs";
 import Class from "./models/Classes.mjs";
+import OpenAI from "openai";
 
 const app = express();
 
@@ -25,6 +26,35 @@ const root = path.resolve(__dirname, "..", "build");
 app.use(express.static(root));
 
 connectToDatabase();
+
+// API endpoint for processing user messages
+app.post("/api/chat", async (req, res) => {
+  try {
+    const { message } = req.body;
+    const apiKey = "YOUR_OPENAI_API_KEY";
+    const apiUrl =
+      "https://api.openai.com/v1/engines/davinci-codex/completions";
+    // Send user message to ChatGPT API
+    const response = await axios.post(
+      apiUrl,
+      {
+        prompt: "Hi is my API working?!",
+        max_tokens: 150,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+      }
+    );
+    // Extract and send the response from ChatGPT back to the frontend
+    res.status(200).json({ reply: response.data.choices[0].text.trim() });
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
 
 // post new user to databse during registration
 app.post("/api/users", async (req, res) => {
