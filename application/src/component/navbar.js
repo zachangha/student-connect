@@ -17,7 +17,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import SchoolIcon from "@mui/icons-material/School";
-import MesssageIcon from "@mui/icons-material/Forum";
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AlertComponent from "./alerts";
@@ -126,7 +126,7 @@ export default function MiniDrawer() {
   const navLinks = [
     { text: "Home", to: "/home", icon: <HomeIcon /> },
     { text: "Classes", to: "/classes", icon: <SchoolIcon /> },
-    { text: "AI Tutor", to: "/aiTutor", icon: <MesssageIcon /> },
+    { text: "AI Tutor", to: "/aiTutor", icon: <QuestionMarkIcon /> },
   ];
 
   const bottomLinks = [
