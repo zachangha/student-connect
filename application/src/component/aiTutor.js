@@ -5,7 +5,7 @@ import "./styles/homePage.css";
 function App() {
   return (
     <div className="bigBox">
-      <h1> MESSAGES PAGE </h1>
+      <h1> AI TUTOR PAGE </h1>
     </div>
   );
 }
