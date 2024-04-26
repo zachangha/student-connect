@@ -10,6 +10,7 @@ import { fileURLToPath } from "url";
 import { connectToDatabase, insertUsers } from "./database.mjs";
 import User from "./models/User.mjs";
 import Class from "./models/Classes.mjs";
+import { ObjectId } from 'mongodb';
 
 const app = express();
 
@@ -120,6 +121,32 @@ app.post("/api/classes/join", async (req, res) => {
     res
       .status(500)
       .json({ message: "Failed to join class", error: error.message });
+  }
+});
+
+// endpoint to get a student's joined classes and a teachers created classes
+app.get("/api/classes/get/:userId", async (req, res) => {
+  const {userId} = req.params;
+  const userInformation = await User.findOne({_id: new ObjectId(userId)});
+  if (!ObjectId.isValid(userId)) {
+    return res.status(400).json({ error: "Invalid userId" });
+  }
+  if(userInformation.role == "student") {
+    try {
+      const classes = await Class.find({students: new ObjectId(userId)});
+      res.send(classes)
+    } catch(error) {
+      console.error("Error: ", error);
+      res.status(500).json({error: "Internal Server Error"});
+    }
+  } else {
+    try {
+      const classes = await Class.find({teacher: new ObjectId(userId)});
+      res.send(classes)
+    } catch(error) {
+      console.error("Error: ", error);
+      res.status(500).json({error: "Internal Server Error"});
+    }
   }
 });
 
