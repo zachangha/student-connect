@@ -127,6 +127,7 @@ export default function MiniDrawer() {
     { text: "Home", to: "/home", icon: <HomeIcon /> },
     { text: "Classes", to: "/classes", icon: <SchoolIcon /> },
     { text: "Messages", to: "/messages", icon: <MesssageIcon /> },
+    { text: "QA", to: "/qa", icon: <MesssageIcon /> },
   ];
 
   const bottomLinks = [
