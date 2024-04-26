@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -6,6 +6,7 @@ import "./styles/classes.css";
 
 const Classes = () => {
   const [courseID, setCourseID] = useState("");
+  const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -41,6 +42,33 @@ const Classes = () => {
     navigate("/addClasses");
   };
 
+  // get teacher and students classes from their userID
+  const getCourses = async () => {
+    try {
+      const response = await fetch(`/api/classes/get/${user.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+
+      if (response.ok) {
+        const retrievedCourses = await response.json();
+        setCourses(retrievedCourses);
+        console.log(retrievedCourses)
+      } else {
+        const result = await response.json();
+        throw new Error(result.message || "Could not load courses");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+    useEffect(() => {
+      getCourses();
+    }, [])
+
   // render something different according to the role of the user
   if (user.role === "student") {
     return (
@@ -65,6 +93,19 @@ const Classes = () => {
         >
           Join Course
         </Button>
+        <div>
+          <h2>Courses: </h2>
+          <ul>
+          {courses.map((course) => (
+            <li key={course.id}>
+              <div>
+              <h3>{course.className}</h3>
+              <p>Teacher: {course.teacher}</p>
+            </div>
+          </li>
+         ))}
+        </ul>
+        </div>
       </div>
     );
   } else if (user.role === "teacher") {
