@@ -111,7 +111,7 @@ function App() {
       </Paper>
       <div style={{ display: "flex", alignItems: "center", marginBottom: 8 }}>
         <TextField
-          label="Type your message..."
+          label="Type your question here..."
           variant="outlined"
           style={{ flex: 1, marginRight: 8 }}
           value={input}
