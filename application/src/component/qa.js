@@ -3,16 +3,10 @@ import {
   Container,
   TextField,
   Button,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  IconButton,
-  Checkbox,
   Typography,
 } from "@mui/material";
 import "./styles/homePage.css";
-import { Button, TextField } from "@mui/material";
+
 
 function App() {
 
@@ -43,7 +37,7 @@ function App() {
       <div className="bigBox">
       <h1> Questions PAGE </h1>
     </div>
-      <Container className="todoContainer">
+      <Container className="qaContainer">
               <TextField
                   variant="outlined"
                   label="Add New Questions"
