@@ -116,7 +116,7 @@ function App() {
           style={{ flex: 1, marginRight: 8 }}
           value={input}
           onChange={handleChange}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
         />
         <Button
           variant="contained"
