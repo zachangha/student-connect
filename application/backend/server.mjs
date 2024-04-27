@@ -31,7 +31,9 @@ connectToDatabase();
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
 
-// Route for processing chat messages using the Gemini API
+/*
+   Route for processing chat messages using the Gemini API
+*/
 app.post("/api/chat", async (req, res) => {
   try {
     // get user prompt from text field

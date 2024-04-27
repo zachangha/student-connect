@@ -31,6 +31,9 @@ function App() {
     setInput(event.target.value);
   };
 
+  /*
+   send message to gemini api and wait for response
+   */
   const handleSend = async () => {
     if (input.trim()) {
       try {
@@ -63,11 +66,15 @@ function App() {
     }
   };
 
+  /* 
+  return the tutor container that allows for user to interact with gemini api
+   */
   return (
     <div className="ai-tutor-container">
       <Paper
         style={{
           position: "relative",
+          height: "70vh",
           overflow: "auto",
           marginBottom: 10,
         }}
@@ -75,6 +82,7 @@ function App() {
         <List>
           {messages.map((message, index) => (
             <ListItem
+              // messages will show up as a list on the page
               key={index}
               style={{
                 justifyContent: message.isUser ? "flex-end" : "flex-start",
@@ -83,11 +91,13 @@ function App() {
               <ListItemText
                 primary={
                   <ReactMarkdown
+                    // render latex and markdown properly for math and for equations
                     children={message.text}
                     remarkPlugins={[remarkMath]}
                     rehypePlugins={[rehypeKatex]}
                   />
                 }
+                // change color depending on user or AI response
                 style={{
                   backgroundColor: message.isUser ? "#e0f7fa" : "#eceff1",
                   padding: 10,
