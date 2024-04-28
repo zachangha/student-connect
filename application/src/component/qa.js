@@ -30,7 +30,7 @@ function App() {
       };
 
   return (
-    <><div className="QA">
+    <><div className="Questions">
           <h1> Questions and Answers </h1>
           <h2> Title of Q and A</h2>
       </div>

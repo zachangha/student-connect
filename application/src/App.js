@@ -33,7 +33,7 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="addClasses" element={<AddClasses />} />
             <Route path="classes" element={<Classes />} />
-            <Route path="questions" element={<Questions />} />
+            <Route path="QA" element={<Questions />} />
             <Route path="members/:memberName" element={<MemberPage />} />
           </Route>
           <Route path="login" element={<Login />} />
