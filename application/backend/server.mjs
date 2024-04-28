@@ -10,7 +10,7 @@ import { fileURLToPath } from "url";
 import { connectToDatabase, insertUsers } from "./database.mjs";
 import User from "./models/User.mjs";
 import Class from "./models/Classes.mjs";
-import { ObjectId } from 'mongodb';
+import { ObjectId } from "mongodb";
 
 const app = express();
 
@@ -124,28 +124,38 @@ app.post("/api/classes/join", async (req, res) => {
   }
 });
 
-// endpoint to get a student's joined classes and a teachers created classes
+/**
+ *  Endpoint to get a student's joined classes and a teachers created classes with the userID.
+ *  If the user is a student it will look for all classes where the userID is contained in the students array along with all the
+ *  names of the teachers for those classes.
+ *  If the user is a teacher it will get all the classes that the userID matches the teacher's ID for the class.
+ */
 app.get("/api/classes/get/:userId", async (req, res) => {
-  const {userId} = req.params;
-  const userInformation = await User.findOne({_id: new ObjectId(userId)});
+  const { userId } = req.params;
+  const userInformation = await User.findOne({ _id: new ObjectId(userId) });
   if (!ObjectId.isValid(userId)) {
     return res.status(400).json({ error: "Invalid userId" });
   }
-  if(userInformation.role == "student") {
+  if (userInformation.role == "student") {
     try {
-      const classes = await Class.find({students: new ObjectId(userId)});
-      res.send(classes)
-    } catch(error) {
+      const classes = await Class.find({ students: new ObjectId(userId) });
+      const teachers = [];
+      for (let i = 0; i < classes.length; i++) {
+        const teacher = await User.findById(classes[i].teacher);
+        teachers.push(teacher);
+      }
+      res.send([classes, teachers]);
+    } catch (error) {
       console.error("Error: ", error);
-      res.status(500).json({error: "Internal Server Error"});
+      res.status(500).json({ error: "Internal Server Error" });
     }
   } else {
     try {
-      const classes = await Class.find({teacher: new ObjectId(userId)});
-      res.send(classes)
-    } catch(error) {
+      const classes = await Class.find({ teacher: new ObjectId(userId) });
+      res.send(classes);
+    } catch (error) {
       console.error("Error: ", error);
-      res.status(500).json({error: "Internal Server Error"});
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 });
