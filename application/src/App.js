@@ -10,7 +10,7 @@ import Home from "./component/home.js";
 import About from "./component/about.js";
 import Login from "./component/login.js";
 import Register from "./component/register.js";
-import Messages from "./component/messages.js";
+import AITutor from "./component/aiTutor.js";
 import Profile from "./component/profile.js";
 import Classes from "./component/classes.js";
 import Footer from "./component/footer.js";
@@ -28,7 +28,7 @@ function App() {
             <Route index element={<Landing />} />{" "}
             <Route path="Home" element={<Home />} />
             <Route path="about" element={<About />} />
-            <Route path="messages" element={<Messages />} />
+            <Route path="aiTutor" element={<AITutor />} />
             <Route path="profile" element={<Profile />} />
             <Route path="addClasses" element={<AddClasses />} />
             <Route path="classes" element={<Classes />} />
