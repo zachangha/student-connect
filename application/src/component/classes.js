@@ -7,6 +7,7 @@ import "./styles/classes.css";
 const Classes = () => {
   const [courseID, setCourseID] = useState("");
   const [courses, setCourses] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -42,20 +43,26 @@ const Classes = () => {
     navigate("/addClasses");
   };
 
-  // get teacher and students classes from their userID
+  /**
+   * get/user.id to get a student's joined classes and teachers or a teacher's created classes.
+   */
   const getCourses = async () => {
     try {
       const response = await fetch(`/api/classes/get/${user.id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-        }
+        },
       });
 
       if (response.ok) {
         const retrievedCourses = await response.json();
-        setCourses(retrievedCourses);
-        console.log(retrievedCourses)
+        if (user.role == "student") {
+          setCourses(retrievedCourses[0]);
+          setTeachers(retrievedCourses[1]);
+        } else {
+          setCourses(retrievedCourses);
+        }
       } else {
         const result = await response.json();
         throw new Error(result.message || "Could not load courses");
@@ -65,9 +72,9 @@ const Classes = () => {
     }
   };
 
-    useEffect(() => {
-      getCourses();
-    }, [])
+  useEffect(() => {
+    getCourses();
+  }, []);
 
   // render something different according to the role of the user
   if (user.role === "student") {
@@ -96,15 +103,15 @@ const Classes = () => {
         <div>
           <h2>Courses: </h2>
           <ul>
-          {courses.map((course) => (
-            <li key={course.id}>
-              <div>
-              <h3>{course.className}</h3>
-              <p>Teacher: {course.teacher}</p>
-            </div>
-          </li>
-         ))}
-        </ul>
+            {courses.map((course, index) => (
+              <li key={course.id}>
+                <div>
+                  <a href={`/classes/${course._id}`}> {course.className}</a>
+                </div>
+                <p>Teacher: {teachers[index].username}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     );
@@ -119,6 +126,18 @@ const Classes = () => {
         >
           Create Course
         </Button>
+        <div>
+          <h2>Courses: </h2>
+          <ul>
+            {courses.map((course) => (
+              <li key={course.id}>
+                <div>
+                  <a href={`/classes/${course._id}`}> {course.className}</a>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   } else {
@@ -132,6 +151,18 @@ const Classes = () => {
         >
           Create Course
         </Button>
+        <div>
+          <h2>Courses: </h2>
+          <ul>
+            {courses.map((course) => (
+              <li key={course.id}>
+                <div>
+                  <a href={`/classes/${course._id}`}> {course.className}</a>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }
