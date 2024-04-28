@@ -1,6 +1,6 @@
 # Student Connect
 
-**Application URL: <http://18.117.145.154>**
+**Application URL: <http://3.145.7.29>**
 
 |   Student Name   |        Student Email        | GitHub Username |  Student's role  |
 | :--------------: | :-------------------------: | :-------------: | :--------------: |
