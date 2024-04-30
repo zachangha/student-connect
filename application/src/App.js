@@ -10,12 +10,13 @@ import Home from "./component/home.js";
 import About from "./component/about.js";
 import Login from "./component/login.js";
 import Register from "./component/register.js";
-import Messages from "./component/messages.js";
+import AITutor from "./component/aiTutor.js";
 import Profile from "./component/profile.js";
 import Classes from "./component/classes.js";
 import Footer from "./component/footer.js";
 import Questions from "./component/QA.js";
 import AddClasses from "./component/addClasses.js";
+import Course from "./component/course.js";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
 import Layout from "./component/layout.js";
@@ -29,12 +30,13 @@ function App() {
             <Route index element={<Landing />} />{" "}
             <Route path="Home" element={<Home />} />
             <Route path="about" element={<About />} />
-            <Route path="messages" element={<Messages />} />
+            <Route path="aiTutor" element={<AITutor />} />
             <Route path="profile" element={<Profile />} />
             <Route path="addClasses" element={<AddClasses />} />
             <Route path="classes" element={<Classes />} />
             <Route path="QA" element={<Questions />} />
             <Route path="members/:memberName" element={<MemberPage />} />
+            <Route path={"course/:courseID"} element={<Course />} />
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />

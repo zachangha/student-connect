@@ -5,11 +5,13 @@ import morgan from "morgan";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
+import axios from "axios";
 import { fileURLToPath } from "url";
 import { connectToDatabase, insertUsers } from "./database.mjs";
 import User from "./models/User.mjs";
 import Class from "./models/Classes.mjs";
+import { ObjectId } from "mongodb";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const app = express();
 
@@ -25,6 +27,33 @@ const root = path.resolve(__dirname, "..", "build");
 app.use(express.static(root));
 
 connectToDatabase();
+
+// AI tutor set up
+const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
+
+/*
+   Route for processing chat messages using the Gemini API
+*/
+app.post("/api/chat", async (req, res) => {
+  try {
+    // get user prompt from text field
+    const { prompt } = req.body;
+
+    // send prompt and wait for results
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+    console.log(text);
+    res.status(200).json({ message: text });
+  } catch (err) {
+    console.error("API request failed with error: ", err);
+    res.status(500).json({
+      error: "Something went wrong",
+      details: err.message,
+    });
+  }
+});
 
 // post new user to databse during registration
 app.post("/api/users", async (req, res) => {
@@ -120,6 +149,57 @@ app.post("/api/classes/join", async (req, res) => {
     res
       .status(500)
       .json({ message: "Failed to join class", error: error.message });
+  }
+});
+
+/**
+ *  Endpoint to get a student's joined classes and a teachers created classes with the userID.
+ *  If the user is a student it will look for all classes where the userID is contained in the students array along with all the
+ *  names of the teachers for those classes.
+ *  If the user is a teacher it will get all the classes that the userID matches the teacher's ID for the class.
+ */
+app.get("/api/classes/get/:userId", async (req, res) => {
+  const { userId } = req.params;
+  const userInformation = await User.findOne({ _id: new ObjectId(userId) });
+  if (!ObjectId.isValid(userId)) {
+    return res.status(400).json({ error: "Invalid userId" });
+  }
+  if (userInformation.role == "student") {
+    try {
+      const classes = await Class.find({ students: new ObjectId(userId) });
+      const teachers = [];
+      for (let i = 0; i < classes.length; i++) {
+        const teacher = await User.findById(classes[i].teacher);
+        teachers.push(teacher);
+      }
+      res.send([classes, teachers]);
+    } catch (error) {
+      console.error("Error: ", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  } else {
+    try {
+      const classes = await Class.find({ teacher: new ObjectId(userId) });
+      res.send(classes);
+    } catch (error) {
+      console.error("Error: ", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+});
+
+/**
+ *  Endpoint to get a a course's information with the courseID.
+ *  It will take the courseID to query through all the classes and return the matching class.
+ */
+app.get("/api/course/get/:courseID", async (req, res) => {
+  const { courseID } = req.params;
+  try {
+    const course = await Class.find({ _id: new ObjectId(courseID) });
+    res.send(course);
+  } catch (error) {
+    console.error("Error: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

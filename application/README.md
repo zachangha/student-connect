@@ -10,6 +10,8 @@ In the **project** directory:
 ```
 URI=REPLACE_URI
 PORT=REPLACE_PORT
+API_KEY=YOURGOOGLEGEMINIAPIKEY
+
 ```
 ## For front end development:
 `npm start`
@@ -24,6 +26,6 @@ PORT=REPLACE_PORT
 > [!IMPORTANT]
 > - NEEDS TO BE RUN ANYTIME THERE IS FRONTEND CHANGES in order for backend to be updated.
 
-`npm run start node`
+`nodemon server.mjs`
 - To start the app on the server in port specified in .env.
 - Run this to test backend functionality.
