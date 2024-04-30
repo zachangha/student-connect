@@ -44,7 +44,7 @@ const Classes = () => {
   };
 
   /**
-   * get/user.id to get a student's joined classes and teachers or a teacher's created classes.
+   * use user.id to get a student's joined classes and teachers or a teacher's created classes.
    */
   const getCourses = async () => {
     try {
@@ -57,7 +57,7 @@ const Classes = () => {
 
       if (response.ok) {
         const retrievedCourses = await response.json();
-        if (user.role == "student") {
+        if (user.role === "student") {
           setCourses(retrievedCourses[0]);
           setTeachers(retrievedCourses[1]);
         } else {
@@ -106,7 +106,7 @@ const Classes = () => {
             {courses.map((course, index) => (
               <li key={course.id}>
                 <div>
-                  <a href={`/classes/${course._id}`}> {course.className}</a>
+                  <a href={`/course/${course._id}`}> {course.className}</a>
                 </div>
                 <p>Teacher: {teachers[index].username}</p>
               </li>
@@ -132,7 +132,7 @@ const Classes = () => {
             {courses.map((course) => (
               <li key={course.id}>
                 <div>
-                  <a href={`/classes/${course._id}`}> {course.className}</a>
+                  <a href={`/course/${course._id}`}> {course.className}</a>
                 </div>
               </li>
             ))}
@@ -157,7 +157,7 @@ const Classes = () => {
             {courses.map((course) => (
               <li key={course.id}>
                 <div>
-                  <a href={`/classes/${course._id}`}> {course.className}</a>
+                  <a href={`/course/${course._id}`}> {course.className}</a>
                 </div>
               </li>
             ))}

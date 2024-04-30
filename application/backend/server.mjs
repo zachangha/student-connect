@@ -160,6 +160,21 @@ app.get("/api/classes/get/:userId", async (req, res) => {
   }
 });
 
+/**
+ *  Endpoint to get a a course's information with the courseID.
+ *  It will take the courseID to query through all the classes and return the matching class.
+ */
+app.get("/api/course/get/:courseID", async (req, res) => {
+  const { courseID } = req.params;
+  try {
+    const course = await Class.find({ _id: new ObjectId(courseID) });
+    res.send(course);
+  } catch (error) {
+    console.error("Error: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // catch all
 app.use("/*", (req, res) => {
   res.sendFile(path.join(root, "index.html"));
