@@ -31,30 +31,16 @@ function App() {
 
     // adds questions. 
     //  later on user could select classes that user is in from drop down
-
-    const handleTitle = () => {
-      if (newTitle.trim() !== "") {
-        setTitle([...title, { id: Date.now(), text: newTitle, checked: false }]);
-        setNewTitle("");
-      }
-    };
-    const handleAddQuestions = () => {
-        if (newQuestions.trim() !== "")  {
-          setQuestions([...questions, { id: Date.now(), text: newQuestions, checked: false }]);
-          setNewQuestions("");
-        }
-      };
-
-      /*
+      
       const handleAddQuestions = () => {
-        if (newQuestions.trim() !== "") || (newTitle.trim() !== "") {
+        if (newQuestions.trim() !== "" && newTitle.trim() !== "") {
           setQuestions([...questions, { id: Date.now(), text: newQuestions, checked: false }]);
           setNewQuestions("");
           setTitle([...title, { id: Date.now(), text: newTitle, checked: false }]);
           setNewTitle("");
         }
       };
-      */
+      
       
       // delete questions
       const handleDeleteQuestions = (id) => {
