@@ -5,12 +5,13 @@ import morgan from "morgan";
 import bcrypt from "bcrypt";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
+import axios from "axios";
 import { fileURLToPath } from "url";
 import { connectToDatabase, insertUsers } from "./database.mjs";
 import User from "./models/User.mjs";
 import Class from "./models/Classes.mjs";
 import { ObjectId } from "mongodb";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const app = express();
 
@@ -26,6 +27,33 @@ const root = path.resolve(__dirname, "..", "build");
 app.use(express.static(root));
 
 connectToDatabase();
+
+// AI tutor set up
+const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
+
+/*
+   Route for processing chat messages using the Gemini API
+*/
+app.post("/api/chat", async (req, res) => {
+  try {
+    // get user prompt from text field
+    const { prompt } = req.body;
+
+    // send prompt and wait for results
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+    console.log(text);
+    res.status(200).json({ message: text });
+  } catch (err) {
+    console.error("API request failed with error: ", err);
+    res.status(500).json({
+      error: "Something went wrong",
+      details: err.message,
+    });
+  }
+});
 
 // post new user to databse during registration
 app.post("/api/users", async (req, res) => {
