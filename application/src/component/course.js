@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Button from "@mui/material/Button";
+import "./styles/classes.css";
 
 const Courses = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -31,6 +33,16 @@ const Courses = () => {
     }
   };
 
+  //MODIFY THIS!!  should allow user to post announcements
+  const postAnnouncement = () =>{
+
+  };
+
+  //MODIFY THIS!! should allow user to post QA
+  const postQA = () => {
+
+  };
+
   useEffect(() => {
     getCourse();
   }, []);
@@ -45,11 +57,52 @@ const Courses = () => {
     );
   } else if (user.role === "teacher") {
     return (
-      <div className="classes-container">
-        {course.map((course) => (
-          <h1>{course.className}</h1>
-        ))}
-      </div>
+
+      <body className="bigouterbox">
+
+        <div className="QAbox">
+
+          {course.map((course) => (
+          <h1>Class: {course.className}</h1>
+          ))}
+
+          <div>Role: {user.role}</div>
+          <br></br>
+          <br></br>
+          <h2 className="border">Announcements:  
+            <Button
+            variant="contained"
+            color="primary"
+            onClick={postAnnouncement}
+            className="postButton">
+            +
+            </Button>
+          </h2>
+        
+          <div className="border">put announcements here</div>
+          <br></br>
+          <br></br>
+          <h2 className="border">Q&A
+            <Button
+            variant="contained"
+            color="primary"
+            onClick={postQA}
+            className="postButton">
+            +
+            </Button>
+          </h2>
+          <div className="border">put Q&A here</div>
+
+        </div>
+
+        <div className="postingInfo">
+          post information
+        </div>
+
+
+      </body>
+
+
     );
   } else {
     return (

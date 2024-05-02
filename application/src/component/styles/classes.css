@@ -1,9 +1,55 @@
 .classes-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: left;
+  justify-content: left;
   height: 100vh;
+  padding-left: 20%;
+  padding-top: 5%;
+  float:left;
+  background-color: lightgrey;
+  border-style: solid;
+  border-color:darkgrey;
+}
+
+.bigouterbox {
+  display: inline-flex;
+  flex-direction:row;
+  align-items: left;
+  justify-content: left;
+  height: 90vh;
+  width: 200vh;
+  padding-left: 15%;
+  padding-top: 4%;
+  float:left;
+  background-color: lightgrey;
+
+  }
+  
+.border{
+  background-color: lightgrey;
+}
+
+.borderPosts{
+  background-color: grey;
+  border-style: solid;
+  border-color: lightgrey;
+}
+  
+.QAbox{
+background-color: white;
+height: 100%;
+width: 65vh;
+float: left;
+border-style: solid;
+
+}
+
+.postingInfo{
+  background-color: lightgrey;
+  height: 100%;
+  width: 120vh;
+  float:right;
 }
 
 .course-id-input,
@@ -12,6 +58,16 @@
   margin: 10px;
   padding: 10px;
   width: 200px;
+}
+
+.postButton{
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 10%;
+  color: white;
+  float: right;
+  background-color: #115293;
 }
 
 .container {

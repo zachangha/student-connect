@@ -115,19 +115,14 @@ const Classes = () => {
         </div>
       </div>
     );
-  } else if (user.role === "teacher") {
+  } 
+  
+  else if (user.role === "teacher") {
     return (
       <div className="classes-container">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={redirectToAddCourse}
-          className="create-course-button"
-        >
-          Create Course
-        </Button>
+     
         <div>
-          <h2>Courses: </h2>
+          <h2>Your Courses: </h2>
           <ul>
             {courses.map((course) => (
               <li key={course.id}>
@@ -138,9 +133,24 @@ const Classes = () => {
             ))}
           </ul>
         </div>
+
+        <div>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={redirectToAddCourse}
+            className="create-course-button">
+            Create Course
+          </Button>
+        </div>    
+
+
       </div>
     );
-  } else {
+  } 
+  
+  
+  else {
     return (
       <div className="classes-container">
         <Button
