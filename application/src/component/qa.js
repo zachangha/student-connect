@@ -21,6 +21,9 @@ function App() {
 
     const [title, setTitle] = useState([]);
     const [newTitle, setNewTitle] = useState("");
+
+    const [Reply, setReply] = useState([]);
+    const [newReply, setNewReply] = useState("");
   
     const user = JSON.parse(localStorage.getItem("user", "userID", "karmaPoints") || "{}");
 
@@ -40,11 +43,22 @@ function App() {
           setNewTitle("");
         }
       };
+
+      const handleAddReply = () => {
+        if (newReply.trim() !== "" ) {
+          setReply([...Reply, { id: Date.now(), text: newReply, checked: false }]);
+          setNewReply("");
+        }
+      };
       
       
       // delete questions
       const handleDeleteQuestions = (id) => {
         setQuestions(questions.filter((question) => question.id !== id));
+      };
+
+      const handleDeleteReply = (id) => {
+        setReply(Reply.filter((replys) => replys.id !== id));
       };
 
       // user can input tilte and question, and post the question in a list
@@ -98,8 +112,47 @@ function App() {
             </ListItem>
           ))}
         </List>
-          </Container></>
 
+        
+        [list reply to question]
+        
+          if(!Array.isArray(questions) || !question.length) {
+            <><TextField
+            variant="outlined"
+            label="Add Reply"
+            value={newReply}
+            onChange={(e) => setNewReply(e.target.value)}
+            fullWidth
+            margin="normal" /><Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddReply}
+              disabled={!newReply.trim()}
+              fullWidth
+            >
+              Add Reply
+            </Button><List>
+              {Reply.map((replys) => (
+                <ListItem
+                  key={replys.id}
+                  dense
+                >
+                  <ListItemText primary={replys.text} />
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => handleDeleteReply(replys.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+            </List></>
+          }
+         
+          </Container></>
   );
 }
 
