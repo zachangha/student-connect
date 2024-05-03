@@ -61,7 +61,7 @@ function App() {
         setReply(Reply.filter((replys) => replys.id !== id));
       };
 
-      // user can input tilte and question, and post the question in a list
+      // user can input tilte and question, post the question in a list, and reply.
   return (
     <><div className="bigBox">
       <h1> Questions & Answers Page </h1>
@@ -113,10 +113,6 @@ function App() {
           ))}
         </List>
 
-        
-        [list reply to question]
-        
-          if(!Array.isArray(questions) || !question.length) {
             <><TextField
             variant="outlined"
             label="Add Reply"
@@ -150,9 +146,7 @@ function App() {
                 </ListItem>
               ))}
             </List></>
-          }
-         
-          </Container></>
+    </Container></>
   );
 }
 
