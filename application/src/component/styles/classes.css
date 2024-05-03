@@ -20,7 +20,7 @@
   height: 90vh;
   width: 200vh;
   padding-left: 15%;
-  padding-top: 4%;
+  padding-top: 3.5%;
   float:left;
   background-color: lightgrey;
 
@@ -62,9 +62,9 @@ border-style: solid;
 
 .postButton{
   display: block;
-  width: 20px;
-  height: 20px;
-  border-radius: 10%;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   color: white;
   float: right;
   background-color: #115293;

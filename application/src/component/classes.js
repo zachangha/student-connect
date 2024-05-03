@@ -101,7 +101,7 @@ const Classes = () => {
           Join Course
         </Button>
         <div>
-          <h2>Courses: </h2>
+          <h2>Your Courses: </h2>
           <ul>
             {courses.map((course, index) => (
               <li key={course.id}>
