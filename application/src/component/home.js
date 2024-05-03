@@ -54,9 +54,9 @@ function App() {
     <div className="root">
       <Typography
         variant="h6"
-        style={{ marginBottom: "16px", textAlign: "center" }}
+        style={{ marginBottom: "16px", textAlign: "center", style: "bold" }}
       >
-        Welcome, {user.username || "User"}! User ID: {user.id || "N/A"}
+        Welcome, {user.username || "User"}!
       </Typography>
 
       <Container className="todoContainer">
