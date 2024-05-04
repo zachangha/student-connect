@@ -204,6 +204,9 @@ app.get("/api/course/get/:courseID", async (req, res) => {
   }
 });
 
+/**
+ *  Add new tasks to the database
+ */
 app.post("/api/tasks", async (req, res) => {
   const { task, authorId } = req.body;
   const newTask = new ToDoList({ authorId, task, completed: false });
@@ -218,6 +221,9 @@ app.post("/api/tasks", async (req, res) => {
   }
 });
 
+/**
+ *  Get all the tasks for this user
+ */
 app.get("/api/tasks/:authorId", async (req, res) => {
   try {
     const tasks = await ToDoList.find({ authorId: req.params.authorId });
@@ -229,6 +235,9 @@ app.get("/api/tasks/:authorId", async (req, res) => {
   }
 });
 
+/**
+ *  Delete tasks from the database
+ */
 app.delete("/api/tasks/:taskId", async (req, res) => {
   try {
     await ToDoList.findByIdAndDelete(req.params.taskId);
