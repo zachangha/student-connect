@@ -19,16 +19,13 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const today = new Date();
-  const dateString = `${today.getDate()}/${
-    today.getMonth() + 1
-  }/${today.getFullYear()}`; // Format: DD/MM/YYYY
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     fetchTasks();
-  }, [user.id]);
+  });
 
+  // list users tasks that have already been saved in the DB
   const fetchTasks = async () => {
     if (user.id) {
       const response = await axios.get(`/api/tasks/${user.id}`);
@@ -41,7 +38,7 @@ function App() {
     }
   };
 
-  // Add Task adjusted to backend response
+  // add tasks to the database
   const handleAddTask = async () => {
     if (newTask.trim() !== "") {
       const response = await axios.post("/api/tasks", {
@@ -49,7 +46,7 @@ function App() {
         authorId: user.id,
       });
       const newTaskFromResponse = {
-        id: response.data.newTask._id, // Adjust according to backend response
+        id: response.data.newTask._id,
         text: response.data.newTask.task,
         checked: response.data.newTask.completed,
       };
@@ -70,6 +67,7 @@ function App() {
     );
   };
 
+  // delete tasks from database
   const handleDeleteTask = async (id) => {
     await axios.delete(`/api/tasks/${id}`);
     fetchTasks(); // Re-fetch tasks to update the list
@@ -79,7 +77,12 @@ function App() {
     <div className="root">
       <Typography
         variant="h6"
-        style={{ marginBottom: "16px", textAlign: "center", style: "bold" }}
+        style={{
+          marginBottom: "16px",
+          textAlign: "center",
+          style: "bold",
+          fontSize: "1.5rem",
+        }}
       >
         Welcome, {user.username || "User"}!
       </Typography>
@@ -116,7 +119,10 @@ function App() {
                 tabIndex={-1}
                 disableRipple
               />
-              <ListItemText primary={task.text} />
+              <ListItemText
+                primary={task.text}
+                primaryTypographyProps={{ style: { fontSize: "1.5rem" } }} // Adjust font size as needed
+              />
               <ListItemSecondaryAction>
                 <IconButton
                   edge="end"
