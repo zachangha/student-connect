@@ -16,6 +16,7 @@ import Classes from "./component/classes.js";
 import Footer from "./component/footer.js";
 import AddClasses from "./component/addClasses.js";
 import Course from "./component/course.js";
+import Announcement from "./component/announcement.js";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
 import Layout from "./component/layout.js";
@@ -35,6 +36,10 @@ function App() {
             <Route path="classes" element={<Classes />} />
             <Route path="members/:memberName" element={<MemberPage />} />
             <Route path={"course/:courseID"} element={<Course />} />
+            <Route
+              path={"course/:courseID/announcement"}
+              element={<Announcement />}
+            />
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />

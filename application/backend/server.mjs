@@ -10,6 +10,7 @@ import { fileURLToPath } from "url";
 import { connectToDatabase, insertUsers } from "./database.mjs";
 import User from "./models/User.mjs";
 import Class from "./models/Classes.mjs";
+import QAForms from "./models/QAForum.mjs";
 import { ObjectId } from "mongodb";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -200,6 +201,37 @@ app.get("/api/course/get/:courseID", async (req, res) => {
   } catch (error) {
     console.error("Error: ", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+/**
+ * Endpoint to create an announcment in the Q&A form.
+ * Takes the courseID and the authorID, which is the teacher.
+ */
+app.post("/api/classes/announcement/create", async (req, res) => {
+  const { authorID, courseID, datePosted, title, message, questionID, type } =
+    req.body;
+  try {
+    const newAnnouncement = new QAForms({
+      authorID,
+      courseID,
+      datePosted,
+      title,
+      message,
+      questionID,
+      type,
+    });
+    await newAnnouncement.save();
+    res.status(201).json({
+      message: "Announcement created successfully",
+      classID: newAnnouncement.courseID,
+    });
+  } catch (error) {
+    console.error("Error when creating announcement:", error);
+    res.status(error.name === "ValidationError" ? 400 : 500).json({
+      message: "Failed to create announcement",
+      error: error.message,
+    });
   }
 });
 

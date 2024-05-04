@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 const Courses = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [course, setCourse] = useState([]);
+  const navigate = useNavigate();
 
   const currentUrl = window.location.href;
   const parts = currentUrl.split("/");
   const courseID = parts[parts.length - 1];
+
+  /**
+   * Redirect to the create announcement page
+   */
+  const redirectToAddAnnouncement = () => {
+    navigate(`/course/${courseID}/announcement`);
+  };
 
   /**
    * use course.id to get a courses's information to display and post information for the user.
@@ -46,6 +56,15 @@ const Courses = () => {
   } else if (user.role === "teacher") {
     return (
       <div className="classes-container">
+        <Button
+          variant="contained"
+          color="primary"
+          className="join-course-button"
+          onClick={redirectToAddAnnouncement}
+        >
+          Add Announcement
+        </Button>
+
         {course.map((course) => (
           <h1>{course.className}</h1>
         ))}
