@@ -22,8 +22,11 @@ function App() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    fetchTasks();
-  });
+    if (user && user.id) {
+      // Ensure there's a user and user.id is not undefined
+      fetchTasks();
+    }
+  }, [user.id]); // Dependency array with user.id
 
   // list users tasks that have already been saved in the DB
   const fetchTasks = async () => {
@@ -56,15 +59,17 @@ function App() {
   };
 
   // checkmarks
-  const handleToggleCheck = (id) => {
-    setTasks(
-      tasks.map((task) => {
-        if (task.id === id) {
-          return { ...task, checked: !task.checked };
-        }
-        return task;
-      })
-    );
+  const handleToggleCheck = async (id, checked) => {
+    const response = await axios.put(`/api/tasks/${id}`, {
+      completed: !checked,
+    });
+    if (response.status === 200) {
+      setTasks(
+        tasks.map((task) =>
+          task.id === id ? { ...task, checked: !task.checked } : task
+        )
+      );
+    }
   };
 
   // delete tasks from database
@@ -111,7 +116,7 @@ function App() {
               key={task.id}
               dense
               button
-              onClick={() => handleToggleCheck(task.id)}
+              onClick={() => handleToggleCheck(task.id, task.checked)}
             >
               <Checkbox
                 edge="start"

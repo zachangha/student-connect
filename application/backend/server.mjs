@@ -268,6 +268,28 @@ app.get("/api/tasks/:authorId", async (req, res) => {
 });
 
 /**
+ * Update a task's completion status
+ */
+app.put("/api/tasks/:taskId", async (req, res) => {
+  const { completed } = req.body;
+  try {
+    const updatedTask = await ToDoList.findByIdAndUpdate(
+      req.params.taskId,
+      { completed: completed },
+      { new: true }
+    );
+    if (!updatedTask) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+    res.status(200).json({ message: "Task updated successfully", updatedTask });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to update task", error: error.message });
+  }
+});
+
+/**
  *  Delete tasks from the database
  */
 app.delete("/api/tasks/:taskId", async (req, res) => {
