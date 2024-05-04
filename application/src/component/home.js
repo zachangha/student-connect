@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   TextField,
@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "./styles/homePage.css";
+import axios from "axios";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -24,10 +25,35 @@ function App() {
     today.getMonth() + 1
   }/${today.getFullYear()}`; // Format: DD/MM/YYYY
 
-  // add tasks to list
-  const handleAddTask = () => {
+  useEffect(() => {
+    fetchTasks();
+  }, [user.id]);
+
+  const fetchTasks = async () => {
+    if (user.id) {
+      const response = await axios.get(`/api/tasks/${user.id}`);
+      const formattedTasks = response.data.map((task) => ({
+        id: task._id,
+        text: task.task,
+        checked: task.completed,
+      }));
+      setTasks(formattedTasks);
+    }
+  };
+
+  // Add Task adjusted to backend response
+  const handleAddTask = async () => {
     if (newTask.trim() !== "") {
-      setTasks([...tasks, { id: Date.now(), text: newTask, checked: false }]);
+      const response = await axios.post("/api/tasks", {
+        task: newTask,
+        authorId: user.id,
+      });
+      const newTaskFromResponse = {
+        id: response.data.newTask._id, // Adjust according to backend response
+        text: response.data.newTask.task,
+        checked: response.data.newTask.completed,
+      };
+      setTasks([...tasks, newTaskFromResponse]);
       setNewTask("");
     }
   };
@@ -44,12 +70,11 @@ function App() {
     );
   };
 
-  // delete tasks from list
-  const handleDeleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const handleDeleteTask = async (id) => {
+    await axios.delete(`/api/tasks/${id}`);
+    fetchTasks(); // Re-fetch tasks to update the list
   };
 
-  // return a todo list
   return (
     <div className="root">
       <Typography
