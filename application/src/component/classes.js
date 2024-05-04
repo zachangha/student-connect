@@ -115,12 +115,9 @@ const Classes = () => {
         </div>
       </div>
     );
-  } 
-  
-  else if (user.role === "teacher") {
+  } else if (user.role === "teacher") {
     return (
       <div className="classes-container">
-     
         <div>
           <h2>Your Courses: </h2>
           <ul>
@@ -139,18 +136,14 @@ const Classes = () => {
             variant="contained"
             color="primary"
             onClick={redirectToAddCourse}
-            className="create-course-button">
+            className="create-course-button"
+          >
             Create Course
           </Button>
-        </div>    
-
-
+        </div>
       </div>
     );
-  } 
-  
-  
-  else {
+  } else {
     return (
       <div className="classes-container">
         <Button
