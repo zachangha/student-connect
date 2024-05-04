@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 const Courses = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [course, setCourse] = useState([]);
+  const [announcements, setAnnouncement] = useState([]);
+
   const navigate = useNavigate();
 
   const currentUrl = window.location.href;
@@ -42,14 +44,36 @@ const Courses = () => {
     }
   };
 
-  //MODIFY THIS!!  should allow user to post announcements
-  const postAnnouncement = () => {};
+  /**
+   * Get a course's array of announcements by it's courseID.
+   */
+  const getAnnouncements = async () => {
+    try {
+      const response = await fetch(`/api/course/announcement/${courseID}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const retrivedAnnouncements = await response.json();
+        console.log(retrivedAnnouncements);
+        setAnnouncement(retrivedAnnouncements);
+      } else {
+        const result = await response.json();
+        throw new Error(result.message || "Could not load course");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   //MODIFY THIS!! should allow user to post QA
   const postQA = () => {};
 
   useEffect(() => {
     getCourse();
+    getAnnouncements();
   }, []);
 
   //student view of the class, cannot post announcements
@@ -66,7 +90,13 @@ const Courses = () => {
           <br></br>
           <h2 className="border">Announcements:</h2>
 
-          <div className="border">put announcements here</div>
+          <div className="border">
+            {announcements.slice(0, 5).map((announcement) => (
+              <li>
+                <a href="">{announcement.title}</a>
+              </li>
+            ))}
+          </div>
           <br></br>
           <br></br>
           <h2 className="border">
@@ -116,7 +146,13 @@ const Courses = () => {
             </Button>
           </h2>
 
-          <div className="border">put announcements here</div>
+          <div className="border">
+            {announcements.slice(0, 5).map((announcement) => (
+              <li>
+                <a href="">{announcement.title}</a>
+              </li>
+            ))}
+          </div>
           <br></br>
           <br></br>
           <h2 className="border">

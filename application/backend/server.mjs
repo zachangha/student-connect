@@ -205,6 +205,20 @@ app.get("/api/course/get/:courseID", async (req, res) => {
 });
 
 /**
+ * Endpoint to get an array of announcements for a class.
+ */
+app.get("/api/course/announcement/:courseID", async (req, res) => {
+  const { courseID } = req.params;
+  try {
+    const course = await QAForms.find({ courseID: new ObjectId(courseID) });
+    res.send(course);
+  } catch (error) {
+    console.error("Error: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+/**
  * Endpoint to create an announcment in the Q&A form.
  * Takes the courseID and the authorID, which is the teacher.
  */
