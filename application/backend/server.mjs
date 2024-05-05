@@ -210,7 +210,10 @@ app.get("/api/course/get/:courseID", async (req, res) => {
 app.get("/api/course/announcement/:courseID", async (req, res) => {
   const { courseID } = req.params;
   try {
-    const course = await QAForms.find({ courseID: new ObjectId(courseID) });
+    const course = await QAForms.find({
+      courseID: new ObjectId(courseID),
+      type: "announcement",
+    }).sort({ datePosted: -1 });
     res.send(course);
   } catch (error) {
     console.error("Error: ", error);
