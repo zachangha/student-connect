@@ -13,7 +13,7 @@ function About() {
       <header className="header">
         <h1>Meet our Team</h1>
       </header>
-      <div className="container">
+      <div className="about-container">
         <div className="infoColumn">
           <div>
             <h2>Goals of Milestone Zero:</h2>
