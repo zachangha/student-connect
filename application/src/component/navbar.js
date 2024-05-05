@@ -112,7 +112,10 @@ export default function MiniDrawer() {
   // delete user info from local and redirect to landing page, sending alert
   const logout = () => {
     localStorage.removeItem("user");
-    setTimeout(() => navigate("/", { replace: true }), 600);
+    setTimeout(() => {
+      navigate("/", { replace: true });
+      window.location.reload(); // This will force reload the browser page
+    }, 600);
 
     setAlert({
       open: true,
