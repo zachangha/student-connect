@@ -23,6 +23,7 @@ app.use(bodyParser.json());
 app.use(morgan("dev"));
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const __filename = fileURLToPath(import.meta.url);
 
 const root = path.resolve(__dirname, "..", "build");
 app.use(express.static(root));
@@ -205,6 +206,23 @@ app.get("/api/course/get/:courseID", async (req, res) => {
 });
 
 /**
+ * Endpoint to get an array of announcements for a class.
+ */
+app.get("/api/course/announcement/:courseID", async (req, res) => {
+  const { courseID } = req.params;
+  try {
+    const course = await QAForms.find({
+      courseID: new ObjectId(courseID),
+      type: "announcement",
+    }).sort({ datePosted: -1 });
+    res.send(course);
+  } catch (error) {
+    console.error("Error: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+/**
  * Endpoint to create an announcment in the Q&A form.
  * Takes the courseID and the authorID, which is the teacher.
  */
@@ -232,6 +250,29 @@ app.post("/api/classes/announcement/create", async (req, res) => {
       message: "Failed to create announcement",
       error: error.message,
     });
+  }
+});
+
+app.post('/api/profile-picture', async (req, res) => {
+  try {
+    const { username, imageUrl } = req.body; 
+
+    // Validate data
+    if (!username || !imageUrl) {
+      return res.status(400).send('Username and image URL are required.');
+    }
+
+    // Update profile picture URL associated with the user in the database using the username
+    const updatedUser = await User.findOneAndUpdate({ username: username }, { profilePicture: imageUrl }, { new: true });
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'Profile picture updated successfully' });
+  } catch (err) {
+    console.error('Error updating profile picture:', err);
+    res.status(500).json({ message: 'Failed to update profile picture' });
   }
 });
 

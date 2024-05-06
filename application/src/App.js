@@ -17,6 +17,7 @@ import Footer from "./component/footer.js";
 import AddClasses from "./component/addClasses.js";
 import Course from "./component/course.js";
 import Announcement from "./component/announcement.js";
+import AnnouncementView from "./component/announcementview.js";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
 import Layout from "./component/layout.js";
@@ -39,6 +40,10 @@ function App() {
             <Route
               path={"course/:courseID/announcement"}
               element={<Announcement />}
+            />
+            <Route
+              path={"course/:courseID/view/:forumID"}
+              element={<AnnouncementView />}
             />
           </Route>
           <Route path="login" element={<Login />} />
