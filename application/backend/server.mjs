@@ -9,6 +9,7 @@ import axios from "axios";
 import { fileURLToPath } from "url";
 import { connectToDatabase, insertUsers } from "./database.mjs";
 import User from "./models/User.mjs";
+import ToDoList from "./models/ToDoList.mjs";
 import Class from "./models/Classes.mjs";
 import QAForms from "./models/QAForum.mjs";
 import { ObjectId } from "mongodb";
@@ -249,6 +250,73 @@ app.post("/api/classes/announcement/create", async (req, res) => {
       message: "Failed to create announcement",
       error: error.message,
     });
+  }
+});
+
+/**
+ *  Add new tasks to the database
+ */
+app.post("/api/tasks", async (req, res) => {
+  const { task, authorId } = req.body;
+  const newTask = new ToDoList({ authorId, task, completed: false });
+
+  try {
+    await newTask.save();
+    res.status(201).json({ message: "Task added successfully", newTask });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to add task", error: error.message });
+  }
+});
+
+/**
+ *  Get all the tasks for this user
+ */
+app.get("/api/tasks/:authorId", async (req, res) => {
+  try {
+    const tasks = await ToDoList.find({ authorId: req.params.authorId });
+    res.status(200).json(tasks);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve tasks", error: error.message });
+  }
+});
+
+/**
+ * Update a task's completion status
+ */
+app.put("/api/tasks/:taskId", async (req, res) => {
+  const { completed } = req.body;
+  try {
+    const updatedTask = await ToDoList.findByIdAndUpdate(
+      req.params.taskId,
+      { completed: completed },
+      { new: true }
+    );
+    if (!updatedTask) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+    res.status(200).json({ message: "Task updated successfully", updatedTask });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to update task", error: error.message });
+  }
+});
+
+/**
+ *  Delete tasks from the database
+ */
+app.delete("/api/tasks/:taskId", async (req, res) => {
+  try {
+    await ToDoList.findByIdAndDelete(req.params.taskId);
+    res.status(200).json({ message: "Task deleted successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to delete task", error: error.message });
   }
 });
 
