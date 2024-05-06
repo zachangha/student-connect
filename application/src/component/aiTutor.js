@@ -13,16 +13,10 @@ import "./styles/aiTutor.css";
 import rehypeKatex from "rehype-katex";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import "katex/dist/katex.min.css";
-import AlertComponent from "./alerts";
 
 function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
-  const [alert, setAlert] = useState({
-    open: false,
-    message: "",
-    severity: "",
-  });
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -42,19 +36,13 @@ function App() {
    */
   const handleSend = async () => {
     if (input.trim()) {
-      setAlert({ open: true, message: "I am thinking...", severity: "info" });
-
       try {
         const response = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ prompt: input }),
         });
-
         const data = await response.json();
-        // Close the thinking alert
-        setAlert({ open: false, message: "", severity: "" });
-
         if (response.ok) {
           setMessages(
             messages.concat(
@@ -65,15 +53,9 @@ function App() {
           setInput("");
         } else {
           console.error("Failed to send message:", data.message);
-          setAlert({
-            open: true,
-            message: "Failed to send message: " + data.message,
-            severity: "error",
-          });
         }
       } catch (error) {
         console.error("Failed to send message:", error);
-        setAlert({ open: true, message: "Network error", severity: "error" });
       }
     }
   };
@@ -145,12 +127,6 @@ function App() {
           <ArrowUpwardIcon />
         </Button>
       </div>
-      <AlertComponent
-        open={alert.open}
-        handleClose={() => setAlert({ ...alert, open: false })}
-        severity={alert.severity}
-        message={alert.message}
-      />
     </div>
   );
 }
