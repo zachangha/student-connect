@@ -16,6 +16,7 @@
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "docdash": "^2.0.2",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "katex": "^0.16.10",
@@ -37,7 +38,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start node": "nodemon ./backend/server.mjs",
-    "server": "node ./backend/server.mjs"
+    "server": "node ./backend/server.mjs",
+    "docs": "jsdoc -d docs --configure jsdocConf.json"
   },
   "eslintConfig": {
     "extends": [
@@ -62,6 +64,7 @@
     "@babel/preset-env": "^7.23.9",
     "husky": "^9.0.10",
     "lint-staged": "^15.2.2",
+    "docdash":"^2.0.0",
     "nodemon": "^3.1.0"
   },
   "lint-staged": {
