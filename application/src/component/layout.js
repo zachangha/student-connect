@@ -6,7 +6,7 @@ import Footer from "./footer";
 const Layout = () => {
   const location = useLocation();
   const hideNav = ["/login", "/", "/register", "/about"].includes(
-    location.pathname
+    location.pathname,
   );
 
   const hideFooter = ["/about"].includes(location.pathname);

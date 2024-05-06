@@ -9,7 +9,7 @@ function ProfilePage() {
   useEffect(() => {
     // Load profile picture URL for the logged-in user from localStorage
     const profileImageUrl = localStorage.getItem(
-      `profileImageUrl_${user.username}`
+      `profileImageUrl_${user.username}`,
     );
     setImageUrl(profileImageUrl || user.profilePicture || "");
     setSelectedImage(profileImageUrl || user.profilePicture || "");

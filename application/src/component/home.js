@@ -40,7 +40,7 @@ function App() {
           return { ...task, checked: !task.checked };
         }
         return task;
-      })
+      }),
     );
   };
 
