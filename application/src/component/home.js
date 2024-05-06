@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Container,
   TextField,
@@ -13,83 +13,50 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "./styles/homePage.css";
-import axios from "axios";
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const today = new Date();
+  const dateString = `${today.getDate()}/${
+    today.getMonth() + 1
+  }/${today.getFullYear()}`; // Format: DD/MM/YYYY
 
-  useEffect(() => {
-    if (user && user.id) {
-      // Ensure there's a user and user.id is not undefined
-      fetchTasks();
-    }
-  }, [user.id]); // Dependency array with user.id
-
-  // list users tasks that have already been saved in the DB
-  const fetchTasks = async () => {
-    if (user.id) {
-      const response = await axios.get(`/api/tasks/${user.id}`);
-      const formattedTasks = response.data.map((task) => ({
-        id: task._id,
-        text: task.task,
-        checked: task.completed,
-      }));
-      setTasks(formattedTasks);
-    }
-  };
-
-  // add tasks to the database
-  const handleAddTask = async () => {
+  // add tasks to list
+  const handleAddTask = () => {
     if (newTask.trim() !== "") {
-      const response = await axios.post("/api/tasks", {
-        task: newTask,
-        authorId: user.id,
-      });
-      const newTaskFromResponse = {
-        id: response.data.newTask._id,
-        text: response.data.newTask.task,
-        checked: response.data.newTask.completed,
-      };
-      setTasks([...tasks, newTaskFromResponse]);
+      setTasks([...tasks, { id: Date.now(), text: newTask, checked: false }]);
       setNewTask("");
     }
   };
 
   // checkmarks
-  const handleToggleCheck = async (id, checked) => {
-    const response = await axios.put(`/api/tasks/${id}`, {
-      completed: !checked,
-    });
-    if (response.status === 200) {
-      setTasks(
-        tasks.map((task) =>
-          task.id === id ? { ...task, checked: !task.checked } : task
-        )
-      );
-    }
+  const handleToggleCheck = (id) => {
+    setTasks(
+      tasks.map((task) => {
+        if (task.id === id) {
+          return { ...task, checked: !task.checked };
+        }
+        return task;
+      })
+    );
   };
 
-  // delete tasks from database
-  const handleDeleteTask = async (id) => {
-    await axios.delete(`/api/tasks/${id}`);
-    fetchTasks(); // Re-fetch tasks to update the list
+  // delete tasks from list
+  const handleDeleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  // return a todo list
   return (
     <div className="root">
       <Typography
         variant="h6"
-        style={{
-          marginBottom: "16px",
-          textAlign: "center",
-          style: "bold",
-          fontSize: "1.5rem",
-        }}
+        style={{ marginBottom: "16px", textAlign: "center" }}
       >
-        Welcome, {user.username || "User"}!
+        Welcome, {user.username || "User"}! User ID: {user.id || "N/A"}
       </Typography>
 
       <Container className="todoContainer">
@@ -116,7 +83,7 @@ function App() {
               key={task.id}
               dense
               button
-              onClick={() => handleToggleCheck(task.id, task.checked)}
+              onClick={() => handleToggleCheck(task.id)}
             >
               <Checkbox
                 edge="start"
@@ -124,10 +91,7 @@ function App() {
                 tabIndex={-1}
                 disableRipple
               />
-              <ListItemText
-                primary={task.text}
-                primaryTypographyProps={{ style: { fontSize: "1.5rem" } }} // Adjust font size as needed
-              />
+              <ListItemText primary={task.text} />
               <ListItemSecondaryAction>
                 <IconButton
                   edge="end"
