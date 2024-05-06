@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -18,56 +18,38 @@ import AddClasses from "./component/addClasses.js";
 import Course from "./component/course.js";
 import Announcement from "./component/announcement.js";
 import AnnouncementView from "./component/announcementview.js";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import Layout from "./component/layout.js";
 
-// Context for user authentication
-const AuthContext = createContext(null);
-
 function App() {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
-
-  // if users are not logged in they will not have access to all the routes and will be given a
-  // blank page
   return (
     <Router>
       <ThemeProvider theme={ourTheme}>
-        <AuthContext.Provider value={{ user, setUser }}>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Landing />} />
-              {user ? (
-                <>
-                  {/* Routes available only to authenticated users */}
-                  <Route path="home" element={<Home />} />
-                  <Route path="about" element={<About />} />
-                  <Route path="aiTutor" element={<AITutor />} />
-                  <Route path="profile" element={<Profile />} />
-                  <Route path="addClasses" element={<AddClasses />} />
-                  <Route path="classes" element={<Classes />} />
-                  <Route path="members/:memberName" element={<MemberPage />} />
-                  <Route path={"course/:courseID"} element={<Course />} />
-                  <Route
-                    path={"course/:courseID/announcement"}
-                    element={<Announcement />}
-                  />
-                  <Route
-                    path={"course/:courseID/view/:forumID"}
-                    element={<AnnouncementView />}
-                  />
-                </>
-              ) : (
-                <>
-                  {/* Publicly accessible routes */}
-                  <Route path="login" element={<Login />} />
-                  <Route path="register" element={<Register />} />
-                  <Route path="about" element={<About />} />
-                </>
-              )}
-            </Route>
-          </Routes>
-          <Footer />
-        </AuthContext.Provider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Landing />} />{" "}
+            <Route path="Home" element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="aiTutor" element={<AITutor />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="addClasses" element={<AddClasses />} />
+            <Route path="classes" element={<Classes />} />
+            <Route path="members/:memberName" element={<MemberPage />} />
+            <Route path={"course/:courseID"} element={<Course />} />
+            <Route
+              path={"course/:courseID/announcement"}
+              element={<Announcement />}
+            />
+            <Route
+              path={"course/:courseID/view/:forumID"}
+              element={<AnnouncementView />}
+            />
+          </Route>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+        </Routes>
+        <Footer />
       </ThemeProvider>
     </Router>
   );
@@ -97,6 +79,22 @@ const ourTheme = createTheme({
     },
     body1: {
       fontSize: "1rem",
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: "8px",
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#556cd6",
+        },
+      },
     },
   },
 });
