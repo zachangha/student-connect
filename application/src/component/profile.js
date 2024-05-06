@@ -1,72 +1,93 @@
-import React, { useState, useEffect } from 'react'; // Import useState and useEffect hooks
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
+import React, { useState, useEffect } from "react";
 import "./styles/profile.css";
 
+function ProfilePage() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
 
-function getRandomColor() {
- const letters = '0123456789ABCDEF';
- let color = '#';
- for (let i = 0; i < 6; i++) {
-   color += letters[Math.floor(Math.random() * 16)];
- }
- return color;
+  useEffect(() => {
+    // Load profile picture URL for the logged-in user from localStorage
+    const profileImageUrl = localStorage.getItem(
+      `profileImageUrl_${user.username}`
+    );
+    setImageUrl(profileImageUrl || user.profilePicture || "");
+    setSelectedImage(profileImageUrl || user.profilePicture || "");
+  }, [user.username]);
+
+  const handleImageUrlChange = (event) => {
+    setImageUrl(event.target.value);
+  };
+
+  const handleImageUrlSubmit = async () => {
+    try {
+      const response = await fetch("/api/profile-picture", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: user.username,
+          imageUrl: imageUrl,
+        }),
+      });
+      if (response.ok) {
+        setSelectedImage(imageUrl);
+
+        localStorage.setItem(`profileImageUrl_${user.username}`, imageUrl);
+      } else {
+        console.error("Failed to update profile picture:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error updating profile picture:", error);
+    }
+  };
+
+  return (
+    <div className="profile-page">
+      <h1>Profile</h1>
+
+      <div className="profile-container">
+        <div className="image-section">
+          {selectedImage && (
+            <img
+              src={selectedImage}
+              alt="Profile Picture"
+              style={{
+                objectFit: "cover",
+                width: "500px",
+                height: "500px",
+                borderRadius: "50%",
+              }}
+            />
+          )}
+          <input
+            type="text"
+            placeholder="Enter image URL"
+            value={imageUrl}
+            onChange={handleImageUrlChange}
+          />
+          <button onClick={handleImageUrlSubmit}>Update Profile Picture</button>
+          <h1>Role: {user.role}</h1>
+        </div>
+
+        <div className="user-info-container">
+          <div className="user-info-box">
+            <h1>Username: {user.username}</h1>
+          </div>
+          <div className="user-info-box">
+            <h1>Email: {user.email}</h1>
+          </div>
+          <div className="user-info-box">
+            <h1>Pronouns: {user.pronouns}</h1>
+          </div>
+          <div className="user-info-box">
+            <h1>Karma points: {user.karmaPoints}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-
-function stringAvatar(name) {
- return {
-   sx: {
-     bgcolor: getRandomColor(),
-     width: '30vw',
-     height: '30vw',
-     position: 'fixed',
-     transform: 'translate(50%, 30%)', // Center the avatar
-     right: '0)', // Position at right with offset
-     bottom: '0)', // Position at bottom with offset
-   },
-   children: name.charAt(0).toUpperCase(), // Get first letter and uppercase
- };
-}
-
-
-
-
-function BackgroundLetterAvatars({ userResponse }) {
- const [userName, setUserName] = useState(''); // State for user name
-
-
- useEffect(() => {
-   if (userResponse) {
-     const firstLetter = userResponse.firstName ? userResponse.firstName.charAt(0).toUpperCase() : '';
-     setUserName(firstLetter);
-   }
- }, [userResponse]); // Update state when userResponse changes
- const user = JSON.parse(localStorage.getItem("user"));
- return (
-  
-   <Stack>
-     <Avatar {...stringAvatar(userName)} />
-     <div className="userprof">
-     <h1>Username: {user.username}</h1>
-     </div>
-     <div className="userprof1">
-     <h1>Email: {user.email}</h1>
-     </div>
-     <div className="userprof1">
-     <h1>Pronouns:  {user.pronouns}</h1>
-     </div>
-     <div className="userprof1">
-     <h1>Role: {user.role}</h1>
-     </div>
-     <div className="userprof1">
-     <h1>Classes:</h1>
-     </div>
-   </Stack>
- 
- );
-}
-
-
-
-export default BackgroundLetterAvatars;
+export default ProfilePage;
