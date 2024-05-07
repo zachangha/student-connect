@@ -101,8 +101,8 @@ const ourTheme = createTheme({
 
 function MemberPage() {
   const { memberName } = useParams();
-  const MemberComponent = React.lazy(
-    () => import(`./component/members/${memberName}`),
+  const MemberComponent = React.lazy(() =>
+    import(`./component/members/${memberName}`)
   );
 
   return (
