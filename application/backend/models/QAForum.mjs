@@ -1,15 +1,24 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const qaForumSchema = new mongoose.Schema({
-  authorID: Number,
-  courseID: Number,
+  authorID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  courseID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Course",
+    required: true,
+  },
   datePosted: Date,
   forumID: String,
-  message: String,
-  questionID: String,
-  type: String,
+  title: String,
+  message: { type: String, required: true },
+  questionID: Number,
+  type: { type: String, required: true },
 });
 
-const QAForum = mongoose.model('QAForum', qaForumSchema);
+const QAForum = mongoose.model("QAForum", qaForumSchema);
 
 export default QAForum;

@@ -11,8 +11,22 @@ const Courses = () => {
   const navigate = useNavigate();
 
   const currentUrl = window.location.href;
-  const parts = currentUrl.split("/");
-  const courseID = parts[parts.length - 1];
+  const courseID = currentUrl.match(/\/course\/([^\/]+)\//)[1];
+  const objectID = currentUrl.match(/\/([^\/]+)$/)[1];
+
+  const targetAnnouncement = announcements.find((obj) => obj._id === objectID);
+
+  // FOR LATER PLEASE DONT DELETE
+  //   const formatDate = async () => {
+  //     console.log(targetAnnouncement.datePosted);
+  //     const month = targetAnnouncement.datePosted.toLocaleString("default", {
+  //       month: "long",
+  //     });
+  //     const day = targetAnnouncement.datePosted.getUTCDate();
+  //     const year = targetAnnouncement.datePosted.getUTCFullYear();
+  //     const formattedDate = `${month} ${day}, ${year}`;
+  //     console.log(formattedDate);
+  //   };
 
   /**
    * Redirect to the create announcement page
@@ -57,7 +71,6 @@ const Courses = () => {
       });
       if (response.ok) {
         const retrivedAnnouncements = await response.json();
-        console.log(retrivedAnnouncements);
         setAnnouncement(retrivedAnnouncements);
       } else {
         const result = await response.json();
@@ -118,7 +131,15 @@ const Courses = () => {
         <div className="postingInfo">
           <br></br>
           <br></br>
-          post information here
+          {targetAnnouncement ? (
+            <div>
+              <h1>{targetAnnouncement.title}</h1>
+              <p>{targetAnnouncement.message}</p>
+              <p>{}</p>
+            </div>
+          ) : (
+            <p>Object not found.</p>
+          )}
         </div>
       </body>
     );
@@ -176,7 +197,15 @@ const Courses = () => {
         <div className="postingInfo">
           <br></br>
           <br></br>
-          post information
+          {targetAnnouncement ? (
+            <div>
+              <h1>{targetAnnouncement.title}</h1>
+              <p>{targetAnnouncement.message}</p>
+              <p>{}</p>
+            </div>
+          ) : (
+            <p>Object not found.</p>
+          )}
         </div>
       </body>
     );
