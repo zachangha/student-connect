@@ -221,6 +221,20 @@ app.get("/api/course/announcement/:courseID", async (req, res) => {
   }
 });
 
+app.get("/api/course/question/:courseID", async (req, res) => {
+  const { courseID } = req.params;
+  try {
+    const course = await QAForms.find({
+      courseID: new ObjectId(courseID),
+      type: "question",
+    }).sort({ datePosted: -1 });
+    res.send(course);
+  } catch (error) {
+    console.error("Error: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 /**
  * Endpoint to create an announcment in the Q&A form.
  * Takes the courseID and the authorID, which is the teacher.
@@ -251,6 +265,39 @@ app.post("/api/classes/announcement/create", async (req, res) => {
     });
   }
 });
+
+
+/**
+ * Endpoint to create an Question in the Q&A form.
+ * Takes the courseID and the authorID, which is the teacher.
+ */
+app.post("/api/classes/Question/create", async (req, res) => {
+  const { authorID, courseID, datePosted, title, message, questionID, type } =
+    req.body;
+  try {
+    const newQuestion = new QAForms({
+      authorID,
+      courseID,
+      datePosted,
+      title,
+      message,
+      questionID,
+      type,
+    });
+    await newQuestion.save();
+    res.status(201).json({
+      message: "Quesion created successfully",
+      classID: newQuestion.courseID,
+    });
+  } catch (error) {
+    console.error("Error when creating question:", error);
+    res.status(error.name === "ValidationError" ? 400 : 500).json({
+      message: "Failed to create question",
+      error: error.message,
+    });
+  }
+});
+
 
 // catch all
 app.use("/*", (req, res) => {

@@ -7,6 +7,7 @@ const Courses = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [course, setCourse] = useState([]);
   const [announcements, setAnnouncement] = useState([]);
+  const [questions, setQuestion] = useState([]);
 
   const navigate = useNavigate();
 
@@ -19,6 +20,10 @@ const Courses = () => {
    */
   const redirectToAddAnnouncement = () => {
     navigate(`/course/${courseID}/announcement`);
+  };
+
+  const redirectToAddQuestion = () => {
+    navigate(`/course/${courseID}/QA`);
   };
 
   /**
@@ -68,12 +73,34 @@ const Courses = () => {
     }
   };
 
+  const getQuestions = async () => {
+    try {
+      const response = await fetch(`/api/course/question/${courseID}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const retrivedQuestions = await response.json();
+        console.log(retrivedQuestions);
+        setQuestion(retrivedQuestions);
+      } else {
+        const result = await response.json();
+        throw new Error(result.message || "Could not load course");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   //MODIFY THIS!! should allow user to post QA
-  const postQA = () => {};
+  // not declared const postQA = () => {};
 
   useEffect(() => {
     getCourse();
     getAnnouncements();
+    getQuestions();
   }, []);
 
   //student view of the class, cannot post announcements
@@ -106,13 +133,22 @@ const Courses = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={postQA}
+              onClick={redirectToAddQuestion}
               className="postButton"
             >
               +
             </Button>
           </h2>
           <div className="border">put Q&A here</div>
+          <div className="border">
+            {questions.slice(0, 5).map((question) => (
+              <li>
+                <a href={`/course/${courseID}/view/${question._id}`}>
+                  {question.title}
+                </a>
+              </li>
+            ))}
+          </div>
         </div>
 
         <div className="postingInfo">
@@ -164,13 +200,22 @@ const Courses = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={postQA}
+              onClick={redirectToAddQuestion}
               className="postButton"
             >
               +
             </Button>
           </h2>
           <div className="border">put Q&A here</div>
+          <div className="border">
+            {questions.slice(0, 5).map((question) => (
+              <li>
+                <a href={`/course/${courseID}/view/${question._id}`}>
+                  {question.title}
+                </a>
+              </li>
+            ))}
+          </div>
         </div>
 
         <div className="postingInfo">

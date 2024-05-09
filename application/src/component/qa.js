@@ -1,153 +1,102 @@
 import React, { useState } from "react";
-import {
-  Container,
-  TextField,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  Button,
-  IconButton,
-  Typography,
-} from "@mui/material";
-import "./styles/homePage.css";
-import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Container, TextField, Button } from "@mui/material";
+import "./styles/classes.css";
 
 
 function App() {
-  // seting the constants
-    const [questions, setQuestions] = useState([]);
-    const [newQuestions, setNewQuestions] = useState("");
+ const user = JSON.parse(localStorage.getItem("user"));
+ const navigate = useNavigate();
 
-    const [title, setTitle] = useState([]);
-    const [newTitle, setNewTitle] = useState("");
 
-    const [Reply, setReply] = useState([]);
-    const [newReply, setNewReply] = useState("");
-  
-    const user = JSON.parse(localStorage.getItem("user", "userID", "karmaPoints") || "{}");
+ const currentUrl = window.location.href;
+ const courseID = currentUrl.match(/\/course\/([^\/]+)\//)[1];
 
-    // // username, number of karma points
-    <Typography variant="h6" style={{ marginBottom: "16px", textAlign: "center" }} >
-     Ask a Question, {user.username || "User"}! User ID: {user.id || "N/A"}! Karma: {user.karmaPoints || "N/A"}
-    </Typography>
 
-    // adds questions. 
-    //  later on user could select classes that user is in from drop down
-      
-      const handleAddQuestions = () => {
-        if (newQuestions.trim() !== "" && newTitle.trim() !== "") {
-          setQuestions([...questions, { id: Date.now(), text: newQuestions, checked: false }]);
-          setNewQuestions("");
-          setTitle([...title, { id: Date.now(), text: newTitle, checked: false }]);
-          setNewTitle("");
-        }
-      };
+ const [formData, setFormData] = useState({
+   title: "",
+   question: "",
+ });
 
-      const handleAddReply = () => {
-        if (newReply.trim() !== "" ) {
-          setReply([...Reply, { id: Date.now(), text: newReply, checked: false }]);
-          setNewReply("");
-        }
-      };
-      
-      
-      // delete questions
-      const handleDeleteQuestions = (id) => {
-        setQuestions(questions.filter((question) => question.id !== id));
-      };
 
-      const handleDeleteReply = (id) => {
-        setReply(Reply.filter((replys) => replys.id !== id));
-      };
+ const handleFormChange = (event) => {
+   const { name, value } = event.target;
+   setFormData({ ...formData, [name]: value });
+ };
 
-      // user can input tilte and question, post the question in a list, and reply.
-  return (
-    <><div className="bigBox">
-      <h1> Questions & Answers Page </h1>
-    </div>
-      <Container className="qaContainer">
-              <TextField
-                  variant="outlined"
-                  label="Add Title"
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  fullWidth
-                  margin="normal" />
 
-                  <TextField
-                  variant="outlined"
-                  label="Add New Questions"
-                  value={newQuestions}
-                  onChange={(e) => setNewQuestions(e.target.value)}
-                  fullWidth
-                  margin="normal" />
+ /**
+  * Submit the data for the Question if the fields are not left blank
+  */
+ const handleSubmit = async (event) => {
+   if (formData.title.trim() !== "" && formData.question.trim() !== "") {
+     event.preventDefault();
+     try {
+       const response = await axios.post("/api/classes/Question/create", {
+         authorID: user.id,
+         courseID: courseID,
+         datePosted: new Date(),
+         title: formData.title,
+         message: formData.question,
+         questionID: null,
+         type: "question",
+       });
+       console.log("Question Created.", response.data);
+       alert("Successfully posted the Question");
+       navigate(`/course/${courseID}`);
+     } catch (error) {
+       alert(error.message);
+     }
+   } else {
+     event.preventDefault();
+     alert("Please enter a title and question.");
+   }
+ };
 
-              <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleAddQuestions}
-                  disabled={!newQuestions.trim()}
-                  fullWidth
-              >
-                  Add Questions
-              </Button>
 
-              <List>
-          {questions.map((question) => (
-            <ListItem
-              key={question.id}
-              dense
-            >
-              <ListItemText primary={question.text} />
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => handleDeleteQuestions(question.id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
-        </List>
-
-            <><TextField
-            variant="outlined"
-            label="Add Reply"
-            value={newReply}
-            onChange={(e) => setNewReply(e.target.value)}
-            fullWidth
-            margin="normal" /><Button
-              variant="contained"
-              color="primary"
-              onClick={handleAddReply}
-              disabled={!newReply.trim()}
-              fullWidth
-            >
-              Add Reply
-            </Button><List>
-              {Reply.map((replys) => (
-                <ListItem
-                  key={replys.id}
-                  dense
-                >
-                  <ListItemText primary={replys.text} />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => handleDeleteReply(replys.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-            </List></>
-    </Container></>
-  );
+ return (
+   <Container component="main" maxWidth="xs" className="container">
+     <h1>Create Question</h1>
+     <form onSubmit={handleSubmit} noValidate>
+       <TextField
+         variant="outlined"
+         margin="normal"
+         required
+         fullWidth
+         id="title"
+         label="Title"
+         name="title"
+         autoComplete="title"
+         autoFocus
+         value={formData.title}
+         onChange={handleFormChange}
+       />
+       <TextField
+         variant="outlined"
+         margin="normal"
+         required
+         fullWidth
+         id="question"
+         label="question"
+         name="question"
+         autoComplete="question"
+         value={formData.question}
+         onChange={handleFormChange}
+       />
+       <Button
+         type="submit"
+         fullWidth
+         variant="contained"
+         color="primary"
+         className="submit-button"
+       >
+         Create Question
+       </Button>
+     </form>
+   </Container>
+ );
 }
+
 
 export default App;

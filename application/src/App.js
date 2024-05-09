@@ -44,6 +44,10 @@ function App() {
               element={<Announcement />}
             />
             <Route
+              path={"course/:courseID/QA"}
+              element={<Questions />}
+            />
+            <Route
               path={"course/:courseID/view/:forumID"}
               element={<AnnouncementView />}
             />

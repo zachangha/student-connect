@@ -7,6 +7,7 @@ const Courses = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [course, setCourse] = useState([]);
   const [announcements, setAnnouncement] = useState([]);
+  const [questions, setQuestion] = useState([]);
 
   const navigate = useNavigate();
 
@@ -15,6 +16,7 @@ const Courses = () => {
   const objectID = currentUrl.match(/\/([^\/]+)$/)[1];
 
   const targetAnnouncement = announcements.find((obj) => obj._id === objectID);
+  const targetQuestion = questions.find((obj) => obj._id === objectID);
 
   // FOR LATER PLEASE DONT DELETE
   //   const formatDate = async () => {
@@ -33,6 +35,9 @@ const Courses = () => {
    */
   const redirectToAddAnnouncement = () => {
     navigate(`/course/${courseID}/announcement`);
+  };
+  const redirectToAddQuestion = () => {
+    navigate(`/course/${courseID}/QA`);
   };
 
   /**
@@ -81,13 +86,39 @@ const Courses = () => {
     }
   };
 
+  const getQuestions = async () => {
+    try {
+      const response = await fetch(`/api/course/question/${courseID}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const retrivedQuestions = await response.json();
+        setQuestion(retrivedQuestions);
+      } else {
+        const result = await response.json();
+        throw new Error(result.message || "Could not load course");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   //MODIFY THIS!! should allow user to post QA
-  const postQA = () => {};
+  
 
   useEffect(() => {
     getCourse();
     getAnnouncements();
   }, []);
+
+  useEffect(() => {
+    getCourse();
+    getQuestions();
+  }, []);
+
 
   //student view of the class, cannot post announcements
   if (user.role === "student") {
@@ -119,13 +150,21 @@ const Courses = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={postQA}
+              onClick={redirectToAddQuestion}
               className="postButton"
             >
               +
             </Button>
           </h2>
-          <div className="border">put Q&A here</div>
+          <div className="border">
+          {questions.slice(0, 5).map((question) => (
+              <li>
+                <a href={`/course/${courseID}/view/${question._id}`}>
+                  {question.title}
+                </a>
+              </li>
+            ))}
+          </div>
         </div>
 
         <div className="postingInfo">
@@ -135,11 +174,23 @@ const Courses = () => {
             <div>
               <h1>{targetAnnouncement.title}</h1>
               <p>{targetAnnouncement.message}</p>
+              
               <p>{}</p>
             </div>
           ) : (
             <p>Object not found.</p>
           )}
+          {targetQuestion ? (
+            <div>
+              <h1>{targetQuestion.title}</h1>
+              <p>{targetQuestion.message}</p>
+              
+              <p>{}</p>
+            </div>
+          ) : (
+            <p>Object not found.</p>
+          )}
+
         </div>
       </body>
     );
@@ -185,7 +236,7 @@ const Courses = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={postQA}
+              onClick={redirectToAddQuestion}
               className="postButton"
             >
               +
@@ -201,6 +252,16 @@ const Courses = () => {
             <div>
               <h1>{targetAnnouncement.title}</h1>
               <p>{targetAnnouncement.message}</p>
+              <p>{}</p>
+            </div>
+          ) : (
+            <p>Object not found.</p>
+          )}
+          {targetQuestion ? (
+            <div>
+              <h1>{targetQuestion.title}</h1>
+              <p>{targetQuestion.message}</p>
+              
               <p>{}</p>
             </div>
           ) : (
