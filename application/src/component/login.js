@@ -41,7 +41,10 @@ function LoginPage() {
           const userData = JSON.stringify(data.user);
           localStorage.setItem("user", userData);
         }
-        setTimeout(() => navigate("/home"), 600);
+        setTimeout(() => {
+          navigate("/home"); // Navigate to home
+          window.location.reload(); // Refresh the page
+        }, 600);
       } else {
         console.error("Login failed:", data.message);
         console.error("Login failed:");

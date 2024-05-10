@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import axios from "axios";
 import { fileURLToPath } from "url";
 import { connectToDatabase, insertUsers } from "./database.mjs";
+import ToDoList from "./models/ToDoList.mjs";
 import User from "./models/User.mjs";
 import Class from "./models/Classes.mjs";
 import QAForms from "./models/QAForum.mjs";
