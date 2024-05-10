@@ -243,6 +243,15 @@ const Courses = () => {
             </Button>
           </h2>
           <div className="border">put Q&A here</div>
+          <div className="border">
+            {questions.slice(0, 5).map((question) => (
+              <li>
+                <a href={`/course/${courseID}/view/${question._id}`}>
+                  {question.title}
+                </a>
+              </li>
+            ))}
+          </div>
         </div>
 
         <div className="postingInfo">
