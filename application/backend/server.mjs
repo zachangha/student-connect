@@ -298,6 +298,99 @@ app.post("/api/classes/Question/create", async (req, res) => {
   }
 });
 
+app.post("/api/profile-picture", async (req, res) => {
+  try {
+    const { username, imageUrl } = req.body;
+
+    // Validate data
+    if (!username || !imageUrl) {
+      return res.status(400).send("Username and image URL are required.");
+    }
+
+    // Update profile picture URL associated with the user in the database using the username
+    const updatedUser = await User.findOneAndUpdate(
+      { username: username },
+      { profilePicture: imageUrl },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "Profile picture updated successfully" });
+  } catch (err) {
+    console.error("Error updating profile picture:", err);
+    res.status(500).json({ message: "Failed to update profile picture" });
+  }
+});
+
+/**
+ *  Add new tasks to the database
+ */
+app.post("/api/tasks", async (req, res) => {
+  const { task, authorId } = req.body;
+  const newTask = new ToDoList({ authorId, task, completed: false });
+
+  try {
+    await newTask.save();
+    res.status(201).json({ message: "Task added successfully", newTask });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to add task", error: error.message });
+  }
+});
+
+/**
+ *  Get all the tasks for this user
+ */
+app.get("/api/tasks/:authorId", async (req, res) => {
+  try {
+    const tasks = await ToDoList.find({ authorId: req.params.authorId });
+    res.status(200).json(tasks);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve tasks", error: error.message });
+  }
+});
+
+/**
+ * Update a task's completion status
+ */
+app.put("/api/tasks/:taskId", async (req, res) => {
+  const { completed } = req.body;
+  try {
+    const updatedTask = await ToDoList.findByIdAndUpdate(
+      req.params.taskId,
+      { completed: completed },
+      { new: true }
+    );
+    if (!updatedTask) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+    res.status(200).json({ message: "Task updated successfully", updatedTask });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to update task", error: error.message });
+  }
+});
+
+/**
+ *  Delete tasks from the database
+ */
+app.delete("/api/tasks/:taskId", async (req, res) => {
+  try {
+    await ToDoList.findByIdAndDelete(req.params.taskId);
+    res.status(200).json({ message: "Task deleted successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to delete task", error: error.message });
+  }
+});
 
 // catch all
 app.use("/*", (req, res) => {
