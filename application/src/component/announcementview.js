@@ -8,15 +8,18 @@ const Courses = () => {
   const [course, setCourse] = useState([]);
   const [announcements, setAnnouncement] = useState([]);
   const [questions, setQuestion] = useState([]);
+  const [replys, setReply] = useState([]);
 
   const navigate = useNavigate();
 
   const currentUrl = window.location.href;
   const courseID = currentUrl.match(/\/course\/([^\/]+)\//)[1];
   const objectID = currentUrl.match(/\/([^\/]+)$/)[1];
+  // const questionID = currentUrl.match(/\/([^\/]+)$/)[1];
 
   const targetAnnouncement = announcements.find((obj) => obj._id === objectID);
   const targetQuestion = questions.find((obj) => obj._id === objectID);
+  const targetReply = replys.find((obj) => obj._id === objectID);
 
   // FOR LATER PLEASE DONT DELETE
   //   const formatDate = async () => {
@@ -38,6 +41,9 @@ const Courses = () => {
   };
   const redirectToAddQuestion = () => {
     navigate(`/course/${courseID}/QA`);
+  };
+  const redirectToAddReply = () => {
+    navigate(`/course/${courseID}/reply/${objectID}`);
   };
 
   /**
@@ -106,6 +112,26 @@ const Courses = () => {
     }
   };
 
+  const getReplys = async () => {
+    try {
+      const response = await fetch(`/api/course/Reply/${objectID}`, { //`/api/course/question/reply/${objectID}`
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const retrivedReplys = await response.json();
+        setReply(retrivedReplys);
+      } else {
+        const result = await response.json();
+        throw new Error(result.message || "Could not load course");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   //MODIFY THIS!! should allow user to post QA
   
 
@@ -117,6 +143,11 @@ const Courses = () => {
   useEffect(() => {
     getCourse();
     getQuestions();
+  }, []);
+
+  useEffect(() => {
+    getCourse();
+    getReplys();
   }, []);
 
 
@@ -165,6 +196,18 @@ const Courses = () => {
               </li>
             ))}
           </div>
+
+          <h2 className="border">
+            Reply To Question
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={redirectToAddReply}
+              className="postButton"
+            >
+              +
+            </Button>
+          </h2>
         </div>
 
         <div className="postingInfo">
@@ -191,7 +234,41 @@ const Courses = () => {
             <p>Object not found.</p>
           )}
 
-        </div>
+          
+
+
+          {targetReply ? (
+            <div>
+              <h1>{targetReply.title}</h1>
+              <p>{targetReply.message}</p>
+              
+              <p>{}</p>
+            </div>
+          ) : (
+            <p>Object not found.</p>
+          )}
+
+          <br></br>
+          <br></br>
+          <h2 className="border">
+            Reply
+            
+          </h2>
+          <div className="border">put Reply here</div>
+          <div className="border">
+            {replys.slice(0, 5).map((reply) => (
+              <li>
+                <a href={`/course/${courseID}/view/${reply._id}`}>
+                  {reply.title}
+                </a>
+              </li>
+            ))}
+            
+          </div>
+          
+
+        
+          </div>
       </body>
     );
   }
@@ -251,7 +328,22 @@ const Courses = () => {
                 </a>
               </li>
             ))}
+
+          
           </div>
+
+          <h2 className="border">
+            Reply To Question
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={redirectToAddReply}
+              className="postButton"
+            >
+              +
+            </Button>
+          </h2>
+          
         </div>
 
         <div className="postingInfo">
@@ -270,13 +362,47 @@ const Courses = () => {
             <div>
               <h1>{targetQuestion.title}</h1>
               <p>{targetQuestion.message}</p>
-              
               <p>{}</p>
             </div>
           ) : (
             <p>Object not found.</p>
           )}
+
+
+
+           {targetReply ? (
+            <div>
+              <h1>{targetReply.title}</h1>
+              <p>{targetReply.message}</p>
+              <p>{}</p>
+            </div>
+          ) : (
+            <p>Object not found.</p>
+          )}
+
+          <br></br>
+          <br></br>
+          <h2 className="border">
+            Reply
+            
+          </h2>
+          <div className="border">put Reply here</div>
+          <div className="border">
+            {replys.slice(0, 5).map((reply) => (
+              <li>
+                <a href={`/course/${courseID}/view/${reply._id}`}>
+                  {reply.title}
+                </a>
+              </li>
+            ))}
+            
+          </div>
+          
+
         </div>
+
+        
+
       </body>
     );
 

@@ -25,6 +25,26 @@ app.use(morgan("dev"));
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
+// const currentUrl = window.location.href;
+// const courseID = currentUrl.match(/\/course\/([^\/]+)\//)[1];
+// const objectID = currentUrl.match(/\/([^\/]+)$/)[1];
+
+/*
+// Ensure code runs after the DOM is fully loaded
+window.addEventListener('DOMContentLoaded', (event) => {
+  // Access window.location.href safely
+  const currentUrl = window.location.href;
+  console.log(currentUrl);
+});
+
+if (typeof window !== 'undefined') {
+  // Code that accesses window can safely run here
+  const currentUrl = window.location.href;
+  console.log(currentUrl);
+}
+*/
+
+
 const root = path.resolve(__dirname, "..", "build");
 app.use(express.static(root));
 
@@ -236,6 +256,39 @@ app.get("/api/course/question/:courseID", async (req, res) => {
   }
 });
 
+app.get("/api/course/Reply/:courseID", async (req, res) => {
+  const { courseID } = req.params;
+  try {
+    const course = await QAForms.find({
+      courseID: new ObjectId(courseID),
+      type: "reply",
+    }).sort({ datePosted: -1 });
+    res.send(course);
+  } catch (error) {
+    console.error("Error: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+
+
+app.get("/api/course/Reply/:objectID", async (req, res) => {
+  const { objectID } = req.params;
+  console.log("objectID:", objectID);
+  console.log("Course:", course);
+  try {
+    const course = await QAForms.find({
+      courseID: new ObjectId(objectID),
+      type: "reply",
+    }).sort({ datePosted: -1 });
+    res.send(course);
+  } catch (error) {
+    console.error("Error: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 /**
  * Endpoint to create an announcment in the Q&A form.
  * Takes the courseID and the authorID, which is the teacher.
@@ -294,6 +347,34 @@ app.post("/api/classes/Question/create", async (req, res) => {
     console.error("Error when creating question:", error);
     res.status(error.name === "ValidationError" ? 400 : 500).json({
       message: "Failed to create question",
+      error: error.message,
+    });
+  }
+});
+
+app.post("/api/classes/Reply/create", async (req, res) => {
+  const { authorID, courseID, datePosted, title, message, questionID, type } =
+    req.body;
+  try {
+    const newReply = new QAForms({
+      authorID,
+      courseID,
+      datePosted,
+      title,
+      message,
+      questionID,
+      type,
+    });
+    console.log(newReply);
+    await newReply.save();
+    res.status(201).json({
+      message: "Reply created successfully",
+      classID: newReply.courseID,
+    });
+  } catch (error) {
+    console.error("Error when creating Reply:", error);
+    res.status(error.name === "ValidationError" ? 400 : 500).json({
+      message: "Failed to create Reply",
       error: error.message,
     });
   }

@@ -12,12 +12,13 @@ function App() {
 
  const currentUrl = window.location.href;
  const courseID = currentUrl.match(/\/course\/([^\/]+)\//)[1];
- const questionID = currentUrl.match(/\/([^\/]+)$/)[1];
+ const objectID = currentUrl.match(/\/([^\/]+)$/)[1];
+ // const questionID = currentUrl.match(/\/([^\/]+)$/)[1];
 
 
  const [formData, setFormData] = useState({
    title: "",
-   question: "",
+   reply: "",
  });
 
 
@@ -25,64 +26,64 @@ function App() {
    const { name, value } = event.target;
    setFormData({ ...formData, [name]: value });
  };
-
+console.log(objectID);
 
  /**
-  * Submit the data for the Question if the fields are not left blank
+  * Submit the data for the reply if the fields are not left blank
   */
  const handleSubmit = async (event) => {
-   if (formData.title.trim() !== "" && formData.question.trim() !== "") {
+   if (formData.reply.trim() !== "") {
      event.preventDefault();
      try {
-       const response = await axios.post("/api/classes/Question/create", {
+       const response = await axios.post("/api/classes/Reply/create", {
          authorID: user.id,
          courseID: courseID,
          datePosted: new Date(),
          title: formData.title,
-         message: formData.question,
-         questionID: null,
-         type: "question",
+         message: formData.reply,
+         questionID: objectID,
+         type: "reply",
        });
-       console.log("Question Created.", response.data);
-       alert("Successfully posted the Question");
-       navigate(`/course/${courseID}`);
+       console.log("Reply Created.", response.data);
+       alert("Successfully posted the Reply");
+       navigate(`/course/${courseID}`);  // /reply/${objectID}
      } catch (error) {
        alert(error.message);
      }
    } else {
      event.preventDefault();
-     alert("Please enter a title and question.");
+     alert("Please enter a reply.");
    }
  };
 
 
  return (
    <Container component="main" maxWidth="xs" className="container">
-     <h1>Create Question</h1>
+     <h1>Create Reply</h1>
      <form onSubmit={handleSubmit} noValidate>
+     <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="title"
+          label="Title"
+          name="title"
+          autoComplete="title"
+          autoFocus
+          value={formData.title}
+          onChange={handleFormChange}
+        />
        <TextField
          variant="outlined"
          margin="normal"
          required
          fullWidth
-         id="title"
-         label="Title"
-         name="title"
-         autoComplete="title"
-         autoFocus
-         value={formData.title}
-         onChange={handleFormChange}
-       />
-       <TextField
-         variant="outlined"
-         margin="normal"
-         required
-         fullWidth
-         id="question"
-         label="question"
-         name="question"
-         autoComplete="question"
-         value={formData.question}
+         id="reply"
+         label="reply"
+         name="reply"
+         autoComplete="reply"
+         value={formData.reply}
          onChange={handleFormChange}
        />
        <Button
@@ -92,7 +93,7 @@ function App() {
          color="primary"
          className="submit-button"
        >
-         Create Question
+         Create Reply
        </Button>
      </form>
    </Container>

@@ -8,12 +8,15 @@ const Courses = () => {
   const [course, setCourse] = useState([]);
   const [announcements, setAnnouncement] = useState([]);
   const [questions, setQuestion] = useState([]);
+//  const [replys, setReply] = useState([]);
 
   const navigate = useNavigate();
 
   const currentUrl = window.location.href;
   const parts = currentUrl.split("/");
   const courseID = parts[parts.length - 1];
+  const objectID = currentUrl.match(/\/([^\/]+)$/)[1];
+  // const questionID = parts[parts.length - 1]
 
   /**
    * Redirect to the create announcement page
@@ -25,6 +28,11 @@ const Courses = () => {
   const redirectToAddQuestion = () => {
     navigate(`/course/${courseID}/QA`);
   };
+
+//  const redirectToAddReply = () => {
+//    navigate(`/course/${courseID}/reply`);
+//  };
+  // /${questionID}
 
   /**
    * use course.id to get a courses's information to display and post information for the user.
@@ -94,6 +102,8 @@ const Courses = () => {
     }
   };
 
+  
+
   //MODIFY THIS!! should allow user to post QA
   // not declared const postQA = () => {};
 
@@ -101,6 +111,7 @@ const Courses = () => {
     getCourse();
     getAnnouncements();
     getQuestions();
+    // getReplys(); no replys here
   }, []);
 
   //student view of the class, cannot post announcements
@@ -149,6 +160,8 @@ const Courses = () => {
               </li>
             ))}
           </div>
+
+          
         </div>
 
         <div className="postingInfo">
@@ -216,6 +229,8 @@ const Courses = () => {
               </li>
             ))}
           </div>
+
+         
         </div>
 
         <div className="postingInfo">

@@ -15,6 +15,7 @@ import Profile from "./component/profile.js";
 import Classes from "./component/classes.js";
 import Footer from "./component/footer.js";
 import Questions from "./component/QA.js";
+import Reply from "./component/reply.js";
 import AddClasses from "./component/addClasses.js";
 import Course from "./component/course.js";
 import Announcement from "./component/announcement.js";
@@ -37,6 +38,7 @@ function App() {
             <Route path="addClasses" element={<AddClasses />} />
             <Route path="classes" element={<Classes />} />
             <Route path="QA" element={<Questions />} />
+            <Route path="reply" element={<Reply />} />
             <Route path="members/:memberName" element={<MemberPage />} />
             <Route path={"course/:courseID"} element={<Course />} />
             <Route
@@ -47,6 +49,10 @@ function App() {
               path={"course/:courseID/QA"}
               element={<Questions />}
             />
+            <Route
+              path={"course/:courseID/reply/:forumID"}
+              element={<Reply />}
+            /> 
             <Route
               path={"course/:courseID/view/:forumID"}
               element={<AnnouncementView />}

@@ -12,10 +12,15 @@ const qaForumSchema = new mongoose.Schema({
     required: true,
   },
   datePosted: Date,
-  forumID: String,
+  forumID: Number,
+  
   title: String,
   message: { type: String, required: true },
-  questionID: Number,
+  questionID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "QAForum",
+    required: false,
+  },
   type: { type: String, required: true },
 });
 
