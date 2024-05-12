@@ -14,12 +14,13 @@ import AITutor from "./component/aiTutor.js";
 import Profile from "./component/profile.js";
 import Classes from "./component/classes.js";
 import Footer from "./component/footer.js";
-import Questions from "./component/QA.js";
+import Questions from "./component/qa.js";
 import Reply from "./component/reply.js";
 import AddClasses from "./component/addClasses.js";
 import Course from "./component/course.js";
 import Announcement from "./component/announcement.js";
 import AnnouncementView from "./component/announcementview.js";
+import QAView from "./component/qaview.js";
 import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
 import Layout from "./component/layout.js";
@@ -45,17 +46,18 @@ function App() {
               path={"course/:courseID/announcement"}
               element={<Announcement />}
             />
-            <Route
-              path={"course/:courseID/QA"}
-              element={<Questions />}
-            />
+            <Route path={"course/:courseID/QA"} element={<Questions />} />
             <Route
               path={"course/:courseID/reply/:forumID"}
               element={<Reply />}
-            /> 
+            />
             <Route
               path={"course/:courseID/view/:forumID"}
               element={<AnnouncementView />}
+            />
+            <Route
+              path={"course/:courseID/viewQuestion/:forumID"}
+              element={<QAView />}
             />
           </Route>
           <Route path="login" element={<Login />} />
@@ -113,8 +115,8 @@ const ourTheme = createTheme({
 
 function MemberPage() {
   const { memberName } = useParams();
-  const MemberComponent = React.lazy(() =>
-    import(`./component/members/${memberName}`)
+  const MemberComponent = React.lazy(
+    () => import(`./component/members/${memberName}`),
   );
 
   return (

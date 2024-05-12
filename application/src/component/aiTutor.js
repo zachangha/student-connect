@@ -59,8 +59,8 @@ function App() {
           setMessages(
             messages.concat(
               { text: input, isUser: true },
-              { text: data.message, isUser: false }
-            )
+              { text: data.message, isUser: false },
+            ),
           );
           setInput("");
         } else {

@@ -25,26 +25,6 @@ app.use(morgan("dev"));
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
-// const currentUrl = window.location.href;
-// const courseID = currentUrl.match(/\/course\/([^\/]+)\//)[1];
-// const objectID = currentUrl.match(/\/([^\/]+)$/)[1];
-
-/*
-// Ensure code runs after the DOM is fully loaded
-window.addEventListener('DOMContentLoaded', (event) => {
-  // Access window.location.href safely
-  const currentUrl = window.location.href;
-  console.log(currentUrl);
-});
-
-if (typeof window !== 'undefined') {
-  // Code that accesses window can safely run here
-  const currentUrl = window.location.href;
-  console.log(currentUrl);
-}
-*/
-
-
 const root = path.resolve(__dirname, "..", "build");
 app.use(express.static(root));
 
@@ -256,7 +236,7 @@ app.get("/api/course/question/:courseID", async (req, res) => {
   }
 });
 
-app.get("/api/course/Reply/:courseID", async (req, res) => {
+app.get("/api/course/reply/:courseID", async (req, res) => {
   const { courseID } = req.params;
   try {
     const course = await QAForms.find({
@@ -270,18 +250,13 @@ app.get("/api/course/Reply/:courseID", async (req, res) => {
   }
 });
 
-
-
-
-app.get("/api/course/Reply/:objectID", async (req, res) => {
+app.get("/api/course/reply/get/:objectID", async (req, res) => {
   const { objectID } = req.params;
-  console.log("objectID:", objectID);
-  console.log("Course:", course);
   try {
     const course = await QAForms.find({
-      courseID: new ObjectId(objectID),
+      questionID: new ObjectId(objectID),
       type: "reply",
-    }).sort({ datePosted: -1 });
+    });
     res.send(course);
   } catch (error) {
     console.error("Error: ", error);
@@ -319,7 +294,6 @@ app.post("/api/classes/announcement/create", async (req, res) => {
     });
   }
 });
-
 
 /**
  * Endpoint to create an Question in the Q&A form.

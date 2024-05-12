@@ -8,7 +8,6 @@ const Courses = () => {
   const [course, setCourse] = useState([]);
   const [announcements, setAnnouncement] = useState([]);
   const [questions, setQuestion] = useState([]);
-//  const [replys, setReply] = useState([]);
 
   const navigate = useNavigate();
 
@@ -16,7 +15,6 @@ const Courses = () => {
   const parts = currentUrl.split("/");
   const courseID = parts[parts.length - 1];
   const objectID = currentUrl.match(/\/([^\/]+)$/)[1];
-  // const questionID = parts[parts.length - 1]
 
   /**
    * Redirect to the create announcement page
@@ -28,11 +26,6 @@ const Courses = () => {
   const redirectToAddQuestion = () => {
     navigate(`/course/${courseID}/QA`);
   };
-
-//  const redirectToAddReply = () => {
-//    navigate(`/course/${courseID}/reply`);
-//  };
-  // /${questionID}
 
   /**
    * use course.id to get a courses's information to display and post information for the user.
@@ -102,16 +95,10 @@ const Courses = () => {
     }
   };
 
-  
-
-  //MODIFY THIS!! should allow user to post QA
-  // not declared const postQA = () => {};
-
   useEffect(() => {
     getCourse();
     getAnnouncements();
     getQuestions();
-    // getReplys(); no replys here
   }, []);
 
   //student view of the class, cannot post announcements
@@ -154,14 +141,12 @@ const Courses = () => {
           <div className="border">
             {questions.slice(0, 5).map((question) => (
               <li>
-                <a href={`/course/${courseID}/view/${question._id}`}>
+                <a href={`/course/${courseID}/viewQuestion/${question._id}`}>
                   {question.title}
                 </a>
               </li>
             ))}
           </div>
-
-          
         </div>
 
         <div className="postingInfo">
@@ -223,14 +208,12 @@ const Courses = () => {
           <div className="border">
             {questions.slice(0, 5).map((question) => (
               <li>
-                <a href={`/course/${courseID}/view/${question._id}`}>
+                <a href={`/course/${courseID}/viewQuestion/${question._id}`}>
                   {question.title}
                 </a>
               </li>
             ))}
           </div>
-
-         
         </div>
 
         <div className="postingInfo">
