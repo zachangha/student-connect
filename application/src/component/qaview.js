@@ -171,27 +171,23 @@ const Courses = () => {
             ))}
           </div>
 
-          <h2 className="border">
-            Reply To Question
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={redirectToAddReply}
-              className="postButton"
-            >
-              +
-            </Button>
-          </h2>
         </div>
 
         <div className="postingInfo">
           <br></br>
           <br></br>
           {targetQuestion ? (
-            <div>
-              <h1>{targetQuestion.title}</h1>
+            <div className="questionBox">
+              <h1>Question: {targetQuestion.title}</h1>
               <p>{targetQuestion.message}</p>
-
+              <Button
+                className="replyButton"
+                variant="contained"
+                color="primary"
+                onClick={redirectToAddReply}
+                >
+                Reply
+              </Button>
               <p>{}</p>
             </div>
           ) : (
@@ -202,7 +198,7 @@ const Courses = () => {
           <br></br>
           <h2 className="border">Reply</h2>
           <div className="border">put Reply here</div>
-          <div className="border">
+          <div className="replyBox">
             {replys.map((reply) => (
               <li>
                 <a href={`/course/${courseID}/view/${reply._id}`}>
@@ -273,26 +269,23 @@ const Courses = () => {
             ))}
           </div>
 
-          <h2 className="border">
-            Reply To Question
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={redirectToAddReply}
-              className="postButton"
-            >
-              +
-            </Button>
-          </h2>
         </div>
 
         <div className="postingInfo">
           <br></br>
           <br></br>
           {targetQuestion ? (
-            <div>
-              <h1>{targetQuestion.title}</h1>
+            <div className="questionBox">
+              <h1>Question: {targetQuestion.title}</h1>
               <p>{targetQuestion.message}</p>
+              <Button
+              className="replyButton"
+              variant="contained"
+              color="primary"
+              onClick={redirectToAddReply}
+              >
+              Reply
+              </Button>
             </div>
           ) : (
             <p>Object not found.</p>
@@ -302,7 +295,7 @@ const Courses = () => {
           <br></br>
           <h2 className="border">Reply</h2>
           <div className="border">put Reply here</div>
-          <div className="border">
+          <div className="replyBox">
             {replys.map((reply) => (
               <li>
                 <a href={`/course/${courseID}/view/${reply._id}`}>

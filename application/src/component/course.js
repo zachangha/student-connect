@@ -205,7 +205,7 @@ const Courses = () => {
             </Button>
           </h2>
           <div className="border">put Q&A here</div>
-          <div className="border">
+          <div className="border"> 
             {questions.slice(0, 5).map((question) => (
               <li>
                 <a href={`/course/${courseID}/viewQuestion/${question._id}`}>
