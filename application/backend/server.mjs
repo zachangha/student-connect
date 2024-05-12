@@ -225,25 +225,11 @@ app.get("/api/course/announcement/:courseID", async (req, res) => {
 app.get("/api/course/question/:courseID", async (req, res) => {
   const { courseID } = req.params;
   try {
-    const course = await QAForms.find({
+    const question = await QAForms.find({
       courseID: new ObjectId(courseID),
       type: "question",
     }).sort({ datePosted: -1 });
-    res.send(course);
-  } catch (error) {
-    console.error("Error: ", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-app.get("/api/course/reply/:courseID", async (req, res) => {
-  const { courseID } = req.params;
-  try {
-    const course = await QAForms.find({
-      courseID: new ObjectId(courseID),
-      type: "reply",
-    }).sort({ datePosted: -1 });
-    res.send(course);
+    res.send(question);
   } catch (error) {
     console.error("Error: ", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -253,11 +239,22 @@ app.get("/api/course/reply/:courseID", async (req, res) => {
 app.get("/api/course/reply/get/:objectID", async (req, res) => {
   const { objectID } = req.params;
   try {
-    const course = await QAForms.find({
+    const replies = await QAForms.find({
       questionID: new ObjectId(objectID),
       type: "reply",
     });
-    res.send(course);
+    const question = await QAForms.find({
+      _id: new ObjectId(objectID),
+    });
+    const questionAuthor = await User.find({
+      _id: new ObjectId(question[0].authorID),
+    });
+    const usernames = [];
+    for (let i = 0; i < replies.length; i++) {
+      const username = await User.findById(replies[i].authorID);
+      usernames.push(username);
+    }
+    res.send([replies, usernames, questionAuthor]);
   } catch (error) {
     console.error("Error: ", error);
     res.status(500).json({ error: "Internal Server Error" });

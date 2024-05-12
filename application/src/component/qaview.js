@@ -8,7 +8,9 @@ const Courses = () => {
   const [course, setCourse] = useState([]);
   const [announcements, setAnnouncement] = useState([]);
   const [questions, setQuestion] = useState([]);
-  const [replys, setReply] = useState([]);
+  const [replies, setReply] = useState([]);
+  const [usernames, setUsernames] = useState([]);
+  const [questionAuthor, setQuestionAuthor] = useState([]);
 
   const navigate = useNavigate();
 
@@ -97,7 +99,7 @@ const Courses = () => {
     }
   };
 
-  const getReplys = async () => {
+  const getReplies = async () => {
     try {
       const response = await fetch(`/api/course/reply/get/${objectID}`, {
         method: "GET",
@@ -106,9 +108,11 @@ const Courses = () => {
         },
       });
       if (response.ok) {
-        const retrivedReplys = await response.json();
-        console.log(retrivedReplys);
-        setReply(retrivedReplys);
+        const retrivedReplies = await response.json();
+        console.log(retrivedReplies);
+        setReply(retrivedReplies[0]);
+        setUsernames(retrivedReplies[1]);
+        setQuestionAuthor(retrivedReplies[2]);
       } else {
         const result = await response.json();
         throw new Error(result.message || "Could not load course");
@@ -122,7 +126,7 @@ const Courses = () => {
     getCourse();
     getAnnouncements();
     getQuestions();
-    getReplys();
+    getReplies();
   }, []);
 
   //student view of the class, cannot post announcements
@@ -190,9 +194,10 @@ const Courses = () => {
           {targetQuestion ? (
             <div>
               <h1>{targetQuestion.title}</h1>
+              {questionAuthor.map((author) => (
+                <h4>{author.username}</h4>
+              ))}
               <p>{targetQuestion.message}</p>
-
-              <p>{}</p>
             </div>
           ) : (
             <p>Object not found.</p>
@@ -203,13 +208,14 @@ const Courses = () => {
           <h2 className="border">Reply</h2>
           <div className="border">put Reply here</div>
           <div className="border">
-            {replys.map((reply) => (
-              <li>
-                <a href={`/course/${courseID}/view/${reply._id}`}>
+            <ul>
+              {replies.map((reply, index) => (
+                <li>
+                  <h4>{usernames[index].username}</h4>
                   {reply.message}
-                </a>
-              </li>
-            ))}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </body>
@@ -292,6 +298,9 @@ const Courses = () => {
           {targetQuestion ? (
             <div>
               <h1>{targetQuestion.title}</h1>
+              {questionAuthor.map((author) => (
+                <h4>{author.username}</h4>
+              ))}
               <p>{targetQuestion.message}</p>
             </div>
           ) : (
@@ -303,13 +312,14 @@ const Courses = () => {
           <h2 className="border">Reply</h2>
           <div className="border">put Reply here</div>
           <div className="border">
-            {replys.map((reply) => (
-              <li>
-                <a href={`/course/${courseID}/view/${reply._id}`}>
+            <ul>
+              {replies.map((reply, index) => (
+                <li>
+                  <h4>{usernames[index].username}</h4>
                   {reply.message}
-                </a>
-              </li>
-            ))}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </body>
