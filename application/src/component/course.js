@@ -14,7 +14,6 @@ const Courses = () => {
   const currentUrl = window.location.href;
   const parts = currentUrl.split("/");
   const courseID = parts[parts.length - 1];
-  const objectID = currentUrl.match(/\/([^\/]+)$/)[1];
 
   /**
    * Redirect to the create announcement page
