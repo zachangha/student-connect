@@ -130,7 +130,10 @@ export default function MiniDrawer() {
   const navLinks = [
     { text: "Home", to: "/home", icon: <HomeIcon /> },
     { text: "Classes", to: "/classes", icon: <SchoolIcon /> },
+
+    // Remove this later { text: "QA", to: "/QA", icon: <SchoolIcon /> },
     { text: "AI Tutor", to: "/aiTutor", icon: <QuestionMarkIcon /> },
+    // f2e3f9d1d84746dccb8cd610580e481257017e69
   ];
 
   const bottomLinks = [

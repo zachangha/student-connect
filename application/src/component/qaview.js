@@ -8,6 +8,9 @@ const Courses = () => {
   const [course, setCourse] = useState([]);
   const [announcements, setAnnouncement] = useState([]);
   const [questions, setQuestion] = useState([]);
+  const [replies, setReply] = useState([]);
+  const [usernames, setUsernames] = useState([]);
+  const [questionAuthor, setQuestionAuthor] = useState([]);
 
   const navigate = useNavigate();
 
@@ -15,19 +18,7 @@ const Courses = () => {
   const courseID = currentUrl.match(/\/course\/([^\/]+)\//)[1];
   const objectID = currentUrl.match(/\/([^\/]+)$/)[1];
 
-  const targetAnnouncement = announcements.find((obj) => obj._id === objectID);
-
-  // FOR LATER PLEASE DONT DELETE
-  //   const formatDate = async () => {
-  //     console.log(targetAnnouncement.datePosted);
-  //     const month = targetAnnouncement.datePosted.toLocaleString("default", {
-  //       month: "long",
-  //     });
-  //     const day = targetAnnouncement.datePosted.getUTCDate();
-  //     const year = targetAnnouncement.datePosted.getUTCFullYear();
-  //     const formattedDate = `${month} ${day}, ${year}`;
-  //     console.log(formattedDate);
-  //   };
+  const targetQuestion = questions.find((obj) => obj._id === objectID);
 
   /**
    * Redirect to the create announcement page
@@ -37,6 +28,9 @@ const Courses = () => {
   };
   const redirectToAddQuestion = () => {
     navigate(`/course/${courseID}/QA`);
+  };
+  const redirectToAddReply = () => {
+    navigate(`/course/${courseID}/reply/${objectID}`);
   };
 
   /**
@@ -105,10 +99,34 @@ const Courses = () => {
     }
   };
 
+  const getReplies = async () => {
+    try {
+      const response = await fetch(`/api/course/reply/get/${objectID}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const retrivedReplies = await response.json();
+        console.log(retrivedReplies);
+        setReply(retrivedReplies[0]);
+        setUsernames(retrivedReplies[1]);
+        setQuestionAuthor(retrivedReplies[2]);
+      } else {
+        const result = await response.json();
+        throw new Error(result.message || "Could not load course");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   useEffect(() => {
     getCourse();
     getAnnouncements();
     getQuestions();
+    getReplies();
   }, []);
 
   //student view of the class, cannot post announcements
@@ -156,15 +174,27 @@ const Courses = () => {
               </li>
             ))}
           </div>
+
         </div>
 
         <div className="postingInfo">
           <br></br>
           <br></br>
-          {targetAnnouncement ? (
-            <div>
-              <h1>{targetAnnouncement.title}</h1>
-              <p>{targetAnnouncement.message}</p>
+          {targetQuestion ? (
+            <div className="questionBox">
+              <h1>Question: {targetQuestion.title}</h1>
+              {questionAuthor.map((author) => (
+                <h4>{author.username} asks:</h4>
+              ))}
+              <p>{targetQuestion.message}</p>
+              <Button
+              className="replyButton"
+              variant="contained"
+              color="primary"
+              onClick={redirectToAddReply}
+              >
+              Reply
+              </Button>
             </div>
           ) : (
             <p>Object not found.</p>
@@ -172,6 +202,18 @@ const Courses = () => {
 
           <br></br>
           <br></br>
+          <h2 className="border">Reply</h2>
+          <div className="border">put Reply here</div>
+          <div className="replyBox">
+            <ul>
+              {replies.map((reply, index) => (
+                <li>
+                  <h4>{usernames[index].username} replied:</h4>
+                  {reply.message}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </body>
     );
@@ -233,21 +275,46 @@ const Courses = () => {
               </li>
             ))}
           </div>
+
         </div>
 
         <div className="postingInfo">
           <br></br>
           <br></br>
-          {targetAnnouncement ? (
-            <div>
-              <h1>{targetAnnouncement.title}</h1>
-              <p>{targetAnnouncement.message}</p>
+          {targetQuestion ? (
+            <div className="questionBox">
+              <h1>Question: {targetQuestion.title}</h1>
+              {questionAuthor.map((author) => (
+                <h4>{author.username} asks:</h4>
+              ))}
+              <p>{targetQuestion.message}</p>
+              <Button
+              className="replyButton"
+              variant="contained"
+              color="primary"
+              onClick={redirectToAddReply}
+              >
+              Reply
+              </Button>
             </div>
           ) : (
             <p>Object not found.</p>
           )}
+
           <br></br>
           <br></br>
+          <h2 className="border">Reply</h2>
+          <div className="border">put Reply here</div>
+          <div className="replyBox">
+            <ul>
+              {replies.map((reply, index) => (
+                <li>
+                  <h4>{usernames[index].username} replied:</h4>
+                  {reply.message}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </body>
     );

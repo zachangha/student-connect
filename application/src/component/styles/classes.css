@@ -46,7 +46,7 @@
 .postingInfo {
   background-color: lightgrey;
   height: 100%;
-  width: 120vh;
+  width: 48%;
   float: right;
 }
 
@@ -67,6 +67,18 @@
   float: right;
   background-color: #115293;
 }
+
+.replyButton {
+  display: block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: white;
+  float: left;
+  background-color: #115293;
+}
+
+
 
 .container {
   display: flex;
@@ -99,3 +111,27 @@ h1 {
 .submit-button:hover {
   background-color: #115293;
 }
+
+.replyBox{
+  display: block;
+  flex-direction:column;
+  align-items:left;
+  padding-left: 5%;
+  padding-bottom: 5%;
+  border-style:solid;
+  border-width: 1px 1px 1px 0px;
+  border-color: black;
+  background-color: whitesmoke;
+  height: 50%;
+  width: 60%;
+  overflow-y: scroll;
+}
+
+.questionBox{
+  padding-left: 5%;
+  background-color: white;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px 1px 1px 0px;
+}
+

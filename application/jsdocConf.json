@@ -13,7 +13,7 @@
   },
   "sourceType": "module",
   "tags": {
-    "allowUnknownTags":true,
+    "allowUnknownTags": true,
     "dictionaries": ["jsdoc", "closure"]
   },
   "templates": {
