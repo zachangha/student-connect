@@ -181,12 +181,20 @@ const Courses = () => {
           <br></br>
           <br></br>
           {targetQuestion ? (
-            <div>
-              <h1>{targetQuestion.title}</h1>
+            <div className="questionBox">
+              <h1>Question: {targetQuestion.title}</h1>
               {questionAuthor.map((author) => (
-                <h4>{author.username}</h4>
+                <h4>{author.username} asks:</h4>
               ))}
               <p>{targetQuestion.message}</p>
+              <Button
+              className="replyButton"
+              variant="contained"
+              color="primary"
+              onClick={redirectToAddReply}
+              >
+              Reply
+              </Button>
             </div>
           ) : (
             <p>Object not found.</p>
@@ -196,11 +204,11 @@ const Courses = () => {
           <br></br>
           <h2 className="border">Reply</h2>
           <div className="border">put Reply here</div>
-          <div className="border">
+          <div className="replyBox">
             <ul>
               {replies.map((reply, index) => (
                 <li>
-                  <h4>{usernames[index].username}</h4>
+                  <h4>{usernames[index].username} replied:</h4>
                   {reply.message}
                 </li>
               ))}
@@ -274,10 +282,10 @@ const Courses = () => {
           <br></br>
           <br></br>
           {targetQuestion ? (
-            <div>
-              <h1>{targetQuestion.title}</h1>
+            <div className="questionBox">
+              <h1>Question: {targetQuestion.title}</h1>
               {questionAuthor.map((author) => (
-                <h4>{author.username}</h4>
+                <h4>{author.username} asks:</h4>
               ))}
               <p>{targetQuestion.message}</p>
               <Button
@@ -297,11 +305,11 @@ const Courses = () => {
           <br></br>
           <h2 className="border">Reply</h2>
           <div className="border">put Reply here</div>
-          <div className="border">
+          <div className="replyBox">
             <ul>
               {replies.map((reply, index) => (
                 <li>
-                  <h4>{usernames[index].username}</h4>
+                  <h4>{usernames[index].username} replied:</h4>
                   {reply.message}
                 </li>
               ))}
