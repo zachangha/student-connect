@@ -205,6 +205,17 @@ app.get("/api/course/get/:courseID", async (req, res) => {
   }
 });
 
+app.get("/api/user/get/:userID", async (req, res) => {
+  const { userID } = req.params;
+  try {
+    const user = await User.findById(userID);
+    res.send(user.karmaPoints.toString());
+  } catch (error) {
+    console.error("Error: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 /**
  * Endpoint to get an array of announcements for a class.
  */
@@ -480,7 +491,11 @@ app.post("/api/reactions", async (req, res) => {
   console.log("Updated document:", updateKarmaPoints);
   res
     .status(200)
-    .json({ message: "Reaction saved successfully", updatedDocument, updateKarmaPoints });
+    .json({
+      message: "Reaction saved successfully",
+      updatedDocument,
+      updateKarmaPoints,
+    });
 });
 
 // catch all

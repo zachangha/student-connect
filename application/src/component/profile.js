@@ -9,7 +9,7 @@ function ProfilePage() {
   useEffect(() => {
     // Load profile picture URL for the logged-in user from localStorage
     const profileImageUrl = localStorage.getItem(
-      `profileImageUrl_${user.username}`,
+      `profileImageUrl_${user.username}`
     );
     setImageUrl(profileImageUrl || user.profilePicture || "");
     setSelectedImage(profileImageUrl || user.profilePicture || "");
@@ -42,6 +42,33 @@ function ProfilePage() {
       console.error("Error updating profile picture:", error);
     }
   };
+
+  const [loadedKarmaPoints, setLoadedKarmaPoints] = useState(0);
+
+  const getUser = async () => {
+    try {
+      const response = await fetch(`/api/user/get/${user.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        let retrivedKarmaPoints = await response.json();
+        setLoadedKarmaPoints(retrivedKarmaPoints);
+        console.log(loadedKarmaPoints);
+      } else {
+        const result = await response.json();
+        throw new Error(result.message || "Could not load course");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <div className="profile-page">
@@ -82,7 +109,7 @@ function ProfilePage() {
             <h1>Pronouns: {user.pronouns}</h1>
           </div>
           <div className="user-info-box">
-            <h1>Karma points: {user.karmaPoints}</h1>
+            <h1>Karma points: {loadedKarmaPoints}</h1>
           </div>
         </div>
       </div>
