@@ -151,7 +151,6 @@ const Courses = () => {
         <div className="postingInfo">
           <br></br>
           <br></br>
-          
         </div>
       </body>
     );
