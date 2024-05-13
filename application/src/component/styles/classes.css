@@ -204,7 +204,7 @@ h1 {
 .announcement-box {
   border: 1px solid black ;
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 3px;
   background-color: whitesmoke;
 }
 
@@ -219,7 +219,7 @@ h1 {
   text-overflow: ellipsis;
 }
 .qa-box {
-  padding: 10px;
+  padding: 3px;
   border: 1px solid black;
   margin-bottom: 10px;
   background-color: #f9f9f9;

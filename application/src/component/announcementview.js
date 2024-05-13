@@ -171,8 +171,8 @@ const Courses = () => {
           <br></br>
           <br></br>
           {targetAnnouncement ? (
-            <div>
-              <h1>{targetAnnouncement.title}</h1>
+            <div className="questionBox">
+              <h1>To All: {targetAnnouncement.title}</h1>
               <p>{targetAnnouncement.message}</p>
             </div>
           ) : (
@@ -257,8 +257,8 @@ const Courses = () => {
           <br></br>
           <br></br>
           {targetAnnouncement ? (
-            <div>
-              <h1>{targetAnnouncement.title}</h1>
+            <div className="questionBox">
+              <h1>To All: {targetAnnouncement.title}</h1>
               <p>{targetAnnouncement.message}</p>
             </div>
           ) : (
