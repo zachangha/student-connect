@@ -124,16 +124,20 @@ const Courses = () => {
           <br></br>
           <br></br>
           <h2 className="border">Announcements:</h2>
-
-          <div className="border">
-            {announcements.slice(0, 5).map((announcement) => (
-              <li>
+          <div
+            className="border"
+            style={{ maxHeight: "200px", overflowY: "auto" }}
+          >
+            {announcements.map((announcement) => (
+              <div key={announcement._id} className="announcement-box">
                 <a href={`/course/${courseID}/view/${announcement._id}`}>
-                  {announcement.title}
+                  <h3>{announcement.title}</h3>
+                  <p>{announcement.message}</p>
                 </a>
-              </li>
+              </div>
             ))}
           </div>
+
           <br></br>
           <br></br>
           <h2 className="border">
@@ -147,14 +151,19 @@ const Courses = () => {
               +
             </Button>
           </h2>
-          <div className="border">
-            {questions.slice(0, 5).map((question) => (
-              <li>
-                <a href={`/course/${courseID}/viewQuestion/${question._id}`}>
-                  {question.title}
-                </a>
-              </li>
-            ))}
+          <div
+            className="border"
+            style={{ maxHeight: "200px", overflowY: "auto" }}
+          >
+            <div className="qa-outerbox">
+              {questions.slice(0, 5).map((question) => (
+                <div className="qa-box" key={question._id}>
+                  <a href={`/course/${courseID}/viewQuestion/${question._id}`}>
+                    <h3>{question.title}</h3>
+                  </a>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -201,15 +210,20 @@ const Courses = () => {
             </Button>
           </h2>
 
-          <div className="border">
-            {announcements.slice(0, 5).map((announcement) => (
-              <li>
+          <div
+            className="border"
+            style={{ maxHeight: "200px", overflowY: "auto" }}
+          >
+            {announcements.map((announcement) => (
+              <div key={announcement._id} className="announcement-box">
                 <a href={`/course/${courseID}/view/${announcement._id}`}>
-                  {announcement.title}
+                  <h3>{announcement.title}</h3>
+                  <p>{announcement.message}</p>
                 </a>
-              </li>
+              </div>
             ))}
           </div>
+
           <br></br>
           <br></br>
           <h2 className="border">
@@ -223,15 +237,19 @@ const Courses = () => {
               +
             </Button>
           </h2>
-          <div className="border">put Q&A here</div>
-          <div className="border">
-            {questions.slice(0, 5).map((question) => (
-              <li>
-                <a href={`/course/${courseID}/viewQuestion/${question._id}`}>
-                  {question.title}
-                </a>
-              </li>
-            ))}
+          <div
+            className="border"
+            style={{ maxHeight: "200px", overflowY: "auto" }}
+          >
+            <div className="qa-outerbox">
+              {questions.slice(0, 5).map((question) => (
+                <div className="qa-box" key={question._id}>
+                  <a href={`/course/${courseID}/viewQuestion/${question._id}`}>
+                    <h3>{question.title}</h3>
+                  </a>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

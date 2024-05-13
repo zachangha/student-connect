@@ -43,11 +43,24 @@
   border-style: solid;
 }
 
-.postingInfo {
+/* .postingInfo {
   background-color: lightgrey;
   height: 100%;
   width: 48%;
   float: right;
+} */
+.postingInfo {
+  display: block;
+  flex-direction: column;
+  align-items: left;
+  
+  border-style: solid;
+  border-width: 1px 1px 1px 0px;
+  border-color: black;
+  background-color: lightgray;
+  height: 100%;
+  width: 95%;
+  overflow-y: scroll;
 }
 
 .course-id-input,
@@ -123,6 +136,7 @@ h1 {
   height: 35%;
   width: 95%;
   overflow-y: scroll;
+  
 }
 
 .questionBox {
@@ -131,6 +145,7 @@ h1 {
   border-style: solid;
   border-color: black;
   border-width: 1px 1px 1px 0px;
+  
 }
 
 /* Reaction button */
@@ -186,3 +201,68 @@ h1 {
     margin: 0 auto; 
     margin:0
   } */
+.announcement-box {
+  border: 1px solid black ;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: whitesmoke;
+}
+
+.announcement-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.announcement-content {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.qa-box {
+  padding: 10px;
+  border: 1px solid black;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  overflow-y: auto;
+  max-height: 200px;
+  width: 100%;
+}
+
+.qa-outerbox {
+  display: block;
+  flex-direction: column;
+  align-items: left;
+  padding-bottom: 5%;
+  border-style: solid;
+  border-width: 1px 1px 1px 0px;
+  border-color: black;
+  background-color: whitesmoke;
+  overflow-y: scroll;
+}
+.courses-container {
+  max-height: 600px;
+  overflow-y: auto; 
+
+  margin-right: 15%;
+}
+.classes-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.courses-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.course-box {
+  padding: 10px;
+  border: 1px solid black;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  width: 100%;
+  max-width: 10000px; 
+}
+
+
+  
