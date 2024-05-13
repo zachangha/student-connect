@@ -445,6 +445,32 @@ app.delete("/api/tasks/:taskId", async (req, res) => {
   }
 });
 
+
+/**
+ *  Saves reactions per reply post
+ */
+
+app.post("/api/reactions", async (req, res) => {
+  try {
+    const { postId, reactionType } = req.body;
+    const userId = req.body.userId || localStorage.getItem('userId'); // Get userId from request body or localStorage
+
+    if (!userId) {
+      return res.status(400).json({ message: 'Missing user ID' });
+    }
+
+    // Update the reaction counts for the given post ID
+    const response = await saveReaction(postId, reactionType, userId);
+    res.status(200).json(response);
+  } catch (error) {
+    console.error("Error saving reaction:", error);
+    res.status(500).json({
+      error: "Something went wrong",
+      details: error.message,
+    });
+  }
+});
+
 // catch all
 app.use("/*", (req, res) => {
   res.sendFile(path.join(root, "index.html"));

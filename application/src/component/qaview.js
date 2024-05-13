@@ -20,6 +20,68 @@ const Courses = () => {
 
   const targetQuestion = questions.find((obj) => obj._id === objectID);
 
+  //karma logic
+  const [showOptions, setShowOptions] = useState(false);
+  const reactionOptions = ["Answered", "Off-Topic", "Bad Information"];
+  const [chosenReaction, setChosenReaction] = useState(null); // Store chosen reaction
+  const [reactionCounts, setReactionCounts] = useState({
+    Answered: 0,
+    "Bad Information": 0,
+    "Off-Topic": 0,
+  }); // Track reaction counts
+  const [karmaPoints, setKarmaPoints] = useState(0); // State to store karma points
+
+  const handleButtonClick = () => {
+    setShowOptions(!showOptions);
+  };
+
+  const handleOptionSelect = async (reaction) => {
+    let karmaChange = 0;
+    switch (reaction) {
+      case "Answered":
+        karmaChange = 1;
+        break;
+      case "Bad Information":
+        karmaChange = -1;
+        break;
+      default:
+        karmaChange = 0;
+    }
+    setChosenReaction(chosenReaction);
+    setShowOptions(false); // Hide options after selection
+    setReactionCounts((prevCounts) => ({
+      ...prevCounts,
+      [reaction]: prevCounts[reaction] + 1,
+    })); // Update count for chosen reaction
+    setKarmaPoints((prevPoints) => prevPoints + karmaChange); // Update karma points based on reaction
+
+    try {
+      const response = await saveReaction(objectID, reaction);
+      console.log("Reaction saved successfully:", response);
+    } catch (error) {
+      console.error("Error saving reaction:", error);
+    }
+  };
+
+  const getReactionCount = (reaction) => {
+    return reactionCounts[reaction] || 0;
+  };
+  const saveReaction = async (objectID, reactionType) => {
+    const response = await fetch("/api/reactions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ objectID, reactionType }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to save reaction");
+    }
+
+    return await response.json();
+  };
+
+  //karma up to this
+
   /**
    * Redirect to the create announcement page
    */
@@ -174,7 +236,6 @@ const Courses = () => {
               </li>
             ))}
           </div>
-
         </div>
 
         <div className="postingInfo">
@@ -184,16 +245,18 @@ const Courses = () => {
             <div className="questionBox">
               <h1>Question: {targetQuestion.title}</h1>
               {questionAuthor.map((author) => (
-                <h4>{author.username} asks:</h4>
+                <h4>
+                  {author.username}, KP: {karmaPoints}, asks:
+                </h4>
               ))}
               <p>{targetQuestion.message}</p>
               <Button
-              className="replyButton"
-              variant="contained"
-              color="primary"
-              onClick={redirectToAddReply}
+                className="replyButton"
+                variant="contained"
+                color="primary"
+                onClick={redirectToAddReply}
               >
-              Reply
+                Reply
               </Button>
             </div>
           ) : (
@@ -204,15 +267,45 @@ const Courses = () => {
           <br></br>
           <h2 className="border">Reply</h2>
           <div className="border">put Reply here</div>
-          <div className="replyBox">
-            <ul>
-              {replies.map((reply, index) => (
-                <li>
-                  <h4>{usernames[index].username} replied:</h4>
-                  {reply.message}
-                </li>
-              ))}
-            </ul>
+          <div className="replyContainer">
+            {replies.map((reply, index) => (
+              <div className="replyBox" key={index}>
+                <div className="reaction-container">
+                  <div className="reaction-boxes">
+                    <div className="reaction-box1">
+                      <p>Answered: {getReactionCount("Answered")}</p>
+                    </div>
+                    <div className="reaction-box2">
+                      <p>Off-Topic: {getReactionCount("Off-Topic")}</p>
+                    </div>
+                    <div className="reaction-box3">
+                      <p>
+                        Bad Information: {getReactionCount("Bad Information")}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <h4>
+                  {usernames[index].username}, KP: {karmaPoints}, replied:
+                </h4>
+                <p>{reply.message}</p>
+                <div>
+                  <button onClick={handleButtonClick}>Choose Reaction</button>
+                  {showOptions && (
+                    <div className="reaction-options">
+                      {reactionOptions.map((reaction) => (
+                        <button
+                          key={reaction}
+                          onClick={() => handleOptionSelect(reaction)}
+                        >
+                          {reaction}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </body>
@@ -275,7 +368,6 @@ const Courses = () => {
               </li>
             ))}
           </div>
-
         </div>
 
         <div className="postingInfo">
@@ -284,17 +376,18 @@ const Courses = () => {
           {targetQuestion ? (
             <div className="questionBox">
               <h1>Question: {targetQuestion.title}</h1>
+              KP: {karmaPoints}
               {questionAuthor.map((author) => (
                 <h4>{author.username} asks:</h4>
               ))}
               <p>{targetQuestion.message}</p>
               <Button
-              className="replyButton"
-              variant="contained"
-              color="primary"
-              onClick={redirectToAddReply}
+                className="replyButton"
+                variant="contained"
+                color="primary"
+                onClick={redirectToAddReply}
               >
-              Reply
+                Reply
               </Button>
             </div>
           ) : (
@@ -305,12 +398,51 @@ const Courses = () => {
           <br></br>
           <h2 className="border">Reply</h2>
           <div className="border">put Reply here</div>
+
           <div className="replyBox">
+            <div className="reaction-container">
+              <div className="reaction-boxes">
+                {" "}
+                {/* Container for all boxes with flexbox */}
+                <div className="reaction-box1">
+                  {" "}
+                  {/* Green background for Answered */}
+                  <p>Answered: {getReactionCount("Answered")}</p>
+                </div>
+                <div className="reaction-box2">
+                  {" "}
+                  {/* Coral background for Off-Topic */}
+                  <p>Off-Topic: {getReactionCount("Off-Topic")}</p>
+                </div>
+                <div className="reaction-box3">
+                  {" "}
+                  {/* Salmon background for Bad Information */}
+                  <p>Bad Information: {getReactionCount("Bad Information")}</p>
+                </div>
+              </div>
+            </div>
             <ul>
               {replies.map((reply, index) => (
                 <li>
-                  <h4>{usernames[index].username} replied:</h4>
+                  <h4>
+                    {usernames[index].username}, KP: {karmaPoints}, replied:
+                  </h4>
                   {reply.message}
+                  <div>
+                    <button onClick={handleButtonClick}>Choose Reaction</button>
+                    {showOptions && (
+                      <div className="reaction-options">
+                        {reactionOptions.map((reaction) => (
+                          <button
+                            key={reaction}
+                            onClick={() => handleOptionSelect(reaction)}
+                          >
+                            {reaction}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>

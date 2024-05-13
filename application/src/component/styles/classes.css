@@ -122,8 +122,8 @@ h1 {
   border-width: 1px 1px 1px 0px;
   border-color: black;
   background-color: whitesmoke;
-  height: 50%;
-  width: 60%;
+  height: 35%;
+  width: 95%;
   overflow-y: scroll;
 }
 
@@ -135,3 +135,57 @@ h1 {
   border-width: 1px 1px 1px 0px;
 }
 
+/* Reaction button */
+.reaction-container {
+  display: flex; 
+  justify-content: space-between; 
+  margin-bottom: 10px;
+}
+
+.reaction-boxes {
+  display: flex;
+}
+.reaction-box1{
+  background-color: lightgreen;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width:135px;
+  height:30px;
+  margin-right: 5px;
+  }
+
+.reaction-box2{
+background-color: yellow;
+display:flex;
+align-items: center;
+justify-content: center;
+width:135px;
+height:30px;
+margin-right: 5px;
+}
+
+.reaction-box3{
+  background-color: lightcoral;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width:135px;
+  height:30px;
+  margin-right: 6px;
+  }
+  .reaction-container {
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 10px; 
+    flex-direction: column; 
+    max-width: 500px; 
+  }
+  
+  /* .replyContainer {
+    width: 100%; 
+    max-width: 800px;
+    margin: 0 auto; 
+  } */
+  
+  
