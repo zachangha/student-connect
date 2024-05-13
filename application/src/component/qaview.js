@@ -35,7 +35,7 @@ const Courses = () => {
     setShowOptions(!showOptions);
   };
 
-  const handleOptionSelect = async (reaction) => {
+  const handleOptionSelect = async (reaction, authorId) => {
     let karmaChange = 0;
     switch (reaction) {
       case "Answered":
@@ -56,21 +56,19 @@ const Courses = () => {
     setKarmaPoints((prevPoints) => prevPoints + karmaChange); // Update karma points based on reaction
 
     try {
-      const response = await saveReaction(objectID, reaction);
+      const response = await saveReaction(objectID, reaction, authorId); // Pass authorId to saveReaction
       console.log("Reaction saved successfully:", response);
     } catch (error) {
       console.error("Error saving reaction:", error);
     }
   };
 
-  const getReactionCount = (reaction) => {
-    return reactionCounts[reaction] || 0;
-  };
-  const saveReaction = async (objectID, reactionType) => {
+  // Function to save reaction
+  const saveReaction = async (objectID, reactionType, authorId) => {
     const response = await fetch("/api/reactions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ objectID, reactionType }),
+      body: JSON.stringify({ objectID, reactionType, authorId }), // Include authorId in the request body
     });
 
     if (!response.ok) {
@@ -79,8 +77,12 @@ const Courses = () => {
 
     return await response.json();
   };
+  // Function to get reaction count for a specific type
+  const getReactionCount = (reactionType) => {
+    return reactionCounts[reactionType] || 0;
+  };
 
-  //karma up to this
+  //karma up to this point
 
   /**
    * Redirect to the create announcement page
@@ -267,7 +269,10 @@ const Courses = () => {
           <br></br>
           <h2 className="border">Reply</h2>
           <div className="border">put Reply here</div>
-          <div className="replyContainer">
+          <div
+            className="replyContainer"
+            style={{ maxHeight: "400px", overflowY: "auto" }}
+          >
             {replies.map((reply, index) => (
               <div className="replyBox" key={index}>
                 <div className="reaction-container">
@@ -398,59 +403,54 @@ const Courses = () => {
           <br></br>
           <h2 className="border">Reply</h2>
           <div className="border">put Reply here</div>
-
-          <div className="replyBox">
-            <div className="reaction-container">
-              <div className="reaction-boxes">
-                {" "}
-                {/* Container for all boxes with flexbox */}
-                <div className="reaction-box1">
-                  {" "}
-                  {/* Green background for Answered */}
-                  <p>Answered: {getReactionCount("Answered")}</p>
+          <div
+            className="replyContainer"
+            style={{ maxHeight: "400px", overflowY: "auto" }}
+          >
+            {replies.map((reply, index) => (
+              <div className="replyBox" key={index}>
+                <div className="reaction-container">
+                  <div className="reaction-boxes">
+                    <div className="reaction-box1">
+                      <p>Answered: {getReactionCount("Answered")}</p>
+                    </div>
+                    <div className="reaction-box2">
+                      <p>Off-Topic: {getReactionCount("Off-Topic")}</p>
+                    </div>
+                    <div className="reaction-box3">
+                      <p>
+                        Bad Information: {getReactionCount("Bad Information")}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="reaction-box2">
-                  {" "}
-                  {/* Coral background for Off-Topic */}
-                  <p>Off-Topic: {getReactionCount("Off-Topic")}</p>
-                </div>
-                <div className="reaction-box3">
-                  {" "}
-                  {/* Salmon background for Bad Information */}
-                  <p>Bad Information: {getReactionCount("Bad Information")}</p>
+                <h4>
+                  {usernames[index].username}, KP: {karmaPoints}, replied:
+                </h4>
+                <p>{reply.message}</p>
+                <div>
+                  <button onClick={handleButtonClick}>Choose Reaction</button>
+                  {showOptions && (
+                    <div className="reaction-options">
+                      {reactionOptions.map((reaction) => (
+                        <button
+                          key={reaction}
+                          onClick={() => handleOptionSelect(reaction)}
+                        >
+                          {reaction}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-            <ul>
-              {replies.map((reply, index) => (
-                <li>
-                  <h4>
-                    {usernames[index].username}, KP: {karmaPoints}, replied:
-                  </h4>
-                  {reply.message}
-                  <div>
-                    <button onClick={handleButtonClick}>Choose Reaction</button>
-                    {showOptions && (
-                      <div className="reaction-options">
-                        {reactionOptions.map((reaction) => (
-                          <button
-                            key={reaction}
-                            onClick={() => handleOptionSelect(reaction)}
-                          >
-                            {reaction}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
+            ))}
           </div>
         </div>
       </body>
     );
-
+  
+       
     //Catch all scenario
   } else {
     return (
@@ -464,5 +464,3 @@ const Courses = () => {
 };
 
 export default Courses;
-
-//

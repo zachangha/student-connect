@@ -451,16 +451,16 @@ app.delete("/api/tasks/:taskId", async (req, res) => {
 
 app.post("/api/reactions", async (req, res) => {
   try {
-    const { postId, reactionType } = req.body;
-    const userId = req.body.userId || localStorage.getItem("userId"); // Get userId from request body or localStorage
+    const { postId, reactionType, authorId } = req.body;
 
-    if (!userId) {
-      return res.status(400).json({ message: "Missing user ID" });
+    if (!authorId) {
+      return res.status(400).json({ message: "Missing author ID" });
     }
 
-    // Update the reaction counts for the given post ID
-    const response = await saveReaction(postId, reactionType, userId);
-    res.status(200).json(response);
+    const response = await saveReaction(postId, reactionType, authorId);
+    const updatedAuthor = await updateUserKarma(authorId, reactionType);
+
+    res.status(200).json({ response, authorKarma: updatedAuthor.karma }); // Return the updated author's karma
   } catch (error) {
     console.error("Error saving reaction:", error);
     res.status(500).json({
@@ -469,6 +469,7 @@ app.post("/api/reactions", async (req, res) => {
     });
   }
 });
+
 
 // catch all
 app.use("/*", (req, res) => {
