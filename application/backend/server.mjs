@@ -451,9 +451,9 @@ app.delete("/api/tasks/:taskId", async (req, res) => {
 
 // Inside your route for saving reactions
 app.post("/api/reactions", async (req, res) => {
-  const { objectID, reactionType } = req.body;
+  const { objectID, reactionType, replyID } = req.body;
 
-  const qaForum = await QAForms.findById(objectID);
+  const qaForum = await QAForms.findById(replyID);
   if (!qaForum) {
     return res.status(404).json({ message: "Question not found" });
   }

@@ -31,9 +31,11 @@ const Courses = () => {
   }); // Track reaction counts
   const [karmaPoints, setKarmaPoints] = useState(0); // State to store karma points
 
-   // Load reaction counts and karma points from local storage
-   useEffect(() => {
-    const storedReactionCounts = JSON.parse(localStorage.getItem("reactionCounts"));
+  // Load reaction counts and karma points from local storage
+  useEffect(() => {
+    const storedReactionCounts = JSON.parse(
+      localStorage.getItem("reactionCounts"),
+    );
     const storedKarmaPoints = JSON.parse(localStorage.getItem("karmaPoints"));
     if (storedReactionCounts) {
       setReactionCounts(storedReactionCounts);
@@ -43,17 +45,17 @@ const Courses = () => {
     }
   }, []);
 
-   // Save reaction counts and karma points to local storage
-   useEffect(() => {
+  // Save reaction counts and karma points to local storage
+  useEffect(() => {
     localStorage.setItem("reactionCounts", JSON.stringify(reactionCounts));
     localStorage.setItem("karmaPoints", JSON.stringify(karmaPoints));
   }, [reactionCounts, karmaPoints]);
-  
+
   const handleButtonClick = () => {
     setShowOptions(!showOptions);
   };
 
-  const handleOptionSelect = async (reaction, authorId) => {
+  const handleOptionSelect = async (reaction, reply, authorId) => {
     let karmaChange = 0;
     switch (reaction) {
       case "Answered":
@@ -74,7 +76,12 @@ const Courses = () => {
     setKarmaPoints((prevPoints) => prevPoints + karmaChange); // Update karma points based on reaction
 
     try {
-      const response = await saveReaction(objectID, reaction, authorId); // Pass authorId to saveReaction
+      const response = await saveReaction(
+        objectID,
+        reaction,
+        authorId,
+        reply._id,
+      ); // Pass authorId to saveReaction
       console.log("Reaction saved successfully:", response);
     } catch (error) {
       console.error("Error saving reaction:", error);
@@ -82,19 +89,20 @@ const Courses = () => {
   };
 
   // Function to save reaction
-  const saveReaction = async (objectID, reactionType, authorId) => {
+  const saveReaction = async (objectID, reactionType, authorId, replyID) => {
     const response = await fetch("/api/reactions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ objectID, reactionType, authorId }), // Include authorId in the request body
+      body: JSON.stringify({ objectID, reactionType, authorId, replyID }), // Include authorId in the request body
     });
 
     if (!response.ok) {
       throw new Error("Failed to save reaction");
     }
-
+    window.location.reload();
     return await response.json();
   };
+
   // Function to get reaction count for a specific type
   const getReactionCount = (reactionType) => {
     return reactionCounts[reactionType] || 0;
@@ -212,6 +220,7 @@ const Courses = () => {
 
     fetchReactionCounts(objectID);
   }, []);
+
   const fetchReactionCounts = async (objectID) => {
     try {
       const response = await fetch(`/api/reactions/${objectID}`, {
@@ -317,15 +326,13 @@ const Courses = () => {
                 <div className="reaction-container">
                   <div className="reaction-boxes">
                     <div className="reaction-box1">
-                      <p>Answered: {getReactionCount("Answered")}</p>
+                      <p>Answered: {reply.reactions.answered}</p>
                     </div>
                     <div className="reaction-box2">
-                      <p>Off-Topic: {getReactionCount("Off-Topic")}</p>
+                      <p>Off-Topic: {reply.reactions.offTopic}</p>
                     </div>
                     <div className="reaction-box3">
-                      <p>
-                        Bad Information: {getReactionCount("Bad Information")}
-                      </p>
+                      <p>Bad Information: {reply.reactions.badInformation}</p>
                     </div>
                   </div>
                 </div>
@@ -334,13 +341,15 @@ const Courses = () => {
                 </h4>
                 <p>{reply.message}</p>
                 <div>
-                  <button onClick={handleButtonClick}>Choose Reaction</button>
+                  <button onClick={() => handleButtonClick(reply.authorId)}>
+                    Choose Reaction
+                  </button>
                   {showOptions && (
                     <div className="reaction-options">
                       {reactionOptions.map((reaction) => (
                         <button
                           key={reaction}
-                          onClick={() => handleOptionSelect(reaction)}
+                          onClick={() => handleOptionSelect(reaction, reply)}
                         >
                           {reaction}
                         </button>
@@ -451,15 +460,13 @@ const Courses = () => {
                 <div className="reaction-container">
                   <div className="reaction-boxes">
                     <div className="reaction-box1">
-                      <p>Answered: {getReactionCount("Answered")}</p>
+                      <p>Answered: {reply.reactions.answered}</p>
                     </div>
                     <div className="reaction-box2">
-                      <p>Off-Topic: {getReactionCount("Off-Topic")}</p>
+                      <p>Off-Topic: {reply.reactions.offTopic}</p>
                     </div>
                     <div className="reaction-box3">
-                      <p>
-                        Bad Information: {getReactionCount("Bad Information")}
-                      </p>
+                      <p>Bad Information: {reply.reactions.badInformation}</p>
                     </div>
                   </div>
                 </div>
@@ -476,7 +483,7 @@ const Courses = () => {
                       {reactionOptions.map((reaction) => (
                         <button
                           key={reaction}
-                          onClick={() => handleOptionSelect(reaction)}
+                          onClick={() => handleOptionSelect(reaction, reply)}
                         >
                           {reaction}
                         </button>
