@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import logoImage from "./images/logo.jpg"; 
+import logoImage from "./images/logo.jpg";
 
 // This is the first page users will see when opening sight
 // Will ask to login or register
@@ -15,7 +15,7 @@ function App() {
     <Container component="main" maxWidth="xs" sx={{ mt: 8 }}>
       <Box
         sx={{
-          marginTop: 22,
+          marginTop: 20,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
