@@ -449,27 +449,35 @@ app.delete("/api/tasks/:taskId", async (req, res) => {
  *  Saves reactions per reply post
  */
 
+// Inside your route for saving reactions
 app.post("/api/reactions", async (req, res) => {
-  try {
-    const { postId, reactionType, authorId } = req.body;
+  const { objectID, reactionType } = req.body;
 
-    if (!authorId) {
-      return res.status(400).json({ message: "Missing author ID" });
-    }
-
-    const response = await saveReaction(postId, reactionType, authorId);
-    const updatedAuthor = await updateUserKarma(authorId, reactionType);
-
-    res.status(200).json({ response, authorKarma: updatedAuthor.karma }); // Return the updated author's karma
-  } catch (error) {
-    console.error("Error saving reaction:", error);
-    res.status(500).json({
-      error: "Something went wrong",
-      details: error.message,
-    });
+  const qaForum = await QAForms.findById(objectID);
+  if (!qaForum) {
+    return res.status(404).json({ message: "Question not found" });
   }
-});
 
+  switch (reactionType) {
+    case "Answered":
+      qaForum.reactions.answered++;
+      break;
+    case "Off-Topic":
+      qaForum.reactions.offTopic++;
+      break;
+    case "Bad Information":
+      qaForum.reactions.badInformation++;
+      break;
+    default:
+      return res.status(400).json({ message: "Invalid reaction type" });
+  }
+
+  const updatedDocument = await qaForum.save();
+  console.log("Updated document:", updatedDocument);
+  res
+    .status(200)
+    .json({ message: "Reaction saved successfully", updatedDocument });
+});
 
 // catch all
 app.use("/*", (req, res) => {
@@ -479,37 +487,3 @@ app.use("/*", (req, res) => {
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server started on port " + process.env.PORT);
 });
-
-/* app.post("/api/reactions", async (req, res) => {
-  try {
-    const { postId, reactionType, userId } = req.body;
-    if (!userId) {
-      return res.status(400).json({ message: "Missing user ID" });
-    }
-
-    const response = await saveReaction(postId, reactionType, userId);
-    res.status(200).json(response);
-  } catch (error) {
-    console.error("Error saving reaction:", error);
-    res.status(500).json({
-      error: "Something went wrong",
-      details: error.message,
-    });
-  }
-});
-
-const saveReaction = async (objectID, reactionType) => {
-  const userId = JSON.parse(localStorage.getItem("user")).userId;
-  const response = await fetch("/api/reactions", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ objectID, reactionType, userId }),
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to save reaction");
-  }
-
-  return await response.json();
-};
- */

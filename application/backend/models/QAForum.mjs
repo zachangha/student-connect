@@ -13,7 +13,6 @@ const qaForumSchema = new mongoose.Schema({
   },
   datePosted: Date,
   forumID: Number,
-  
   title: String,
   message: { type: String, required: true },
   questionID: {
@@ -22,6 +21,11 @@ const qaForumSchema = new mongoose.Schema({
     required: false,
   },
   type: { type: String, required: true },
+  reactions: {
+    answered: { type: Number, default: 0 },
+    offTopic: { type: Number, default: 0 },
+    badInformation: { type: Number, default: 0 },
+  },
 });
 
 const QAForum = mongoose.model("QAForum", qaForumSchema);

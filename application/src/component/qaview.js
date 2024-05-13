@@ -47,7 +47,7 @@ const Courses = () => {
       default:
         karmaChange = 0;
     }
-    setChosenReaction(chosenReaction);
+    setChosenReaction(reaction);
     setShowOptions(false); // Hide options after selection
     setReactionCounts((prevCounts) => ({
       ...prevCounts,
@@ -429,7 +429,9 @@ const Courses = () => {
                 </h4>
                 <p>{reply.message}</p>
                 <div>
-                  <button onClick={handleButtonClick}>Choose Reaction</button>
+                  <button onClick={() => handleButtonClick(reply.authorId)}>
+                    Choose Reaction
+                  </button>
                   {showOptions && (
                     <div className="reaction-options">
                       {reactionOptions.map((reaction) => (
@@ -449,8 +451,6 @@ const Courses = () => {
         </div>
       </body>
     );
-  
-       
     //Catch all scenario
   } else {
     return (
