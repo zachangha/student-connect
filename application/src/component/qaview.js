@@ -34,7 +34,7 @@ const Courses = () => {
   // Load reaction counts and karma points from local storage
   useEffect(() => {
     const storedReactionCounts = JSON.parse(
-      localStorage.getItem("reactionCounts"),
+      localStorage.getItem("reactionCounts")
     );
     const storedKarmaPoints = JSON.parse(localStorage.getItem("karmaPoints"));
     if (storedReactionCounts) {
@@ -80,7 +80,7 @@ const Courses = () => {
         objectID,
         reaction,
         authorId,
-        reply._id,
+        reply
       ); // Pass authorId to saveReaction
       console.log("Reaction saved successfully:", response);
     } catch (error) {
@@ -89,11 +89,11 @@ const Courses = () => {
   };
 
   // Function to save reaction
-  const saveReaction = async (objectID, reactionType, authorId, replyID) => {
+  const saveReaction = async (objectID, reactionType, authorId, reply) => {
     const response = await fetch("/api/reactions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ objectID, reactionType, authorId, replyID }), // Include authorId in the request body
+      body: JSON.stringify({ objectID, reactionType, authorId, reply }), // Include authorId in the request body
     });
 
     if (!response.ok) {
@@ -296,7 +296,7 @@ const Courses = () => {
               <h1>Question: {targetQuestion.title}</h1>
               {questionAuthor.map((author) => (
                 <h4>
-                  {author.username}, KP: {karmaPoints}, asks:
+                  {author.username}, KP: {author.karmaPoints}, asks:
                 </h4>
               ))}
               <p>{targetQuestion.message}</p>
@@ -337,7 +337,7 @@ const Courses = () => {
                   </div>
                 </div>
                 <h4>
-                  {usernames[index].username}, KP: {karmaPoints}, replied:
+                  {usernames[index].username}, KP: {usernames[index].karmaPoints}, replied:
                 </h4>
                 <p>{reply.message}</p>
                 <div>
@@ -429,9 +429,8 @@ const Courses = () => {
           {targetQuestion ? (
             <div className="questionBox">
               <h1>Question: {targetQuestion.title}</h1>
-              KP: {karmaPoints}
               {questionAuthor.map((author) => (
-                <h4>{author.username} asks:</h4>
+                <h4>{author.username}, KP: {author.karmaPoints}, asks:</h4>
               ))}
               <p>{targetQuestion.message}</p>
               <Button
@@ -471,7 +470,7 @@ const Courses = () => {
                   </div>
                 </div>
                 <h4>
-                  {usernames[index].username}, KP: {karmaPoints}, replied:
+                  {usernames[index].username}, KP: {usernames[index].karmaPoints}, replied:
                 </h4>
                 <p>{reply.message}</p>
                 <div>

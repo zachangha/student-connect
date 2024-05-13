@@ -451,32 +451,36 @@ app.delete("/api/tasks/:taskId", async (req, res) => {
 
 // Inside your route for saving reactions
 app.post("/api/reactions", async (req, res) => {
-  const { objectID, reactionType, replyID } = req.body;
-
-  const qaForum = await QAForms.findById(replyID);
+  const { objectID, reactionType, reply } = req.body;
+  const qaForum = await QAForms.findById(reply._id);
+  const replyUser = await User.findById(reply.authorID);
   if (!qaForum) {
     return res.status(404).json({ message: "Question not found" });
   }
-
+  if (!replyUser) {
+    return res.status(404).json({ message: "User not found" });
+  }
   switch (reactionType) {
     case "Answered":
       qaForum.reactions.answered++;
+      replyUser.karmaPoints++;
       break;
     case "Off-Topic":
       qaForum.reactions.offTopic++;
       break;
     case "Bad Information":
       qaForum.reactions.badInformation++;
+      replyUser.karmaPoints--;
       break;
     default:
       return res.status(400).json({ message: "Invalid reaction type" });
   }
-
   const updatedDocument = await qaForum.save();
-  console.log("Updated document:", updatedDocument);
+  const updateKarmaPoints = await replyUser.save();
+  console.log("Updated document:", updateKarmaPoints);
   res
     .status(200)
-    .json({ message: "Reaction saved successfully", updatedDocument });
+    .json({ message: "Reaction saved successfully", updatedDocument, updateKarmaPoints });
 });
 
 // catch all
