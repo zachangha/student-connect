@@ -66,8 +66,8 @@ function App() {
     if (response.status === 200) {
       setTasks(
         tasks.map((task) =>
-          task.id === id ? { ...task, checked: !task.checked } : task,
-        ),
+          task.id === id ? { ...task, checked: !task.checked } : task
+        )
       );
     }
   };
