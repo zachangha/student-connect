@@ -445,19 +445,17 @@ app.delete("/api/tasks/:taskId", async (req, res) => {
   }
 });
 
-
 /**
  *  Saves reactions per reply post
  */
 
-
 app.post("/api/reactions", async (req, res) => {
   try {
     const { postId, reactionType } = req.body;
-    const userId = req.body.userId || localStorage.getItem('userId'); // Get userId from request body or localStorage
+    const userId = req.body.userId || localStorage.getItem("userId"); // Get userId from request body or localStorage
 
     if (!userId) {
-      return res.status(400).json({ message: 'Missing user ID' });
+      return res.status(400).json({ message: "Missing user ID" });
     }
 
     // Update the reaction counts for the given post ID
@@ -480,3 +478,37 @@ app.use("/*", (req, res) => {
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server started on port " + process.env.PORT);
 });
+
+/* app.post("/api/reactions", async (req, res) => {
+  try {
+    const { postId, reactionType, userId } = req.body;
+    if (!userId) {
+      return res.status(400).json({ message: "Missing user ID" });
+    }
+
+    const response = await saveReaction(postId, reactionType, userId);
+    res.status(200).json(response);
+  } catch (error) {
+    console.error("Error saving reaction:", error);
+    res.status(500).json({
+      error: "Something went wrong",
+      details: error.message,
+    });
+  }
+});
+
+const saveReaction = async (objectID, reactionType) => {
+  const userId = JSON.parse(localStorage.getItem("user")).userId;
+  const response = await fetch("/api/reactions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ objectID, reactionType, userId }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to save reaction");
+  }
+
+  return await response.json();
+};
+ */
