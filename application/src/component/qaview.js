@@ -315,8 +315,7 @@ const Courses = () => {
 
           <br></br>
           <br></br>
-          <h2 className="border">Reply</h2>
-          <div className="border">put Reply here</div>
+          <h2 className="border">Replies</h2>
           <div
             className="replyContainer"
             style={{ maxHeight: "400px", overflowY: "auto" }}
@@ -448,8 +447,7 @@ const Courses = () => {
 
           <br></br>
           <br></br>
-          <h2 className="border">Reply</h2>
-          <div className="border">put Reply here</div>
+          <h2 className="border">Replies</h2>
           <div
             className="replyContainer"
             style={{ maxHeight: "400px", overflowY: "auto" }}
