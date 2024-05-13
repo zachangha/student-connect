@@ -31,6 +31,24 @@ const Courses = () => {
   }); // Track reaction counts
   const [karmaPoints, setKarmaPoints] = useState(0); // State to store karma points
 
+   // Load reaction counts and karma points from local storage
+   useEffect(() => {
+    const storedReactionCounts = JSON.parse(localStorage.getItem("reactionCounts"));
+    const storedKarmaPoints = JSON.parse(localStorage.getItem("karmaPoints"));
+    if (storedReactionCounts) {
+      setReactionCounts(storedReactionCounts);
+    }
+    if (storedKarmaPoints) {
+      setKarmaPoints(storedKarmaPoints);
+    }
+  }, []);
+
+   // Save reaction counts and karma points to local storage
+   useEffect(() => {
+    localStorage.setItem("reactionCounts", JSON.stringify(reactionCounts));
+    localStorage.setItem("karmaPoints", JSON.stringify(karmaPoints));
+  }, [reactionCounts, karmaPoints]);
+  
   const handleButtonClick = () => {
     setShowOptions(!showOptions);
   };
@@ -191,7 +209,28 @@ const Courses = () => {
     getAnnouncements();
     getQuestions();
     getReplies();
+
+    fetchReactionCounts(objectID);
   }, []);
+  const fetchReactionCounts = async (objectID) => {
+    try {
+      const response = await fetch(`/api/reactions/${objectID}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const reactionCountsData = await response.json();
+        setReactionCounts(reactionCountsData);
+      } else {
+        const result = await response.json();
+        throw new Error(result.message || "Could not fetch reaction counts");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   //student view of the class, cannot post announcements
   if (user.role === "student") {
