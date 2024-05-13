@@ -19,6 +19,7 @@ const Courses = () => {
   const objectID = currentUrl.match(/\/([^\/]+)$/)[1];
 
   const targetQuestion = questions.find((obj) => obj._id === objectID);
+  
 
   //karma logic
   const [showOptions, setShowOptions] = useState(false);
