@@ -43,6 +43,33 @@ function ProfilePage() {
     }
   };
 
+  const [loadedKarmaPoints, setLoadedKarmaPoints] = useState(0);
+
+  const getUser = async () => {
+    try {
+      const response = await fetch(`/api/user/get/${user.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        let retrivedKarmaPoints = await response.json();
+        setLoadedKarmaPoints(retrivedKarmaPoints);
+        console.log(loadedKarmaPoints);
+      } else {
+        const result = await response.json();
+        throw new Error(result.message || "Could not load course");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <div className="profile-page">
       <h1>Profile</h1>
@@ -82,7 +109,7 @@ function ProfilePage() {
             <h1>Pronouns: {user.pronouns}</h1>
           </div>
           <div className="user-info-box">
-            <h1>Karma points: {user.karmaPoints}</h1>
+            <h1>Karma points: {loadedKarmaPoints}</h1>
           </div>
         </div>
       </div>

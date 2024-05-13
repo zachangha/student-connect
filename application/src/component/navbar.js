@@ -23,8 +23,9 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AlertComponent from "./alerts";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
+import logoImage from "./images/logo-small.jpg";
 
-// different drawer configurations
+// Different drawer configurations
 const drawerWidth = 200;
 
 const openedMixin = (theme) => ({
@@ -74,7 +75,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-// aesthetics of the drawer
+// Aesthetics of the drawer
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -92,7 +93,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-// open and close drawer functions
+// Open and close drawer functions
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -109,7 +110,7 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
-  // delete user info from local and redirect to landing page, sending alert
+  // Delete user info from local and redirect to landing page, sending alert
   const logout = () => {
     localStorage.removeItem("user");
     setTimeout(() => {
@@ -126,11 +127,10 @@ export default function MiniDrawer() {
 
   const navigate = useNavigate();
 
-  // links that will be listed in the sidebar
+  // Links that will be listed in the sidebar
   const navLinks = [
     { text: "Home", to: "/home", icon: <HomeIcon /> },
     { text: "Classes", to: "/classes", icon: <SchoolIcon /> },
-
     // Remove this later { text: "QA", to: "/QA", icon: <SchoolIcon /> },
     { text: "AI Tutor", to: "/aiTutor", icon: <QuestionMarkIcon /> },
     // f2e3f9d1d84746dccb8cd610580e481257017e69
@@ -153,9 +153,20 @@ export default function MiniDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Student Connect
-          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <img
+              src={logoImage}
+              alt="Logo"
+              style={{
+                height: "30px",
+                marginLeft: "20px",
+                marginRight: "10px",
+              }}
+            />
+            <Typography variant="h6" noWrap component="div">
+              Student Connect
+            </Typography>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

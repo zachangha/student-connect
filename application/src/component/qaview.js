@@ -20,6 +20,91 @@ const Courses = () => {
 
   const targetQuestion = questions.find((obj) => obj._id === objectID);
 
+  //karma logic
+  const [showOptions, setShowOptions] = useState(false);
+  const reactionOptions = ["Answered", "Off-Topic", "Bad Information"];
+  const [chosenReaction, setChosenReaction] = useState(null); // Store chosen reaction
+  const [reactionCounts, setReactionCounts] = useState({
+    Answered: 0,
+    "Bad Information": 0,
+    "Off-Topic": 0,
+  }); // Track reaction counts
+  const [karmaPoints, setKarmaPoints] = useState(0); // State to store karma points
+
+  // Load reaction counts and karma points from local storage
+  useEffect(() => {
+    const storedReactionCounts = JSON.parse(
+      localStorage.getItem("reactionCounts")
+    );
+    const storedKarmaPoints = JSON.parse(localStorage.getItem("karmaPoints"));
+    if (storedReactionCounts) {
+      setReactionCounts(storedReactionCounts);
+    }
+    if (storedKarmaPoints) {
+      setKarmaPoints(storedKarmaPoints);
+    }
+  }, []);
+
+  // Save reaction counts and karma points to local storage
+  useEffect(() => {
+    localStorage.setItem("reactionCounts", JSON.stringify(reactionCounts));
+    localStorage.setItem("karmaPoints", JSON.stringify(karmaPoints));
+  }, [reactionCounts, karmaPoints]);
+
+  const handleButtonClick = () => {
+    setShowOptions(!showOptions);
+  };
+
+  const handleOptionSelect = async (reaction, reply, authorId) => {
+    let karmaChange = 0;
+    switch (reaction) {
+      case "Answered":
+        karmaChange = 1;
+        break;
+      case "Bad Information":
+        karmaChange = -1;
+        break;
+      default:
+        karmaChange = 0;
+    }
+    setChosenReaction(reaction);
+    setShowOptions(false); // Hide options after selection
+    setReactionCounts((prevCounts) => ({
+      ...prevCounts,
+      [reaction]: prevCounts[reaction] + 1,
+    })); // Update count for chosen reaction
+    setKarmaPoints((prevPoints) => prevPoints + karmaChange); // Update karma points based on reaction
+
+    try {
+      const response = await saveReaction(objectID, reaction, authorId, reply); // Pass authorId to saveReaction
+      console.log("Reaction saved successfully:", response);
+    } catch (error) {
+      console.error("Error saving reaction:", error);
+    }
+  };
+
+  // Function to save reaction
+  const saveReaction = async (objectID, reactionType, authorId, reply) => {
+    const response = await fetch("/api/reactions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ objectID, reactionType, authorId, reply }), // Include authorId in the request body
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to save reaction");
+    }
+    window.location.reload();
+    return await response.json();
+  };
+
+  // Function to get reaction count for a specific type
+  const getReactionCount = (reactionType) => {
+    return reactionCounts[reactionType] || 0;
+  };
+
+  //karma up to this point
+
   /**
    * Redirect to the create announcement page
    */
@@ -127,7 +212,29 @@ const Courses = () => {
     getAnnouncements();
     getQuestions();
     getReplies();
+
+    fetchReactionCounts(objectID);
   }, []);
+
+  const fetchReactionCounts = async (objectID) => {
+    try {
+      const response = await fetch(`/api/reactions/${objectID}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const reactionCountsData = await response.json();
+        setReactionCounts(reactionCountsData);
+      } else {
+        const result = await response.json();
+        throw new Error(result.message || "Could not fetch reaction counts");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   //student view of the class, cannot post announcements
   if (user.role === "student") {
@@ -143,15 +250,20 @@ const Courses = () => {
           <br></br>
           <h2 className="border">Announcements:</h2>
 
-          <div className="border">
-            {announcements.slice(0, 5).map((announcement) => (
-              <li>
+          <div
+            className="border"
+            style={{ maxHeight: "200px", overflowY: "auto" }}
+          >
+            {announcements.map((announcement) => (
+              <div key={announcement._id} className="announcement-box">
                 <a href={`/course/${courseID}/view/${announcement._id}`}>
-                  {announcement.title}
+                  <h3>{announcement.title}</h3>
+                  <p>{announcement.message}</p>
                 </a>
-              </li>
+              </div>
             ))}
           </div>
+
           <br></br>
           <br></br>
           <h2 className="border">
@@ -165,16 +277,20 @@ const Courses = () => {
               +
             </Button>
           </h2>
-          <div className="border">
-            {questions.slice(0, 5).map((question) => (
-              <li>
-                <a href={`/course/${courseID}/viewQuestion/${question._id}`}>
-                  {question.title}
-                </a>
-              </li>
-            ))}
+          <div
+            className="border"
+            style={{ maxHeight: "200px", overflowY: "auto" }}
+          >
+            <div className="qa-outerbox">
+              {questions.slice(0, 5).map((question) => (
+                <div className="qa-box" key={question._id}>
+                  <a href={`/course/${courseID}/viewQuestion/${question._id}`}>
+                    <h3>{question.title}</h3>
+                  </a>
+                </div>
+              ))}
+            </div>
           </div>
-
         </div>
 
         <div className="postingInfo">
@@ -184,16 +300,18 @@ const Courses = () => {
             <div className="questionBox">
               <h1>Question: {targetQuestion.title}</h1>
               {questionAuthor.map((author) => (
-                <h4>{author.username} asks:</h4>
+                <h4>
+                  {author.username}, KP: {author.karmaPoints}, asks:
+                </h4>
               ))}
               <p>{targetQuestion.message}</p>
               <Button
-              className="replyButton"
-              variant="contained"
-              color="primary"
-              onClick={redirectToAddReply}
+                className="replyButton"
+                variant="contained"
+                color="primary"
+                onClick={redirectToAddReply}
               >
-              Reply
+                Reply
               </Button>
             </div>
           ) : (
@@ -202,17 +320,50 @@ const Courses = () => {
 
           <br></br>
           <br></br>
-          <h2 className="border">Reply</h2>
-          <div className="border">put Reply here</div>
-          <div className="replyBox">
-            <ul>
-              {replies.map((reply, index) => (
-                <li>
-                  <h4>{usernames[index].username} replied:</h4>
-                  {reply.message}
-                </li>
-              ))}
-            </ul>
+          <h2 className="border">Replies</h2>
+          <div
+            className="replyContainer"
+            style={{ maxHeight: "400px", overflowY: "auto" }}
+          >
+            {replies.map((reply, index) => (
+              <div className="replyBox" key={index}>
+                <div className="reaction-container">
+                  <div className="reaction-boxes">
+                    <div className="reaction-box1">
+                      <p>Answered: {reply.reactions.answered}</p>
+                    </div>
+                    <div className="reaction-box2">
+                      <p>Off-Topic: {reply.reactions.offTopic}</p>
+                    </div>
+                    <div className="reaction-box3">
+                      <p>Bad Information: {reply.reactions.badInformation}</p>
+                    </div>
+                  </div>
+                </div>
+                <h4>
+                  {usernames[index].username}, KP:{" "}
+                  {usernames[index].karmaPoints}, replied:
+                </h4>
+                <p>{reply.message}</p>
+                <div>
+                  <button onClick={() => handleButtonClick(reply.authorId)}>
+                    Choose Reaction
+                  </button>
+                  {showOptions && (
+                    <div className="reaction-options">
+                      {reactionOptions.map((reaction) => (
+                        <button
+                          key={reaction}
+                          onClick={() => handleOptionSelect(reaction, reply)}
+                        >
+                          {reaction}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </body>
@@ -243,13 +394,17 @@ const Courses = () => {
             </Button>
           </h2>
 
-          <div className="border">
-            {announcements.slice(0, 5).map((announcement) => (
-              <li>
+          <div
+            className="border"
+            style={{ maxHeight: "200px", overflowY: "auto" }}
+          >
+            {announcements.map((announcement) => (
+              <div key={announcement._id} className="announcement-box">
                 <a href={`/course/${courseID}/view/${announcement._id}`}>
-                  {announcement.title}
+                  <h3>{announcement.title}</h3>
+                  <p>{announcement.message}</p>
                 </a>
-              </li>
+              </div>
             ))}
           </div>
           <br></br>
@@ -265,17 +420,21 @@ const Courses = () => {
               +
             </Button>
           </h2>
-          <div className="border">put Q&A here</div>
-          <div className="border">
-            {questions.slice(0, 5).map((question) => (
-              <li>
-                <a href={`/course/${courseID}/viewQuestion/${question._id}`}>
-                  {question.title}
-                </a>
-              </li>
-            ))}
-          </div>
 
+          <div
+            className="border"
+            style={{ maxHeight: "200px", overflowY: "auto" }}
+          >
+            <div className="qa-outerbox">
+              {questions.slice(0, 5).map((question) => (
+                <div className="qa-box" key={question._id}>
+                  <a href={`/course/${courseID}/viewQuestion/${question._id}`}>
+                    <h3>{question.title}</h3>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="postingInfo">
@@ -285,16 +444,18 @@ const Courses = () => {
             <div className="questionBox">
               <h1>Question: {targetQuestion.title}</h1>
               {questionAuthor.map((author) => (
-                <h4>{author.username} asks:</h4>
+                <h4>
+                  {author.username}, KP: {author.karmaPoints}, asks:
+                </h4>
               ))}
               <p>{targetQuestion.message}</p>
               <Button
-              className="replyButton"
-              variant="contained"
-              color="primary"
-              onClick={redirectToAddReply}
+                className="replyButton"
+                variant="contained"
+                color="primary"
+                onClick={redirectToAddReply}
               >
-              Reply
+                Reply
               </Button>
             </div>
           ) : (
@@ -303,22 +464,54 @@ const Courses = () => {
 
           <br></br>
           <br></br>
-          <h2 className="border">Reply</h2>
-          <div className="border">put Reply here</div>
-          <div className="replyBox">
-            <ul>
-              {replies.map((reply, index) => (
-                <li>
-                  <h4>{usernames[index].username} replied:</h4>
-                  {reply.message}
-                </li>
-              ))}
-            </ul>
+          <h2 className="border">Replies</h2>
+          <div
+            className="replyContainer"
+            style={{ maxHeight: "400px", overflowY: "auto" }}
+          >
+            {replies.map((reply, index) => (
+              <div className="replyBox" key={index}>
+                <div className="reaction-container">
+                  <div className="reaction-boxes">
+                    <div className="reaction-box1">
+                      <p>Answered: {reply.reactions.answered}</p>
+                    </div>
+                    <div className="reaction-box2">
+                      <p>Off-Topic: {reply.reactions.offTopic}</p>
+                    </div>
+                    <div className="reaction-box3">
+                      <p>Bad Information: {reply.reactions.badInformation}</p>
+                    </div>
+                  </div>
+                </div>
+                <h4>
+                  {usernames[index].username}, KP:{" "}
+                  {usernames[index].karmaPoints}, replied:
+                </h4>
+                <p>{reply.message}</p>
+                <div>
+                  <button onClick={() => handleButtonClick(reply.authorId)}>
+                    Choose Reaction
+                  </button>
+                  {showOptions && (
+                    <div className="reaction-options">
+                      {reactionOptions.map((reaction) => (
+                        <button
+                          key={reaction}
+                          onClick={() => handleOptionSelect(reaction, reply)}
+                        >
+                          {reaction}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </body>
     );
-
     //Catch all scenario
   } else {
     return (

@@ -205,6 +205,17 @@ app.get("/api/course/get/:courseID", async (req, res) => {
   }
 });
 
+app.get("/api/user/get/:userID", async (req, res) => {
+  const { userID } = req.params;
+  try {
+    const user = await User.findById(userID);
+    res.send(user.karmaPoints.toString());
+  } catch (error) {
+    console.error("Error: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 /**
  * Endpoint to get an array of announcements for a class.
  */
@@ -443,6 +454,48 @@ app.delete("/api/tasks/:taskId", async (req, res) => {
       .status(500)
       .json({ message: "Failed to delete task", error: error.message });
   }
+});
+
+/**
+ *  Saves reactions per reply post
+ */
+
+// Inside your route for saving reactions
+app.post("/api/reactions", async (req, res) => {
+  const { objectID, reactionType, reply } = req.body;
+  const qaForum = await QAForms.findById(reply._id);
+  const replyUser = await User.findById(reply.authorID);
+  if (!qaForum) {
+    return res.status(404).json({ message: "Question not found" });
+  }
+  if (!replyUser) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  switch (reactionType) {
+    case "Answered":
+      qaForum.reactions.answered++;
+      replyUser.karmaPoints++;
+      break;
+    case "Off-Topic":
+      qaForum.reactions.offTopic++;
+      break;
+    case "Bad Information":
+      qaForum.reactions.badInformation++;
+      replyUser.karmaPoints--;
+      break;
+    default:
+      return res.status(400).json({ message: "Invalid reaction type" });
+  }
+  const updatedDocument = await qaForum.save();
+  const updateKarmaPoints = await replyUser.save();
+  console.log("Updated document:", updateKarmaPoints);
+  res
+    .status(200)
+    .json({
+      message: "Reaction saved successfully",
+      updatedDocument,
+      updateKarmaPoints,
+    });
 });
 
 // catch all

@@ -100,48 +100,51 @@ const Classes = () => {
         >
           Join Course
         </Button>
-        <div>
-          <h2>Your Courses: </h2>
-          <ul>
-            {courses.map((course, index) => (
-              <li key={course.id}>
-                <div>
-                  <a href={`/course/${course._id}`}> {course.className}</a>
-                </div>
-                <p>Teacher: {teachers[index].username}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
+        
+  <div className="courses-container">
+  <h2>Your Courses:</h2>
+  <div className="courses-list"
+  style={{ maxHeight: "200px", overflowY: "auto" }}>
+    {courses.map((course, index) => (
+       <a key={course.id} href={`/course/${course._id}`} className="course-link">
+      <div className="course-box" key={course.id}>
+        <a href={`/course/${course._id}`}>{course.className}</a>
+        <p>Teacher: {teachers[index].username}</p>
       </div>
+      </a>
+    ))}
+  </div>
+</div>
+</div>
+
     );
   } else if (user.role === "teacher") {
     return (
       <div className="classes-container">
-        <div>
-          <h2>Your Courses: </h2>
-          <ul>
-            {courses.map((course) => (
-              <li key={course.id}>
-                <div>
-                  <a href={`/course/${course._id}`}> {course.className}</a>
-                </div>
-              </li>
-            ))}
-          </ul>
+  <div className="courses-list">
+    <h2>Your Courses: </h2>
+    <div className="courses-container">
+      {courses.map((course) => (
+         <a key={course.id} href={`/course/${course._id}`} className="course-link">
+        <div key={course.id} className="course-box">
+          <a href={`/course/${course._id}`}>{course.className}</a>
         </div>
+        </a>
+      ))}
+    </div>
+  </div>
 
-        <div>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={redirectToAddCourse}
-            className="create-course-button"
-          >
-            Create Course
-          </Button>
-        </div>
-      </div>
+  <div>
+    <Button
+      variant="contained"
+      color="primary"
+      onClick={redirectToAddCourse}
+      className="create-course-button"
+    >
+      Create Course
+    </Button>
+  </div>
+</div>
     );
   } else {
     return (

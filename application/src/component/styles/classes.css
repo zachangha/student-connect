@@ -43,11 +43,24 @@
   border-style: solid;
 }
 
-.postingInfo {
+/* .postingInfo {
   background-color: lightgrey;
   height: 100%;
   width: 48%;
   float: right;
+} */
+.postingInfo {
+  display: block;
+  flex-direction: column;
+  align-items: left;
+  
+  border-style: solid;
+  border-width: 1px 1px 1px 0px;
+  border-color: black;
+  background-color: lightgray;
+  height: 100%;
+  width: 95%;
+  overflow-y: scroll;
 }
 
 .course-id-input,
@@ -77,8 +90,6 @@
   float: left;
   background-color: #115293;
 }
-
-
 
 .container {
   display: flex;
@@ -112,26 +123,146 @@ h1 {
   background-color: #115293;
 }
 
-.replyBox{
+.replyBox {
   display: block;
-  flex-direction:column;
-  align-items:left;
+  flex-direction: column;
+  align-items: left;
   padding-left: 5%;
   padding-bottom: 5%;
-  border-style:solid;
+  border-style: solid;
   border-width: 1px 1px 1px 0px;
   border-color: black;
   background-color: whitesmoke;
-  height: 50%;
-  width: 60%;
+  height: 35%;
+  width: 95%;
   overflow-y: scroll;
+  
 }
 
-.questionBox{
+.questionBox {
   padding-left: 5%;
   background-color: white;
   border-style: solid;
   border-color: black;
   border-width: 1px 1px 1px 0px;
+  
 }
 
+/* Reaction button */
+.reaction-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.reaction-boxes {
+  display: flex;
+}
+.reaction-box1 {
+  background-color: lightgreen;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 135px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+.reaction-box2 {
+  background-color: yellow;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 135px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+.reaction-box3 {
+  background-color: lightcoral;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 135px;
+  height: 30px;
+  margin-right: 6px;
+}
+.reaction-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  flex-direction: column;
+  max-width: 500px;
+}
+
+/* .replyContainer {
+    width: 100%; 
+    max-width: 800px;
+    margin: 0 auto; 
+    margin:0
+  } */
+.announcement-box {
+  border: 1px solid black ;
+  margin-bottom: 10px;
+  padding: 3px;
+  background-color: whitesmoke;
+}
+
+.announcement-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.announcement-content {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.qa-box {
+  padding: 3px;
+  border: 1px solid black;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  overflow-y: auto;
+  max-height: 200px;
+  width: 100%;
+}
+
+.qa-outerbox {
+  display: block;
+  flex-direction: column;
+  align-items: left;
+  padding-bottom: 5%;
+  border-style: solid;
+  border-width: 1px 1px 1px 0px;
+  border-color: black;
+  background-color: whitesmoke;
+  overflow-y: scroll;
+}
+.courses-container {
+  max-height: 600px;
+  overflow-y: auto; 
+
+  margin-right: 15%;
+}
+.classes-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.courses-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.course-box {
+  padding: 10px;
+  border: 1px solid black;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  width: 100%;
+  max-width: 10000px; 
+}
+
+
+  

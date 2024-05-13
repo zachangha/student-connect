@@ -4,9 +4,10 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import logoImage from "./images/logo.jpg";
 
-// this is the first page users will see when opening sight
-// will ask to login or register
+// This is the first page users will see when opening sight
+// Will ask to login or register
 function App() {
   const navigate = useNavigate();
 
@@ -14,12 +15,17 @@ function App() {
     <Container component="main" maxWidth="xs" sx={{ mt: 8 }}>
       <Box
         sx={{
-          marginTop: 35,
+          marginTop: 20,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
+        <img
+          src={logoImage}
+          alt="Logo"
+          style={{ marginBottom: "20px", width: "70%", height: "70%" }}
+        />
         <Typography component="h1" variant="h5">
           Welcome to Student Connect
         </Typography>
